@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 02:11:41 by idouidi           #+#    #+#             */
-/*   Updated: 2022/10/09 14:17:36 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/10/15 17:53:28 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ namespace ft
             container_type ctr;
 
         //MEMBER FUNCTIONS
-        explicit    stack( const Container& cont = Container() ) { ctr(cont) };
+        explicit    stack( const Container& cont = Container() ) { ctr(cont); };
         bool        empty() const { return ctr.empty(); };
         size_type   size() const { return ctr.size(); };
         void        push( const value_type& value ) { ctr.push_back(value); };
 
-    }
+    };
 }
 
 #endif

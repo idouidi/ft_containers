@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   tester.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2022/10/15 21:08:43 by idouidi          ###   ########.fr       */
+/*   Created: 2022/10/15 20:44:29 by idouidi           #+#    #+#             */
+/*   Updated: 2022/10/15 21:17:42 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/map.hpp"
-#include "../includes/stack.hpp"
-#include "../includes/vector.hpp"
-#include "../includes/tester.hpp"
+#ifndef __TESTER_HPP__
+# define __TESTER_HPP__
 
-int main()
+# include <iostream>
+# include <fstream>
+# include <string>
+
+template <class T>
+std::string equal(const T& t1, const T& t2)
 {
-    vector_tester();
-    return (0);
+    return (t1 == t2 ? "✔" : "✘");
 }
+
+void vector_tester();
+
+#endif

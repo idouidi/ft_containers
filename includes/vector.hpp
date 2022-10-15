@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 03:17:33 by idouidi           #+#    #+#             */
-/*   Updated: 2022/10/13 18:36:19 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/10/15 21:51:43 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ namespace ft
 			typedef typename allocator_type::const_pointer				const_pointer;
 			typedef T *													iterator;
 			typedef const T* 											const_iterator;
-			typedef typename reverse_iterator<iterator>            		reverse_iterator;
-			typedef typename reverse_iterator<const_iterator>           const_reverse_iterator;
+			// typedef typename reverse_iterator<iterator>            		reverse_iterator;
+			// typedef typename reverse_iterator<const_iterator>           const_reverse_iterator;
 		private:
 			Allocator													__alloc;
 			pointer														__start;
 			pointer														__end;
+		public:
 		/*
 		*	*	*	*	*	*		MEMBER FUNCTION		*	*	*	*	*	*	*	*
 		*/
@@ -81,11 +82,11 @@ namespace ft
 		iterator				end();
 		const_iterator			end() const;
 
-		reverse_iterator 		rbegin();
-		const_reverse_iterator 	rbegin() const;
+		// reverse_iterator 		rbegin();
+		// const_reverse_iterator 	rbegin() const;
 
-		reverse_iterator 		rend();
-		const_reverse_iterator	rend() const;
+		// reverse_iterator 		rend();
+		// const_reverse_iterator	rend() const;
 
 		// SIZE
 		size_type 				size() const;
@@ -112,8 +113,8 @@ namespace ft
 		reference 				back();
 		const_reference			back() const;
 
-		value_type* 			data() noexcept;
-		const value_type* 		data() const noexcept;
+		// value_type* 			data() noexcept;
+		// const value_type* 		data() const noexcept;
 
 		// MODIFIER
 		template <class InputIterator>
@@ -135,7 +136,7 @@ namespace ft
 
 		//ALLOCATOR
 		allocator_type 			get_allocator() const; 
-	}
+	};
 
 	// OPERATOR
 		template <class T, class Alloc>  
@@ -160,6 +161,4 @@ namespace ft
 		template <class T, class Alloc>
 		void 					swap (vector<T,Alloc>& x, vector<T,Alloc>& y);
 }
-
-
 #endif
