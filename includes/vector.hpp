@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 03:17:33 by idouidi           #+#    #+#             */
-/*   Updated: 2022/10/13 17:52:07 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/10/13 18:36:19 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,24 @@ namespace ft
 		*	CONSTRUCTOR
 		*/
 
-		// empty container constructor (default constructor)
+		// ~ empty container constructor (default constructor)
 		explicit vector (const allocator_type& alloc = allocator_type())
 		: __alloc(alloc), __start(0), __end(0)
 		{}
 
-		// fill constructor
+
+		// ~ fill constructor
 		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		: __alloc(alloc), __start(0), __end(0)
 		{
-			//Attempts to allocate a block of storage with a size large enough to contain n of member type value_type.
-			__start = __alloc.allocate( n );
+			__start = __alloc.allocate( n ); //Attempts to allocate a block of storage with a size large enough to contain n of member type value_type.
+			__end =	__start;
+			for (size_type i = 0; i < n; i++)
+				__alloc.construct( __start + i , val ); //Constructs an element object on the location pointed by __start + i.
+			__end = n;
 		}
 
+		// ~ range constructor
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
 
