@@ -6,7 +6,7 @@
 #    By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 00:45:13 by idouidi           #+#    #+#              #
-#    Updated: 2022/10/15 21:12:11 by idouidi          ###   ########.fr        #
+#    Updated: 2022/10/15 21:56:43 by idouidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,3 +35,7 @@ fclean		: clean
 re			: fclean all
 
 .PHONY: all clean fclean re
+
+# 🚧 ==> progress 
+# 💥 ==> crash
+# ✅ ==> finish
