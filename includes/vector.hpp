@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+ /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
@@ -34,8 +34,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer				const_pointer;
 			typedef T *													iterator;
 			typedef const T* 											const_iterator;
-			// typedef typename reverse_iterator<iterator>            		reverse_iterator;
-			// typedef typename reverse_iterator<const_iterator>           const_reverse_iterator;
+			// typedef ft::reverse_iterator<iterator>            		reverse_iterator;
+			// typedef ft::reverse_iterator<const_iterator>           	const_reverse_iterator;
 		private:
 			Allocator													__alloc;
 			pointer														__start;
