@@ -20,9 +20,6 @@ namespace ft
 	template < class T, class Allocator = std::allocator<T> >
 	class vector
 	{
-		/*
-		*	*	*	*	*	*		MEMBER TYPE		*	*	*	*	*	*	*	*
-		*/
 		public:
 			typedef T           										value_type;
 			typedef Allocator											allocator_type;
@@ -41,9 +38,6 @@ namespace ft
 			pointer														__start;
 			pointer														__end;
 		public:
-		/*
-		*	*	*	*	*	*		MEMBER FUNCTION		*	*	*	*	*	*	*	*
-		*/
 
 		/*	
 		*	CONSTRUCTOR
