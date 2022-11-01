@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 02:11:41 by idouidi           #+#    #+#             */
-/*   Updated: 2022/10/15 17:53:28 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/11/01 11:31:56 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define __STACK_HPP__
 
 #include "vector.hpp"
+
 namespace ft
 {
     template < class T, class Container = vector<T> >

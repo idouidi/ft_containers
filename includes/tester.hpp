@@ -6,15 +6,14 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 20:44:29 by idouidi           #+#    #+#             */
-/*   Updated: 2022/10/15 21:17:42 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/11/01 11:32:09 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __TESTER_HPP__
 # define __TESTER_HPP__
 
-# include <iostream>
-# include <fstream>
+
 # include <string>
 
 template <class T>

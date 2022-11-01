@@ -11,9 +11,11 @@
 /* ************************************************************************** */
 
 #ifndef __VECTOR_HPP__
-#define __VECTOR_HPP__
+# define __VECTOR_HPP__
 
-#include <iostream>
+# include <iostream>
+# include "iterator.hpp"
+# include "utils.hpp"
 
 namespace ft
 {

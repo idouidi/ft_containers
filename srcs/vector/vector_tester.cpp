@@ -6,16 +6,14 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 20:40:14 by idouidi           #+#    #+#             */
-/*   Updated: 2022/10/18 15:22:47 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/11/01 11:31:44 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <vector>
+# include <fstream>
+# include <iostream>
+
 # include "../../includes/vector.hpp"
-# include "../../includes/tester.hpp"
-
-
-//U(*ptr_stl)(my_int = int())
 
 template <class T, typename U>
 static bool compAttribute(char *os, std::vector<T>& stl_vector, ft::vector<T>& ft_vector)
