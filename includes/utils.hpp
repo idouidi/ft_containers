@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 11:33:06 by idouidi           #+#    #+#             */
-/*   Updated: 2022/11/01 17:59:15 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/11/02 15:00:00 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ namespace ft
 	struct integral_type< signed char > : public true_type {} ;
 
 	template <>
-	struct integral_type<short int > : public true_type {} ;
+	struct integral_type< short int > : public true_type {} ;
 
 	template <>
 	struct integral_type< int > : public true_type {} ;
@@ -149,6 +149,19 @@ namespace ft
 		{
 			return (ft::pair< T1, T2 >(x, y));
 		}
+
+
+	/*      *       *       *   UTILS FUNCTIONS     *       *        *
+    *
+    *		*		*		*		*		*		*		*		 */
+    template < class InputIterator >
+    typename ft::iterator_traits<InputIterator>::difference_type gapIterator(InputIterator first, InputIterator last)
+    {
+        typename ft::iterator_traits<InputIterator>::difference_type gapIt = 0;
+        for(; first != last; first++; gapIt++)
+			;
+		return(gapIt);
+    }
 }
 
 #endif

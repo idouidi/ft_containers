@@ -33,8 +33,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer				const_pointer;
 			typedef T *													iterator;
 			typedef const T* 											const_iterator;
-			// typedef ft::reverse_iterator<iterator>            		reverse_iterator;
-			// typedef ft::reverse_iterator<const_iterator>           	const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator>            			reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>           		const_reverse_iterator;
 		private:
 			Allocator													__alloc;
 			pointer														__start;
@@ -42,16 +42,16 @@ namespace ft
 		public:
 
 		/*	
-		*	CONSTRUCTOR
+		*	📌 CONSTRUCTOR
 		*/
 
-		// ~ empty container constructor (default constructor)
+		// 📚 empty container constructor (default constructor)
 		explicit vector (const allocator_type& alloc = allocator_type())
 		: __alloc(alloc), __start(0), __end(0)
 		{}
 
 
-		// ~ fill constructor
+		// 📚 fill constructor
 		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		: __alloc(alloc), __start(0), __end(0)
 		{
@@ -62,32 +62,54 @@ namespace ft
 			__end = n;
 		}
 
-		// ~ range constructor
-		template <class InputIterator>
-		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
+		// 📚 range constructor
+		template < class InputIterator, typename = ft::enable_if<!ft::is_integral<InputIterator>::value, T>::type * = 0 >
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _alloc(alloc)
+		{
+			difference_type n = ft::gapIterator( first, last );
+			__start = __alloc.allocate( n );
+			__end =	__start;
+			for (difference_type i = 0; i < n; i++)
+				__alloc.construct(__start + i, *first++);
+			__end = n;
+			// ====> 💡💡 you can use ft::assign()
+		}
 
-		vector (const vector& x);
+		vector (const vector& x): __alloc(x.__alloc), __start(u_nullptr), __end(u_nullptr)
+		{
+			//🚧🚧 il faut construire le container avec assign/insert
+		}
 
-		// DESTRUCTOR 
-		~vector();
+		/*	
+		*	📌 DESTRUCTOR
+		*/
+		~vector()
+		{
+			//🚧🚧 use clear 
+			// 🚧🚧 _alloc.deallocate(_start, this->capacity());
+		}
 
-		// ITERATOR
-		iterator				begin();
-		const_iterator			begin() const;
+        /*
+        *   📌 MEMBER FUNCTION 
+        */
 
-		iterator				end();
-		const_iterator			end() const;
+		iterator				begin() { return (__start); }
+		const_iterator			begin() const { return (__start); }
 
-		// reverse_iterator 		rbegin();
-		// const_reverse_iterator 	rbegin() const;
+		iterator				end() { return (__end); }
+		const_iterator			end() const { return (__end); }
 
-		// reverse_iterator 		rend();
-		// const_reverse_iterator	rend() const;
+		reverse_iterator 		rbegin() { return (reverse_iterator( end() )); }
+		const_reverse_iterator 	rbegin() const { return (const_reverse_iterator( end() )); } 
 
-		// SIZE
+		reverse_iterator 		rend() { return (reverse_iterator( begin())); }
+		const_reverse_iterator	rend() const { return (const_reverse_iterator( begin() ))}
+
+
 		size_type 				size() const;
 
 		size_type 				max_size() const;
+	
 		void 					resize (size_type n, value_type val = value_type());
 
 		size_type 				capacity() const;
@@ -96,7 +118,7 @@ namespace ft
 
 		void 					reserve (size_type n);
 
-		//ELEMEMT ACCESS
+
 		reference 				operator[] (size_type n);
 		const_reference 		operator[] (size_type n) const;
 
