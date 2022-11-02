@@ -14,6 +14,7 @@
 # define __VECTOR_HPP__
 
 # include <iostream>
+# include <cstddef>
 # include "iterator.hpp"
 # include "utils.hpp"
 
@@ -63,8 +64,8 @@ namespace ft
 		}
 
 		// 📚 range constructor
-		template < class InputIterator, typename = ft::enable_if<!ft::is_integral<InputIterator>::value, T>::type * = 0 >
-		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _alloc(alloc)
+		template < class InputIterator, typename ft::enable_if<!ft::is_integral<InputIterator>::value, T>::type >
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): __alloc(alloc)
 		{
 			difference_type n = ft::gapIterator( first, last );
 			__start = __alloc.allocate( n );
@@ -75,7 +76,7 @@ namespace ft
 			// ====> 💡💡 you can use ft::assign()
 		}
 
-		vector (const vector& x): __alloc(x.__alloc), __start(u_nullptr), __end(u_nullptr)
+		vector (const vector& x): __alloc(x.__alloc), __start(NULL), __end(NULL)
 		{
 			//🚧🚧 il faut construire le container avec assign/insert
 		}
@@ -103,18 +104,27 @@ namespace ft
 		const_reverse_iterator 	rbegin() const { return (const_reverse_iterator( end() )); } 
 
 		reverse_iterator 		rend() { return (reverse_iterator( begin())); }
-		const_reverse_iterator	rend() const { return (const_reverse_iterator( begin() ))}
+		const_reverse_iterator	rend() const { return (const_reverse_iterator( begin() )); }
 
 
-		size_type 				size() const;
+		size_type 				size() const { return (__end - __start); }
 
-		size_type 				max_size() const;
+		size_type 				max_size() const { return (allocator_type().max_size()); }
 	
-		void 					resize (size_type n, value_type val = value_type());
+		void 					resize (size_type n, value_type val = value_type())
+		{
+			if (n > size())
+			{
+				for (; size() > n; __end--)
+					__alloc.destroy(__end);
+			}
+			// else
+			// 	insert(__end(), n - size(), val); 🚧🚧
+		}
 
 		size_type 				capacity() const;
 
-		bool				 	empty() const;
+		bool				 	empty() const { return (size() == 0)};
 
 		void 					reserve (size_type n);
 

@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 11:33:06 by idouidi           #+#    #+#             */
-/*   Updated: 2022/11/02 15:00:00 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/11/02 19:16:51 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ namespace ft
 		static const T                      value = v;
 		typedef T       					value_type;
 		typedef integral_constant< T, v > 	type;
-		const operator T() { return v; }
+		// const operator T() { return v; } 🚧🚧
 	};
 
 	typedef integral_constant< bool, true > true_type;
@@ -99,7 +99,7 @@ namespace ft
 	template < class InputIterator1, class InputIterator2 >
 	bool equal (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 	{
-		for (; first1 != last1; ++first1; ++first2;)
+		for (; first1 != last1; ++first1, ++first2)
 			    if (!(*first1 == *first2))
       				return false;
 		return true;
@@ -108,7 +108,7 @@ namespace ft
 	template <class InputIterator1, class InputIterator2, class BinaryPredicate>
 	bool equal (InputIterator1 first1, InputIterator1 last1,InputIterator2 first2, BinaryPredicate pred)
 	{
-		for (; first1 != last1; ++first1; ++first2;)
+		for (; first1 != last1; ++first1, ++first2)
 			if (!pred(*first1,*first2))
 				return false;
 		return true;
@@ -158,7 +158,7 @@ namespace ft
     typename ft::iterator_traits<InputIterator>::difference_type gapIterator(InputIterator first, InputIterator last)
     {
         typename ft::iterator_traits<InputIterator>::difference_type gapIt = 0;
-        for(; first != last; first++; gapIt++)
+        for(; first != last; first++, gapIt++)
 			;
 		return(gapIt);
     }

@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 13:28:30 by idouidi           #+#    #+#             */
-/*   Updated: 2022/11/02 16:31:12 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/11/02 19:14:36 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ namespace ft
         */
 
        // 📚 Returns a copy of the base iterator.
-       iterator_type base() const { (return __elem); }
+       iterator_type base() const { return __elem; }
 
        // 📚 Returns a reference to the element pointed to by the iterator.
        reference operator*() const
@@ -238,7 +238,7 @@ namespace ft
     typename reverse_iterator<Iterator>::difference_type operator- (const reverse_iterator<Iterator>& lhs,
                                                                     const reverse_iterator<Iterator>& rhs)
     {
-        return lhs.base() - rhs.base())
+        return (lhs.base() - rhs.base()) ;
     }
 
 }
