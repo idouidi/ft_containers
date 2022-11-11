@@ -40,6 +40,7 @@ namespace ft
 			Allocator													__alloc;
 			pointer														__start;
 			pointer														__end;
+			pointer														__capacity;
 		public:
 
 		/*	
@@ -48,20 +49,21 @@ namespace ft
 
 		// 📚 empty container constructor (default constructor)
 		explicit vector (const allocator_type& alloc = allocator_type())
-		: __alloc(alloc), __start(0), __end(0)
+		: __alloc(alloc), __start(0), __end(0), __capacity(0);
 		{}
 
 
 		// 📚 fill constructor
 		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
-		: __alloc(alloc), __start(0), __end(0)
+		: __alloc(alloc), __start(0), __end(0), __capacity(0)
 		{
 			__start = __alloc.allocate( n ); //Attempts to allocate a block of storage with a size large enough to contain n of member type value_type.
 			__end =	__start;
-			for (size_type i = 0; i < n; i++)
+			for (size_type i = 0; i < n; i++, __end++)
 				__alloc.construct( __start + i , val ); //Constructs an element object on the location pointed by __start + i.
-			__end = n;
+			__capacity = __start + n;
 		}
+
 
 		// 📚 range constructor
 		template < class InputIterator, typename ft::enable_if<!ft::is_integral<InputIterator>::value, T>::type >
@@ -70,79 +72,138 @@ namespace ft
 			difference_type n = ft::gapIterator( first, last );
 			__start = __alloc.allocate( n );
 			__end =	__start;
-			for (difference_type i = 0; i < n; i++)
-				__alloc.construct(__start + i, *first++);
-			__end = n;
-			// ====> 💡💡 you can use ft::assign()
+			for (difference_type i = 0; i < n; i++, __end++, first++)
+				__alloc.construct(__start + i, *first);
+			__capacity = __start + n;
 		}
 
-		vector (const vector& x): __alloc(x.__alloc), __start(NULL), __end(NULL)
+
+		vector (const vector& x): __alloc(x.__alloc), __start(0), __end(0), __capacity(0)
 		{
-			//🚧🚧 il faut construire le container avec assign/insert
+			//🚧🚧 il faut construire le container avec insert
 		}
+
 
 		/*	
 		*	📌 DESTRUCTOR
 		*/
+
 		~vector()
 		{
 			//🚧🚧 use clear 
 			// 🚧🚧 _alloc.deallocate(_start, this->capacity());
 		}
 
+
+
         /*
         *   📌 MEMBER FUNCTION 
         */
 
+	   // 📚 Returns an iterator pointing to the first element in the vector.
 		iterator				begin() { return (__start); }
 		const_iterator			begin() const { return (__start); }
 
+
+		// 📚 Returns an iterator pointing to the last element in the vector.
 		iterator				end() { return (__end); }
 		const_iterator			end() const { return (__end); }
 
+
+		// 📚 Returns a reverse iterator pointing to the last element in the vector (i.e., its reverse beginning).
 		reverse_iterator 		rbegin() { return (reverse_iterator( end() )); }
 		const_reverse_iterator 	rbegin() const { return (const_reverse_iterator( end() )); } 
 
+
+		// 📚 Returns a reverse iterator pointing to the theoretical element preceding the first element in the vector 
+		// (which is considered its reverse end).
 		reverse_iterator 		rend() { return (reverse_iterator( begin())); }
 		const_reverse_iterator	rend() const { return (const_reverse_iterator( begin() )); }
 
 
+		// 📚 Returns the number of elements in the vector.
 		size_type 				size() const { return (__end - __start); }
 
+
+		// 📚 Returns the maximum number of elements that the vector can hold.
+		// This is the maximum potential size the container can reach due to known system.
 		size_type 				max_size() const { return (allocator_type().max_size()); }
-	
+
+
+		// 📚 Resizes the container so that it contains n elements.
 		void 					resize (size_type n, value_type val = value_type())
 		{
-			if (n > size())
+			if (n > this->size())
+				insert(end(), n - this->size(), val);
+			else
 			{
-				for (; size() > n; __end--)
+				for (; this->size() > n; __end--)
 					__alloc.destroy(__end);
 			}
-			// else
-			// 	insert(__end(), n - size(), val); 🚧🚧
 		}
 
-		size_type 				capacity() const;
 
-		bool				 	empty() const { return (size() == 0)};
-
-		void 					reserve (size_type n);
+		// 📚 Returns the total number of elements that the vector can hold before needing to allocate more memory.
+		size_type 				capacity() const { return (__capacity - __start); }
 
 
-		reference 				operator[] (size_type n);
-		const_reference 		operator[] (size_type n) const;
+		// 📚 Returns true if the vector is empty.
+		bool				 	empty() const { return (size() == 0) };
 
-		reference 				at (size_type n);
-		const_reference 		at (size_type n) const;
 
-		reference 				front();
-		const_reference			front() const;
-		
-		reference 				back();
-		const_reference			back() const;
+		// 📚 Requests that the vector capacity be at least enough to contain n elements.
+		void 					reserve (size_type n)
+		{
+			if (n > this->max_size())
+				throw (std::length_error("the parameter is greater than max_size()"));
+			else if (n > this->__capacity())
+			{
+				pointer		tmp_start = __start;
+				size_type	tmp_capacity = this->capacity();
+				size_type	tnp_size = this->size(); 
 
-		// value_type* 			data() noexcept;
-		// const value_type* 		data() const noexcept;
+				__start = __alloc.construct(n);
+				__end = start;
+				__capacity = __start + n;
+
+				for (size_type i = 0; i < n; i++, __end++, tmp_start++)
+					__alloc.construct(__start + i, *tmp_start);
+				__alloc.deallocate(tmp_start - tmp_size, tmp_capacity);
+			}
+		}
+
+
+		// 📚 Returns a reference to the element at position n in the vector container.
+		reference 				operator[] (size_type n) { return (*(__start + n)); }
+		const_reference 		operator[] (size_type n) const { return (*(__start + n)); } 
+
+
+		// 📚 Returns a reference to the element at position n in the vector container.
+		// except that vector::at is bound-checked and signals if the requested position 
+		// is out of range by throwing an out_of_range exception.
+		reference 				at (size_type n)
+		{
+			if (n >= this->size())
+				throw (std::out_of_range("the parameter is greater than size()"));
+			return (*(__start + n));
+		}
+		const_reference 		at (size_type n) const
+		{
+			if (n >= this->size())
+				throw (std::out_of_range("the parameter is greater than size()"));
+			return (*(__start + n));	
+		}
+
+
+		// 📚 Returns a reference to the first element in the vector.
+		reference 				front() { return *(__start) };
+		const_reference			front() const { return *(__start) };
+
+
+		// 📚 Returns a reference to the last element in the vector.
+		reference 				back() { return (*(_end - 1)); }
+		const_reference			back() const { return (*(_end - 1)); }
+
 
 		// MODIFIER
 		template <class InputIterator>
@@ -163,7 +224,7 @@ namespace ft
 		void 					clear();
 
 		//ALLOCATOR
-		allocator_type 			get_allocator() const; 
+		allocator_type 			get_allocator() const { return (__alloc) }; 
 	};
 
 	// OPERATOR
