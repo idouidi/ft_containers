@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 11:33:06 by idouidi           #+#    #+#             */
-/*   Updated: 2022/11/02 19:16:51 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/11/12 13:45:37 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,12 +155,12 @@ namespace ft
     *
     *		*		*		*		*		*		*		*		 */
     template < class InputIterator >
-    typename ft::iterator_traits<InputIterator>::difference_type gapIterator(InputIterator first, InputIterator last)
+    typename ft::iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator last)
     {
-        typename ft::iterator_traits<InputIterator>::difference_type gapIt = 0;
-        for(; first != last; first++, gapIt++)
+        typename ft::iterator_traits<InputIterator>::difference_type distIt = 0;
+        for(; first != last; first++, distIt++)
 			;
-		return(gapIt);
+		return(distIt);
     }
 }
 
