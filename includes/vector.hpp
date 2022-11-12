@@ -62,8 +62,11 @@ namespace ft
 		{
 			__start = __alloc.allocate( n ); //Attempts to allocate a block of storage with a size large enough to contain n of member type value_type.
 			__end =	__start;
-			for (size_type i = 0; i < n; i++, __end++)
+			for (size_type i = 0; i < n; i++)
+			{
 				__alloc.construct( __start + i , val ); //Constructs an element object on the location pointed by __start + i.
+				__end++;
+			}
 			__capacity = __start + n;
 		}
 
@@ -76,8 +79,12 @@ namespace ft
 			difference_type n = ft::distance( first, last );
 			__start = __alloc.allocate( n );
 			__end =	__start;
-			for (difference_type i = 0; i < n; i++, __end++, first++)
+			for (difference_type i = 0; i < n; i++)
+			{
 				__alloc.construct(__start + i, *first);
+				__end++;
+				first++;
+			}
 			__capacity = __start + n;
 		}
 
@@ -181,8 +188,12 @@ namespace ft
 				__end = start;
 				__capacity = __start + n;
 
-				for (size_type i = 0; i < n; i++, __end++, tmp_start++)
+				for (size_type i = 0; i < n; i++)
+				{
 					__alloc.construct(__start + i, *tmp_start);
+					__end++;
+					tmp_start++;
+				}
 				__alloc.deallocate(tmp_start - tmp_size, tmp_capacity);
 			}
 		}
@@ -233,27 +244,48 @@ namespace ft
 		void 					assign (InputIterator first, InputIterator last)
 		{
 			this->clear();
-			size_type __dist = ft::distance(first, last);
+			size_type __dist = (size_type)ft::distance(first, last);
 			if (this->capacity() >= dist)
 			{
-				for (first != last; first++, __end++)
+				for (first != last; first++)
 					push_back(first);
-
 			}
 			else
 			{
 				this->deallocate();
 				__start = __alloc.allocate(__dist);
 				__end = start;
-				__capacity = __dist;
-				for (first != last; first++, __end++)
+				__capacity = __start + __dist;
+				for (first != last; first++)
 					push_back(first);
-
 			}
-
 		}
 
+//In the fill version, the new contents are n elements, each initialized to a copy of val.
 		void 					assign (size_type n, const value_type& val);
+		{
+			this->clear();
+			if (this->capacity() >= n)
+			{
+				for (size_type i = 0; i < n; i++)
+				{
+					__alloc.construct(__start + i, val);
+					__end++;
+				}
+			}
+			else
+			{
+				this->deallocate();
+				__start = __alloc.allocate(n);
+				__end = start;
+				__capacity = __start + n;
+				for (size_type i = 0; i < n; i++)
+				{
+					__alloc.construct(__start + i, val);
+					__end++;
+				}
+			}
+		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -263,7 +295,7 @@ namespace ft
 		{
 			if (__end == __capacity)
 				this->reserve(this->size() + 1);
-			__alloc.construct(__start + this->size(), val)	
+			__alloc.construct(__start + this->size(), val)
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -273,13 +305,28 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-		iterator 				insert (iterator position, const value_type& val);
+// 📚 Insert an element a the position. Can ecrease de size of the container. 
+// This action force the container to realocate all the elements that were after "postion" to their new positions.
+		iterator 				insert (iterator position, const value_type& val)
+		{
+
+		}
+
 		void 					insert (iterator position, size_type n, const value_type& val);
+		{
+				if (n > this->max_size())
+					throw (std::length_error("the parameter is greater than max_size()"));
+		}
+
 		template <class InputIterator>
 		void 					insert (iterator position, InputIterator first, InputIterator last);
 
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
 		iterator				erase (iterator position);
 		iterator 				erase (iterator first, iterator last);
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 		void 					clear()
 		{
@@ -292,8 +339,11 @@ namespace ft
 			
 		}
 
-		//ALLOCATOR
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
 		allocator_type 			get_allocator() const { return (__alloc) }; 
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 	};
 
 	// OPERATOR
