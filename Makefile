@@ -6,7 +6,7 @@
 #    By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 00:45:13 by idouidi           #+#    #+#              #
-#    Updated: 2022/11/02 16:29:45 by idouidi          ###   ########.fr        #
+#    Updated: 2022/11/16 15:48:01 by idouidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ re			: fclean all
 #  🚧 ==> progress 
 #  💥 ==> crash
 #  ✅ ==> finish
+#  🏆 == > success
 #  📌 ==> immportant part
 #  💡 ==> propose an idea
 #  📚 ==> brief

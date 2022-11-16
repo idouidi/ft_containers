@@ -262,7 +262,7 @@ namespace ft
 		}
 
 //In the fill version, the new contents are n elements, each initialized to a copy of val.
-		void 					assign (size_type n, const value_type& val);
+		void 					assign (size_type n, const value_type& val)
 		{
 			this->clear();
 			if (this->capacity() >= n)
@@ -309,17 +309,49 @@ namespace ft
 // This action force the container to realocate all the elements that were after "postion" to their new positions.
 		iterator 				insert (iterator position, const value_type& val)
 		{
-
+			size_type anchor = position - __start;
+			this->insert(position, 1, val);
+			return (__start + anchor);
 		}
 
-		void 					insert (iterator position, size_type n, const value_type& val);
+		void 					insert (iterator position, size_type n, const value_type& val)
 		{
 				if (n > this->max_size())
 					throw (std::length_error("the parameter is greater than max_size()"));
+
+			vector<T> vec_tmp(*this);
+			this->reserve(this->size() + n);
+			size_type anchor = position - __start;
+
+			for (size_type i = anchor ; i < anchor + n; i++)
+				__alloc.constructor(__start + i, val);
+
+			for (size_type i = anchor + n; i < this->size() + n; i++)
+				__alloc.construct(__start + i, vec_tmp[i - n]);
+			if (position == __start)
+			__start -= n;
+			__end += n;
 		}
 
-		template <class InputIterator>
+		template <class InputIterator, typename ft::enable_if<ft::is_integral<InputIterator>::value, T>::type = true>
 		void 					insert (iterator position, InputIterator first, InputIterator last);
+		{
+			vector<T> vec_tmp(*this);
+			size_type dist = (size_type)ft::distance(first, last);
+			this->reserve(this->size() + dist);
+			size_type anchor = position - __start;
+
+			for (size_type i = anchor ; i < anchor + dist; i++)
+			{
+				__alloc.constructor(__start + i, first);
+				first++;
+			}
+			for (size_type i = anchor + dist; i < this->size() + dist; i++)
+				__alloc.construct(__start + i, vec_tmp[i - n]);
+			if (position == __start)
+			__start -= n;
+			__end += n;
+		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
