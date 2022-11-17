@@ -93,7 +93,7 @@ namespace ft
 // Copy constructor
 		vector (const vector& x): __alloc(x.__alloc), __start(0), __end(0), __capacity(0)
 		{
-			//🚧🚧 il faut construire le container avec insert
+			this->assign(x.begin(), x.end());
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -252,7 +252,7 @@ namespace ft
 			}
 			else
 			{
-				this->deallocate();
+				__alloc.deallocate(__start, __capacity);
 				__start = __alloc.allocate(__dist);
 				__end = start;
 				__capacity = __start + __dist;
@@ -275,7 +275,7 @@ namespace ft
 			}
 			else
 			{
-				this->deallocate();
+				__alloc.deallocate(__start, __capacity);
 				__start = __alloc.allocate(n);
 				__end = start;
 				__capacity = __start + n;
@@ -305,8 +305,10 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-// 📚 Insert an element a the position. Can ecrease de size of the container. 
-// This action force the container to realocate all the elements that were after "postion" to their new positions.
+// 📚 The vector is extended by inserting new elements before the element at the specified position, 
+// effectively increasing the container size by the number of elements inserted.
+
+// Insert an elem val at the position 
 		iterator 				insert (iterator position, const value_type& val)
 		{
 			size_type anchor = position - __start;
@@ -314,6 +316,7 @@ namespace ft
 			return (__start + anchor);
 		}
 
+// Insert n elem val at the position
 		void 					insert (iterator position, size_type n, const value_type& val)
 		{
 				if (n > this->max_size())
@@ -333,8 +336,9 @@ namespace ft
 			__end += n;
 		}
 
+// Insert the elem in the range [first, last) at the position
 		template <class InputIterator, typename ft::enable_if<ft::is_integral<InputIterator>::value, T>::type = true>
-		void 					insert (iterator position, InputIterator first, InputIterator last);
+		void 					insert (iterator position, InputIterator first, InputIterator last)
 		{
 			vector<T> vec_tmp(*this);
 			size_type dist = (size_type)ft::distance(first, last);
@@ -355,8 +359,37 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-		iterator				erase (iterator position);
-		iterator 				erase (iterator first, iterator last);
+// 📚 Removes from the vector either a single element (position) or a range of elements ([first,last)).
+
+// remove a elem at position
+		iterator				erase (iterator position)
+		{
+			size_type anchor = position - __start;
+
+			for (size_type i = anchor; i < this->size(); i++)
+			{
+				__alloc.destroy(__start + i);
+				if (i + 1 < this->size())
+					__alloc.construct(__start + i, __start[i + 1]);
+			}
+			return (position);
+		}
+
+// remove elem in the range [first, last) at the position
+		iterator 				erase (iterator first, iterator last)
+		{
+			vector<T> vec_tmp(*this);
+			size_type anchor = first - __start;
+			size_type  nb_elem = last - first;
+
+			for (size_type i = anchor; i < this->size(); i++)
+				__alloc.destroy(__start + i);
+			
+			for (size_type i = anchor + nb_elem; i < this->size(); i++)
+				__alloc.construct(__start + i - nb_elem, vec_tmp[i]);
+			__end -= nb_elem;
+			return (first);
+		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -371,34 +404,72 @@ namespace ft
 			
 		}
 
-/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	: 	:	:	:	*/
 
 		allocator_type 			get_allocator() const { return (__alloc) }; 
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 	};
 
-	// OPERATOR
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	: 	:	:	:	*/
+
+// 📚 Performs the appropriate comparison operation between the vector containers lhs and rhs.
 		template <class T, class Alloc>  
 		bool 					operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+		{
+			if (lhs.size() != rhs.size())
+				return (false);
+			for (size_t i = 0; i < rhs.(size); i++)
+				if (rhs[i] != lhs[i])
+					return (false);
+			return (true);
+		}
 
 		template <class T, class Alloc>  
-		bool 					operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+		bool 					operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return (!(rhs == lhs)); }
+
 
 		template <class T, class Alloc>
-		bool 					operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+		bool 					operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
+			// 🚧 ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		}
 
 		template <class T, class Alloc>
-		bool 					operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+		bool 					operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return (!(rhs < lhs)); }
 
 		template <class T, class Alloc>
-		bool 					operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+		bool 					operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return (rhs < lhs); }
 
 		template <class T, class Alloc>
-		bool 					operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+		bool 					operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return (!(lhs < rhs)); }
 	
-	//SWAP
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	: 	:	:	:	*/
+
 		template <class T, class Alloc>
-		void 					swap (vector<T,Alloc>& x, vector<T,Alloc>& y);
+		void 					swap (vector<T,Alloc>& x, vector<T,Alloc>& y) 
+		{
+			if ( x != y)
+			{
+				pointer tmp_start = x.__start;
+				pointer tmp_end = x.__end;
+				pointer tmp_capacity = x.__capacity;
+				Allocator tmp_alloc = x.__alloc;
+
+				x.__start = y.__start; 
+				x.__end = y.__end;
+				x.__capacity = y.__capacity; 
+				x.__alloc = y.__alloc;
+
+				y.__start = tmp_start;
+				y.__end = tmp_end;
+				y.__capacity = tmp_capacity;
+				y.__alloc =  tmp_alloc;
+			}
+		}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	: 	:	:	:	*/
+
 }
 #endif

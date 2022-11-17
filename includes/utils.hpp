@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/01 11:33:06 by idouidi           #+#    #+#             */
-/*   Updated: 2022/11/12 13:45:37 by idouidi          ###   ########.fr       */
+/*   Created: 2022/11/17 18:17:11 by idouidi           #+#    #+#             */
+/*   Updated: 2022/11/17 18:59:08 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef __UTILS_HPP__
 # define __UTILS_HPP__
@@ -16,12 +17,12 @@
 namespace ft
 {
 
-   /*      *       *       *   ENABLE_IF     *       *       *		*		*
-	*
-   	* This is useful to hide signatures on compile time when a particular 
-	* condition is not met, since in this case, the member enable_if::type will 
-	* not be defined and attempting to compile using it should fail.
-    *       *       *       *       *       *       *       *       *		*/
+/*     :      :      :   ENABLE_IF    :      :      :		:		:
+:
+: This is useful to hide signatures on compile time when a particular 
+: condition is not met, since in this case, the member enable_if::type will 
+: not be defined and attempting to compile using it should fail.
+:      :      :      :      :      :      :      :      :		*/
 	template < bool Cond, class T = void>
 	struct enable_if {};
 
@@ -30,10 +31,11 @@ namespace ft
 
 
 
-   /*      *       *       *   IS_INTEGRAL     *       *       *		*		*
-	*
-	* class that identifies whether T is an integral type.
-	*      *       *       *	*		*		*       *       *		*		*/
+/*     :      :      :   IS_INTEGRAL    :      :      :		:		:
+:
+: class that identifies whether T is an integral type.
+:
+:     :      :      :	:		:		:      :      :		:		*/
 
 	template < class T, T v>
 	struct integral_constant
@@ -91,11 +93,12 @@ namespace ft
 
 
 
-   /*      *       *       *   EQUAL    *       *       *		*		*		*
-	*
-	* Compares the elements in the range [first1,last1) with those in the range
-	* beginning at first2, and returns true if all of the elements in both ranges match.
-	*      *       *       *	*		*		*       *       *		*		*/
+/*     :      :      :   EQUAL   :      :      :		:		:		:
+:
+: Compares the elements in the range [first1,last1) with those in the range
+: beginning at first2, and returns true if all of the elements in both ranges match.
+:
+:     :      :      :	:		:		:      :      :		:		*/
 	template < class InputIterator1, class InputIterator2 >
 	bool equal (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 	{
@@ -115,45 +118,46 @@ namespace ft
 	}
 
 
-	   /*      *       *       *   PAIR    *       *       *		*		*		*
-	   	*
-		* This class couples together a pair of values, which may be of 
-		* different types (T1 and T2). The individual values can be accessed through 
-		* its public members first and second.
-		*      *       *       *	*		*		*       *       *		*		*/
-		template < class T1, class T2>
-		struct pair
+/*     :      :      :   PAIR   :      :      :		:		:		:
+:
+: This class couples together a pair of values, which may be of 
+: different types (T1 and T2). The individual values can be accessed through 
+: its public members first and second.
+:
+:     :      :      :	:		:		:      :      :		:		*/
+	template < class T1, class T2>
+	struct pair
+	{
+		public:
+		typedef T1	first_type;
+		typedef T2	second_type;
+
+		first_type	first;
+		second_type	second;
+
+		pair(): first(), second() {};
+		pair (const first_type& a, const second_type& b): first(a), second(b) {};
+		template <class U, class V>
+		pair(const pair<U, V>& pr): first(pr.first), second(pr.second) {};
+		pair& operator=(const pair& pr) 
 		{
-			public:
-			typedef T1	first_type;
-			typedef T2	second_type;
+			first = pr.first;
+			second = pr.second;
+			return:this;
+		}
 
-			first_type	first;
-			second_type	second;
+	};
 
-			pair(): first(), second() {};
-			pair (const first_type& a, const second_type& b): first(a), second(b) {};
-			template <class U, class V>
-			pair(const pair<U, V>& pr): first(pr.first), second(pr.second) {};
-			pair& operator=(const pair& pr) 
-			{
-				first = pr.first;
-				second = pr.second;
-				return *this;
-			}
-
-		};
-
-		template < class T1, class T2 >
-		ft::pair< T1, T2 > make_pair(T1 x, T2 y)
-		{
-			return (ft::pair< T1, T2 >(x, y));
+	template < class T1, class T2 >
+	ft::pair< T1, T2 > make_pair(T1 x, T2 y)
+	{
+		return (ft::pair< T1, T2 >(x, y));
 		}
 
 
-	/*      *       *       *   UTILS FUNCTIONS     *       *        *
-    *
-    *		*		*		*		*		*		*		*		 */
+/*     :      :      :   UTILS FUNCTIONS    :      :       :
+:
+:		:		:		:		:		:		:		:		*/
     template < class InputIterator >
     typename ft::iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator last)
     {
@@ -162,6 +166,8 @@ namespace ft
 			;
 		return(distIt);
     }
+
+
 }
 
 #endif
