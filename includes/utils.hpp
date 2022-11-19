@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:17:11 by idouidi           #+#    #+#             */
-/*   Updated: 2022/11/17 18:59:08 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/11/19 12:20:33 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ namespace ft
 		{
 			first = pr.first;
 			second = pr.second;
-			return:this;
+			return *this;
 		}
 
 	};
