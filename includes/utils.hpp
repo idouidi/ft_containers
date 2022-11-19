@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:17:11 by idouidi           #+#    #+#             */
-/*   Updated: 2022/11/19 12:20:33 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/11/19 19:21:47 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ namespace ft
 
 /*     :      :      :   ENABLE_IF    :      :      :		:		:
 :
-: This is useful to hide signatures on compile time when a particular 
+: 📚 This is useful to hide signatures on compile time when a particular 
 : condition is not met, since in this case, the member enable_if::type will 
 : not be defined and attempting to compile using it should fail.
 :      :      :      :      :      :      :      :      :		*/
@@ -33,7 +33,7 @@ namespace ft
 
 /*     :      :      :   IS_INTEGRAL    :      :      :		:		:
 :
-: class that identifies whether T is an integral type.
+: 📚 class that identifies whether T is an integral type.
 :
 :     :      :      :	:		:		:      :      :		:		*/
 
@@ -95,7 +95,7 @@ namespace ft
 
 /*     :      :      :   EQUAL   :      :      :		:		:		:
 :
-: Compares the elements in the range [first1,last1) with those in the range
+: 📚 Compares the elements in the range [first1,last1) with those in the range
 : beginning at first2, and returns true if all of the elements in both ranges match.
 :
 :     :      :      :	:		:		:      :      :		:		*/
@@ -117,10 +117,46 @@ namespace ft
 		return true;
 	}
 
+/*     :      :      :   LEXICOGRAPHICAL_COMPARE   :      :      	:
+:
+: 📚 Returns true if the range [first1,last1) compares 
+: lexicographically less than the range [first2,last2).
+:     :      :      :   :	:      :      :		:		:			: */
+	template <class InputIterator1, class InputIterator2>
+	bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, 
+								InputIterator2 first2, InputIterator2 last2)
+	{
+ 		while (first1!=last1)
+  		{
+    		if (first2 == last2 || *first2 < *first1)
+				return (false);
+    		else if (*first1 < *first2)
+				return (true);
+    		++first1;
+			++first2;
+  		}
+  		return (first2!=last2);
+	}
+
+	template <class InputIterator1, class InputIterator2, class Compare>
+	bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
+								InputIterator2 first2, InputIterator2 last2, Compare comp)
+	{
+            while (first1 != last1)
+            {
+                if (first2 == last2 || comp(*first2, *first1))
+					return (false);
+                else if (comp(*first1, *first2))
+					return (true);
+                ++first1;
+                ++first2;
+            }
+            return (first2 != last2);		
+	}
 
 /*     :      :      :   PAIR   :      :      :		:		:		:
 :
-: This class couples together a pair of values, which may be of 
+: 📚 This class couples together a pair of values, which may be of 
 : different types (T1 and T2). The individual values can be accessed through 
 : its public members first and second.
 :

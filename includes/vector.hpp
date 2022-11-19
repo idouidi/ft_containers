@@ -60,6 +60,7 @@ namespace ft
 		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		: __alloc(alloc), __start(0), __end(0), __capacity(0)
 		{
+			// 💡 __start = __alloc.allocate( sizeof(value_type)  * n ); 
 			__start = __alloc.allocate( n ); //Attempts to allocate a block of storage with a size large enough to contain n of member type value_type.
 			__end =	__start;
 			for (size_type i = 0; i < n; i++)
