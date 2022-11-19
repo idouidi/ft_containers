@@ -422,6 +422,7 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
+// 📚 Removes all elements from the vector (which are destroyed), leaving the container with a size of 0.
 		void 					clear()
 		{
 			size_type tmp_size = this->size();
@@ -435,6 +436,7 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	: 	:	:	:	*/
 
+// 📚 Returns a copy of the allocator object associated with the vector.
 		allocator_type 			get_allocator() const { return (__alloc); } 
 	};
 
@@ -455,12 +457,11 @@ namespace ft
 		template <class T, class Alloc>  
 		bool 					operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return (!(rhs == lhs)); }
 
-
-		// template <class T, class Alloc>
-		// bool 					operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-		// {
-		// 	// 🚧 ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
-		// }
+		template <class T, class Alloc>
+		bool 					operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
+			ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		}
 
 		template <class T, class Alloc>
 		bool 					operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) { return (!(rhs < lhs)); }
