@@ -396,6 +396,31 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
+// 📚 Exchanges the content of the container by the content of x, which is another vector object of the same type. 
+// Sizes may differ.
+		void swap (vector& x)
+		{
+			if ( x != *this)
+			{
+				pointer tmp_start = __start;
+				pointer tmp_end = __end;
+				pointer tmp_capacity = __capacity;
+				Allocator tmp_alloc = __alloc;
+
+				__start = x.__start; 
+				__end = x.__end;
+				__capacity = x.__capacity; 
+				__alloc = x.__alloc;
+
+				x.__start = tmp_start;
+				x.__end = tmp_end;
+				x.__capacity = tmp_capacity;
+				x.__alloc =  tmp_alloc;
+			}
+		}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
 		void 					clear()
 		{
 			size_type tmp_size = this->size();
@@ -410,10 +435,7 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	: 	:	:	:	*/
 
 		allocator_type 			get_allocator() const { return (__alloc); } 
-
-/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 	};
-
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	: 	:	:	:	*/
 
@@ -453,27 +475,8 @@ namespace ft
 // 📚 Exchanges the content of the container by the content of x, which is another vector object of the same type. 
 // Sizes may differ.
 
-		// template <class T, class Alloc>
-		// void 					swap (vector<T,Alloc>& x, vector<T,Alloc>& y) 
-		// {
-		// 	if ( x != y)
-		// 	{
-		// 		pointer tmp_start = x.__start;
-		// 		pointer tmp_end = x.__end;
-		// 		pointer tmp_capacity = x.__capacity;
-		// 		Allocator tmp_alloc = x.__alloc;
-
-		// 		x.__start = y.__start; 
-		// 		x.__end = y.__end;
-		// 		x.__capacity = y.__capacity; 
-		// 		x.__alloc = y.__alloc;
-
-		// 		y.__start = tmp_start;
-		// 		y.__end = tmp_end;
-		// 		y.__capacity = tmp_capacity;
-		// 		y.__alloc =  tmp_alloc;
-		// 	}
-		// }
+		template <class T, class Alloc>
+		void 					swap (vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	: 	:	:	:	*/
 
