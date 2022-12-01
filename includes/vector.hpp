@@ -14,6 +14,7 @@
 # define __VECTOR_HPP__
 
 # include <iostream>
+#include <vector>
 # include <cstddef>
 # include "iterator.hpp"
 # include "utils.hpp"
@@ -104,7 +105,7 @@ namespace ft
 		~vector()
 		{
 			this->clear();
-			__alloc.deallocate(__start, this->capacity());
+			__alloc.deallocate(this->begin(), this->capacity());
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -128,26 +129,26 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns a reverse iterator pointing to the last element in the vector (i.e., its reverse beginning).
-		reverse_iterator 		rbegin() { return (reverse_iterator( end() )); }
-		const_reverse_iterator 	rbegin() const { return (const_reverse_iterator( end() )); } 
+		reverse_iterator 		rbegin() { return (reverse_iterator(end())); }
+		const_reverse_iterator 	rbegin() const { return (const_reverse_iterator(end())); } 
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns a reverse iterator pointing to the theoretical element preceding the first element 
 // in the vector (which is considered its reverse end).
-		reverse_iterator 		rend() { return (reverse_iterator( begin())); }
-		const_reverse_iterator	rend() const { return (const_reverse_iterator( begin() )); }
+		reverse_iterator 		rend() { return (reverse_iterator(begin())); }
+		const_reverse_iterator	rend() const { return (const_reverse_iterator(begin())); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns the number of elements in the vector.
-		size_type 				size() const { return (__end - __start); }
+		size_type 				size() const { return (this->end() - this->begin()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns the maximum number of elements that the vector can hold.
 // This is the maximum potential size the container can reach due to known system.
-		size_type 				max_size() const { return (allocator_type().max_size()); }
+		size_type 				max_size() const { return (__alloc.max_size()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -166,12 +167,12 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns the total number of elements that the vector can hold before needing to allocate more memory.
-		size_type 				capacity() const { return (__capacity - __start); }
+		size_type 				capacity() const { return (__capacity - this->begin()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns true if the vector is empty.
-		bool				 	empty() const { return (size() == 0); };
+		bool				 	empty() const { return (this->size() == 0); };
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -182,7 +183,7 @@ namespace ft
 				throw (std::length_error("the parameter is greater than max_size()"));
 			else if (n > this->__capacity())
 			{
-				pointer		tmp_start = __start;
+				pointer		tmp_start = this->begin();
 				size_type	tmp_capacity = this->capacity();
 				size_type	tmp_size = this->size(); 
 
@@ -251,16 +252,16 @@ namespace ft
 			if (this->capacity() >= dist)
 			{
 				for (;first != last; first++)
-					push_back(first);
+					push_back(*first);
 			}
 			else
 			{
-				__alloc.deallocate(__start, __capacity);
+				__alloc.deallocate(__start, this->capacity());
 				__start = __alloc.allocate(dist);
 				__end = __start;
 				__capacity = __start + dist;
 				for (;first != last; first++)
-					push_back(first);
+					push_back(*first);
 			}
 		}
 
@@ -460,7 +461,7 @@ namespace ft
 		template <class T, class Alloc>
 		bool 					operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 		{
-			ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+			return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 		}
 
 		template <class T, class Alloc>
