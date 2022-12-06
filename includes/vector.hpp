@@ -181,13 +181,13 @@ namespace ft
 		{
 			if (n > this->max_size())
 				throw (std::length_error("the parameter is greater than max_size()"));
-			else if (n > this->__capacity())
+			else if (n > this->capacity())
 			{
 				pointer		tmp_start = this->begin();
 				size_type	tmp_capacity = this->capacity();
 				size_type	tmp_size = this->size(); 
 
-				__start = __alloc.construct(n);
+				__start = __alloc.allocate(n);
 				__end = __start;
 				__capacity = __start + n;
 

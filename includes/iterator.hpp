@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 13:28:30 by idouidi           #+#    #+#             */
-/*   Updated: 2022/11/02 19:14:36 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/06 19:21:25 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,6 @@ namespace ft
 	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 
-
-    /*      *       *       *   Iterator class      *       *       *
-    *
-    *   Is a a base class template that can be used to derive 
-    *   iterator classes from it. It is not an iterator class and does not provide 
-    *   any of the functionality an iterator is expected to have.
-    *       *       *       *       *       *       *       *       */
-    
-    template < class Category, class T, class Distance = ptrdiff_t,
-               class Pointer = T*, class Reference = T& >
-    class iterator
-    {
-        typedef T           value_type;
-        typedef Distance    difference_type;
-        typedef Pointer     pointer;
-        typedef Reference   reference;
-        typedef Category    iterator_category;
-
-    };
-
-
-
     /*      *       *       *   Traits class        *       *       *
     *
     *   defining properties of iterators.
@@ -57,17 +35,18 @@ namespace ft
     *   iterator_category   : It can be imput_iterator/output_iterator/forward_iterator/bidirectional_iterator/random_acces_iterator
     *       *       *       *       *       *       *       *       */
     template <class Iterator>
-    class iterator_traits 
+    struct iterator_traits 
     {
-        typedef typename Iterator::difference_type     difference_type;
-        typedef typename Iterator::value_type          value_type;
-        typedef typename Iterator::pointer             pointer;
-        typedef typename Iterator::reference           reference;
-        typedef typename Iterator::iterator_category   iterator_category;
+        typedef std::ptrdiff_t              difference_type;
+        typedef Iterator                    value_type;
+        typedef value_type*                 pointer;
+        typedef value_type&                 reference;
+        typedef random_access_iterator_tag  iterator_category;  
     };
 
+
     template < class T >
-    class iterator_traits< T * >
+    struct iterator_traits< T * >
     {
         typedef std::ptrdiff_t              difference_type;
         typedef T                           value_type;
@@ -77,7 +56,7 @@ namespace ft
     };
 
     template < class T >
-    class iterator_traits< const T * >
+    struct iterator_traits< const T * >
     {
         typedef std::ptrdiff_t              difference_type;
         typedef T                           value_type;

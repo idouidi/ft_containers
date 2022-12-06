@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 02:11:41 by idouidi           #+#    #+#             */
-/*   Updated: 2022/11/01 11:31:56 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/06 18:00:24 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 
 namespace ft
 {
-    template < class T, class Container = vector<T> >
+    template < class T, class Container = ft::vector<T> >
     class stack
     {
-        // MEMBER TYPE
+
         public:
-            typedef T	        value_type;
-	        typedef size_t	    size_type;
-	        typedef Container	container_type;
+	        typedef Container                               container_type;
+            typedef typename container_type::value_type     value_type;
+	        typedef typename container_type::size_type      size_type;
         private:
             container_type ctr;
 
