@@ -326,17 +326,20 @@ namespace ft
 				if (n > this->max_size())
 					throw (std::length_error("the parameter is greater than max_size()"));
 
-			vector<T> vec_tmp(*this);
-			this->reserve(this->size() + n);
 			size_type anchor = position - __start;
+			size_type tmp_capacity = this->capacity();
+	
+			for (; tmp_capacity < this->size() + n;)
+				tmp_capacity *= 2;
+			this->reserve(tmp_capacity);
+			for (size_type i = 0; i < n; i++)
+				__alloc.construct(__start + this->size() + i, val);
 
-			for (size_type i = anchor ; i < anchor + n; i++)
-				__alloc.constructor(__start + i, val);
-
-			for (size_type i = anchor + n; i < this->size() + n; i++)
-				__alloc.construct(__start + i, vec_tmp[i - n]);
-			if (position == __start)
-			__start -= n;
+			for (size_type i = this->size() - 1; i > 0 ; i--)
+				__start[i + n] = __start[i];
+			
+			for (size_type i = anchor; i < anchor + n; i++)
+				__start[i] = val;
 			__end += n;
 		}
 
@@ -345,21 +348,8 @@ namespace ft
 		void 					insert (iterator position, InputIterator first, InputIterator last,
 								typename ft::enable_if<!ft::is_integral<InputIterator>::value, T>::type * = 0)
 		{
-			vector<T> vec_tmp(*this);
-			size_type dist = (size_type)ft::distance(first, last);
-			this->reserve(this->size() + dist);
-			size_type anchor = position - __start;
-
-			for (size_type i = anchor ; i < anchor + dist; i++)
-			{
-				__alloc.constructor(__start + i, first);
-				first++;
-			}
-			for (size_type i = anchor + dist; i < this->size() + dist; i++)
-				__alloc.construct(__start + i, vec_tmp[i - dist]);
-			if (position == __start)
-				__start -= dist;
-			__end += dist;
+			for (; first != last; first++, position++)
+				this->insert(position, first);
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -377,22 +367,17 @@ namespace ft
 				if (i + 1 < this->size())
 					__alloc.construct(__start + i, __start[i + 1]);
 			}
+			__end -= 1;
 			return (position);
 		}
 
 // remove elem in the range [first, last) at the position
 		iterator 				erase (iterator first, iterator last)
 		{
-			vector<T> vec_tmp(*this);
-			size_type anchor = first - __start;
-			size_type  nb_elem = last - first;
+			difference_type dist = ft::distance(first, last);
 
-			for (size_type i = anchor; i < this->size(); i++)
-				__alloc.destroy(__start + i);
-			
-			for (size_type i = anchor + nb_elem; i < this->size(); i++)
-				__alloc.construct(__start + i - nb_elem, vec_tmp[i]);
-			__end -= nb_elem;
+			for (difference_type i = 0; i < dist; i++)
+				this->erase(first);
 			return (first);
 		}
 
@@ -485,3 +470,5 @@ namespace ft
 
 }
 #endif
+
+
