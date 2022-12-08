@@ -261,7 +261,10 @@ namespace ft
 				__end = __start;
 				__capacity = __start + dist;
 				for (;first != last; first++)
+				{
 					push_back(*first);
+					__end++;
+				}
 			}
 		}
 

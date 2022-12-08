@@ -6,7 +6,7 @@
 #    By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 00:45:13 by idouidi           #+#    #+#              #
-#    Updated: 2022/12/06 19:56:05 by idouidi          ###   ########.fr        #
+#    Updated: 2022/12/08 19:24:05 by idouidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ all			: $(NAME)
 
 clean		:
 	rm -rf $(OBJS)
+	rm -rf ./srcs/vector/output/*
 
 fclean		: clean
 	rm -rf $(NAME)
