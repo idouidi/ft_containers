@@ -6,11 +6,12 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 20:40:14 by idouidi           #+#    #+#             */
-/*   Updated: 2022/12/08 19:26:59 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/20 20:24:54 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include <fstream>
+# include <cstdlib>
 # include <sys/stat.h>
 # include <cstring>
 # include <iostream>
@@ -61,8 +62,47 @@ const char  *compareContent(const char *file_name, std::vector<T>& stl_vector, f
     return (OK);
 }
 
+template <class T>
+static void printIterator(const char *file_name, const char * __name_space__, T &vec)
+{
+    std::fstream os;
+
+    os.open(file_name , std::fstream::in | std::fstream::out |  std::ios_base::app);
+
+    os << __name_space__ << ":" <<  std::endl;
+    os << "BEGIN    ->  END:   ";
+    typename T::iterator it = vec.begin();
+    for (;it != vec.end(); it++)
+        os << "[" << *it << "]";
+    os << std::endl;
+
+    os << "RBEGIN   ->  REND:  ";
+    typename T::reverse_iterator r_it = vec.rbegin();
+    for (; r_it != vec.rend(); r_it++)
+        os << "[" << *r_it << "]";
+    os << std::endl;
+    os << std::endl;
+}
+
+template <class T>
+const char * compareIterator(const char *file_name, std::vector<T>& stl_vector, ft::vector<T>& ft_vector)
+{
+    const char *ret;
+    printIterator(file_name, "STL", stl_vector);
+    printIterator(file_name, "FT", ft_vector);
+    
+    std::cout << "BEGIN:                 " << (ret = (*stl_vector.begin() == *ft_vector.begin() ? OK : KO)) << std::endl;
+    std::cout << "END:                   " << (ret = (*(stl_vector.end() - 1) == *(ft_vector.end() - 1) ? OK : KO)) << std::endl;
+    std::cout << "RBEGIN:                " << (ret = (*stl_vector.rbegin() == *ft_vector.rbegin() ? OK : KO)) << std::endl;
+    std::cout << "REND:                  " << (ret = (*(--stl_vector.rend()) == *(--ft_vector.rend()) ? OK : KO)) << std::endl;
+    return (ret);
+}
+
+
+
 void vector_tester()
 {
+    std::srand(time(NULL));
     std::cout<< "\n\033[1;31m             = = =>      VECTOR      <= = =\033[0m\n\n";
 
     std::cout<< "\033[1;33m + CONSTRUCTOR + \033[0m\n";
@@ -87,25 +127,31 @@ void vector_tester()
 
     std::cout<< "Range Constructor:     ";
     {
-        int array[] = {4, 2, 9, 100, 5};
+        int randArray[5];
+        
+        for(int i = 0; i < 5; i++)
+            randArray[i]=rand()%100;
 
-        std::vector<int>::iterator stl_it(&array[2]);
-        ft::vector<int>::iterator ft_it(&array[2]);
+        std::vector<int>::iterator stl_it(&randArray[2]);
+        ft::vector<int>::iterator ft_it(&randArray[2]);
     
-        std::vector<int> stl_vector(stl_it, stl_it + 2);
-        ft::vector<int> ft_vector(ft_it, ft_it + 2);
+        std::vector<int> stl_vector(stl_it, stl_it + 3);
+        ft::vector<int> ft_vector(ft_it, ft_it + 3);
         std::cout << (compareContent("./srcs/vector/output/Range_constructor", stl_vector, ft_vector))<< std::endl;
     }
     
     std::cout<< "Copy Constructor:      ";
     {
-        int array[] = {4, 2, 9, 100, 5};
+        int randArray[5];
 
-        std::vector<int>::iterator stl_it(&array[0]);
-        ft::vector<int>::iterator ft_it(&array[0]);
+        for(int i = 0; i < 5; i++)
+            randArray[i]=rand()%100;
+
+        std::vector<int>::iterator stl_it(&randArray[0]);
+        ft::vector<int>::iterator ft_it(&randArray[0]);
     
-        std::vector<int> stl_vector(stl_it, stl_it + 4);
-        ft::vector<int> ft_vector(ft_it, ft_it + 4);
+        std::vector<int> stl_vector(stl_it, stl_it + 5);
+        ft::vector<int> ft_vector(ft_it, ft_it + 5);
 
         std::vector<int> stl_vector_copy(stl_vector);
         ft::vector<int> ft_vector_copy(ft_vector);
@@ -115,5 +161,63 @@ void vector_tester()
             std::cout << KO << std::endl;
     }
 
-     std::cout<< "\n\033[1;33m + ITERATOR + \033[0m\n";
+    std::cout<< "\n\033[1;33m + ITERATOR + \033[0m\n";
+    {
+       int         randArray[5];
+
+       for(int i = 0; i < 5; i++)
+           randArray[i]=rand()%100;
+
+       std::vector<int>::iterator stl_it(&randArray[0]);
+       ft::vector<int>::iterator ft_it(&randArray[0]);
+
+       std::vector<int> stl_vector(stl_it, stl_it + 5);
+       ft::vector<int> ft_vector(ft_it, ft_it + 5);
+
+       compareIterator("./srcs/vector/output/Iterator", stl_vector, ft_vector);
+    }
+    
+    std::cout << "\n\033[1;33m + CAPACITY + \033[0m\n";
+    {
+        int randArray[5];
+        const char *ret; 
+
+        for(int i = 0; i < 5; i++)
+            randArray[i]=rand()%100;
+
+        std::vector<int>::iterator stl_it(&randArray[0]);
+        ft::vector<int>::iterator ft_it(&randArray[0]);
+
+        std::vector<int> stl_vector(stl_it, stl_it + 5);
+        ft::vector<int> ft_vector(ft_it, ft_it + 5);
+        printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
+        printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
+
+        std::cout << "SIZE:                  " <<((stl_vector.size() == ft_vector.size()) ? OK : KO) << std::endl; 
+        std::cout << "MAXSIZE:               " <<((stl_vector.max_size() == ft_vector.max_size()) ? OK : KO) << std::endl;     
+        std::cout << "CAPACITY               " <<((stl_vector.capacity() == ft_vector.capacity()) ? OK : KO) << std::endl; 
+        std::cout << "EMPTY:                 " <<((stl_vector.empty() == ft_vector.empty()) ? OK : KO) << std::endl; 
+
+        /* RESIZE WITH N < SIZE() */
+        stl_vector.resize(3);
+        ft_vector.resize(3);
+        printIterator("./srcs/vector/output/Capacity", "STL", stl_vector);
+        printIterator("./srcs/vector/output/Capacity", "FT", ft_vector);
+
+        ret = (*stl_vector.begin() == *ft_vector.begin() ? OK : KO);
+        ret = (*(stl_vector.end() - 1) == *(ft_vector.end() - 1) ? OK : KO);
+        std::cout << "RESIZE:                " << (!std::strcmp(ret, OK) ? OK : KO) << " ";
+        
+        /* RESIZE WITH N > SIZE() */
+        stl_vector.resize(6, 42);
+        ft_vector.resize(6, 42);
+        printIterator("./srcs/vector/output/Capacity", "STL", stl_vector);
+        printIterator("./srcs/vector/output/Capacity", "FT", ft_vector);
+
+        ret = (*stl_vector.begin() == *ft_vector.begin() ? OK : KO);
+        ret = (*(stl_vector.end() - 1) == *(ft_vector.end() - 1) ? OK : KO);
+        std::cout << (!std::strcmp(ret, OK) ? OK : KO) << std::endl;
+
+
+    }
 }

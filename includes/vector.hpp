@@ -156,7 +156,7 @@ namespace ft
 		void 					resize (size_type n, value_type val = value_type())
 		{
 			if (n > this->size())
-				insert(end(), n - this->size(), val);
+				insert(this->end(), n - this->size(), val);
 			else
 			{
 				for (; this->size() > n; __end--)
@@ -333,7 +333,10 @@ namespace ft
 			size_type tmp_capacity = this->capacity();
 	
 			for (; tmp_capacity < this->size() + n;)
+			{
 				tmp_capacity *= 2;
+			}
+			std::cout << tmp_capacity << "|" << this->size() + n <<std::endl;
 			this->reserve(tmp_capacity);
 			for (size_type i = 0; i < n; i++)
 				__alloc.construct(__start + this->size() + i, val);

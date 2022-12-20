@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 13:28:30 by idouidi           #+#    #+#             */
-/*   Updated: 2022/12/06 19:21:25 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/20 18:08:00 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ namespace ft
             typedef typename ft::iterator_traits<Iterator>::difference_type    difference_type;
             typedef typename ft::iterator_traits<Iterator>::pointer            pointer;
             typedef typename ft::iterator_traits<Iterator>::reference          reference;
-        private:
+        // protected:
             iterator_type   __elem;
 
 		/*	
@@ -100,6 +100,13 @@ namespace ft
         //📚 COPY CONSTRUCTOR
         template <class Iter>
         reverse_iterator (const reverse_iterator<Iter>& rev_it) { *this = rev_it; }
+
+        // OPERATOR COPY AFFECTATION
+        reverse_iterator& operator=(const reverse_iterator& other)
+        {
+            __elem = other.__elem;
+            return (*this);
+        }
 
         /*
         *   📌 MEMBER FUNCTION 
@@ -128,7 +135,7 @@ namespace ft
        reverse_iterator operator++(int)
        {
             reverse_iterator tmp = *this;
-            --(*this);
+            ++(*this);
             return (tmp);
        }
 
@@ -152,7 +159,7 @@ namespace ft
        reverse_iterator operator--(int)
        {
             reverse_iterator tmp = *this;
-            ++__elem;
+            --(*this);
             return (tmp);
        }
 
