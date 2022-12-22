@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 20:40:14 by idouidi           #+#    #+#             */
-/*   Updated: 2022/12/20 20:24:54 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/22 16:43:09 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,18 +201,18 @@ void vector_tester()
         /* RESIZE WITH N < SIZE() */
         stl_vector.resize(3);
         ft_vector.resize(3);
-        printIterator("./srcs/vector/output/Capacity", "STL", stl_vector);
-        printIterator("./srcs/vector/output/Capacity", "FT", ft_vector);
+        printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
+        printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
 
         ret = (*stl_vector.begin() == *ft_vector.begin() ? OK : KO);
         ret = (*(stl_vector.end() - 1) == *(ft_vector.end() - 1) ? OK : KO);
         std::cout << "RESIZE:                " << (!std::strcmp(ret, OK) ? OK : KO) << " ";
         
         /* RESIZE WITH N > SIZE() */
-        stl_vector.resize(6, 42);
-        ft_vector.resize(6, 42);
-        printIterator("./srcs/vector/output/Capacity", "STL", stl_vector);
-        printIterator("./srcs/vector/output/Capacity", "FT", ft_vector);
+        stl_vector.resize(10);
+        ft_vector.resize(10);
+        printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
+        printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
 
         ret = (*stl_vector.begin() == *ft_vector.begin() ? OK : KO);
         ret = (*(stl_vector.end() - 1) == *(ft_vector.end() - 1) ? OK : KO);

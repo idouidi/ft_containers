@@ -184,20 +184,19 @@ namespace ft
 			else if (n > this->capacity())
 			{
 				pointer		tmp_start = this->begin();
+				size_type   tmp_size = this->size();
 				size_type	tmp_capacity = this->capacity();
-				size_type	tmp_size = this->size(); 
 
 				__start = __alloc.allocate(n);
-				__end = __start;
-				__capacity = __start + n;
-
-				for (size_type i = 0; i < n; i++)
+				__end = this->begin();
+				for (size_type i = 0; i < n && i < tmp_size; i++)
 				{
-					__alloc.construct(__start + i, *tmp_start);
-					__end++;
-					tmp_start++;
+					__alloc.construct(__start + i, tmp_start[i]);
+					__end += i;
+					__alloc.destroy(tmp_start + i);
 				}
-				__alloc.deallocate(tmp_start - tmp_size, tmp_capacity);
+				__alloc.deallocate(tmp_start, tmp_capacity);
+				__capacity = __start + n;
 			}
 		}
 
@@ -328,16 +327,10 @@ namespace ft
 		{
 				if (n > this->max_size())
 					throw (std::length_error("the parameter is greater than max_size()"));
-
+			
 			size_type anchor = position - __start;
-			size_type tmp_capacity = this->capacity();
-	
-			for (; tmp_capacity < this->size() + n;)
-			{
-				tmp_capacity *= 2;
-			}
-			std::cout << tmp_capacity << "|" << this->size() + n <<std::endl;
-			this->reserve(tmp_capacity);
+
+			this->reserve(n + this->size());
 			for (size_type i = 0; i < n; i++)
 				__alloc.construct(__start + this->size() + i, val);
 
