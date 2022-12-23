@@ -192,7 +192,7 @@ namespace ft
 				for (size_type i = 0; i < n && i < tmp_size; i++)
 				{
 					__alloc.construct(__start + i, tmp_start[i]);
-					__end += i;
+					__end++;
 					__alloc.destroy(tmp_start + i);
 				}
 				__alloc.deallocate(tmp_start, tmp_capacity);
@@ -330,7 +330,9 @@ namespace ft
 			
 			size_type anchor = position - __start;
 
-			this->reserve(n + this->size());
+			(this->capacity() * 2 >= this->size() + n) ? 
+				this->reserve(this->capacity() * 2) : this->reserve(this->size() + n);
+
 			for (size_type i = 0; i < n; i++)
 				__alloc.construct(__start + this->size() + i, val);
 

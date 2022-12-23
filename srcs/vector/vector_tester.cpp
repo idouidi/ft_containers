@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 20:40:14 by idouidi           #+#    #+#             */
-/*   Updated: 2022/12/22 16:43:09 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/23 18:50:08 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ static void printIterator(const char *file_name, const char * __name_space__, T 
         os << "[" << *r_it << "]";
     os << std::endl;
     os << std::endl;
+    os.close();
 }
 
 template <class T>
@@ -99,7 +100,38 @@ const char * compareIterator(const char *file_name, std::vector<T>& stl_vector, 
 }
 
 
+template <class T>
+static void printElemAccess(const char *file_name, const char * __name_space__, T &vec)
+{
+    std::fstream os;
 
+    os.open(file_name , std::fstream::in | std::fstream::out |  std::ios_base::app);
+
+    os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
+    os << __name_space__ << ":" <<  std::endl;
+    os << "Operator[2]  = " << vec[2] << std::endl;
+    os << "At           = " << vec.at(4) << std::endl;
+    os << "Front        = " << vec.front() << std::endl;
+    os << "Back         = " << vec.back() << std::endl;
+    os << std::endl;
+    os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
+     os.close();
+}
+
+template <class T>
+static void compareElemAccess(const char *file_name, std::vector<T>& stl_vector, ft::vector<T>& ft_vector)
+{
+    const char *ret;
+    printElemAccess(file_name, "STL", stl_vector);
+    printElemAccess(file_name, "FT", ft_vector);
+
+    std::cout << "Operator[]             " << (ret = (stl_vector[2] == ft_vector[2] ? OK : KO)) << std::endl;
+    std::cout << "At                     " << (ret = (stl_vector.at(4) == ft_vector.at(4) ? OK : KO)) << std::endl;
+    std::cout << "Front                  " << (ret = (stl_vector.front() == ft_vector.front() ? OK : KO)) << std::endl;
+    std::cout << "Back                   " << (ret = (stl_vector.back()== ft_vector.back() ? OK : KO)) << std::endl;
+
+
+}
 void vector_tester()
 {
     std::srand(time(NULL));
@@ -179,17 +211,21 @@ void vector_tester()
     
     std::cout << "\n\033[1;33m + CAPACITY + \033[0m\n";
     {
-        int randArray[5];
-        const char *ret; 
+        int             size = 2;
+        int             randArray[size];
+        const char      *ret; 
+        std::fstream    os;
 
-        for(int i = 0; i < 5; i++)
+        os.open("./srcs/vector/output/Capacity", std::fstream::in | std::fstream::out |  std::ios_base::app);
+
+        for(int i = 0; i < size; i++)
             randArray[i]=rand()%100;
 
         std::vector<int>::iterator stl_it(&randArray[0]);
         ft::vector<int>::iterator ft_it(&randArray[0]);
 
-        std::vector<int> stl_vector(stl_it, stl_it + 5);
-        ft::vector<int> ft_vector(ft_it, ft_it + 5);
+        std::vector<int> stl_vector(stl_it, stl_it + size);
+        ft::vector<int> ft_vector(ft_it, ft_it + size);
         printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
         printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
 
@@ -199,16 +235,18 @@ void vector_tester()
         std::cout << "EMPTY:                 " <<((stl_vector.empty() == ft_vector.empty()) ? OK : KO) << std::endl; 
 
         /* RESIZE WITH N < SIZE() */
-        stl_vector.resize(3);
-        ft_vector.resize(3);
+        os << "            ++ RESIZE WITH N < SIZE() ++\n" << std::endl;
+        stl_vector.resize(6);
+        ft_vector.resize(6);
         printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
         printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
 
         ret = (*stl_vector.begin() == *ft_vector.begin() ? OK : KO);
         ret = (*(stl_vector.end() - 1) == *(ft_vector.end() - 1) ? OK : KO);
         std::cout << "RESIZE:                " << (!std::strcmp(ret, OK) ? OK : KO) << " ";
-        
+
         /* RESIZE WITH N > SIZE() */
+        os << "            +++ RESIZE WITH N > SIZE() +++\n" << std::endl;
         stl_vector.resize(10);
         ft_vector.resize(10);
         printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
@@ -217,6 +255,68 @@ void vector_tester()
         ret = (*stl_vector.begin() == *ft_vector.begin() ? OK : KO);
         ret = (*(stl_vector.end() - 1) == *(ft_vector.end() - 1) ? OK : KO);
         std::cout << (!std::strcmp(ret, OK) ? OK : KO) << std::endl;
+
+
+        /* RESERVE WITH N > CAPACITY */
+        os << "            +++ RESERVE N > CAPACITY() +++\n" << std::endl;
+        stl_vector.reserve(100);
+        ft_vector.reserve(100);
+        printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
+        printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
+        std::cout << "RESERVE:               " << ((stl_vector.capacity() == ft_vector.capacity()) ? OK : KO) << " ";
+        /* RESERVE WITH N < CAPACITY */
+        os << "            +++ RESERVE N < CAPACITY() +++\n" << std::endl;
+        stl_vector.reserve(3);
+        ft_vector.reserve(3);
+        printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
+        printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
+        std::cout << ((stl_vector.capacity() == ft_vector.capacity()) ? OK : KO) << std::endl;
+        os.close();
+    }
+
+    std::cout << "\n\033[1;33m + ELEMENT ACCESS + \033[0m\n";
+    {
+        int             size = 5;
+        int             randArray[size];
+
+        for(int i = 0; i < size; i++)
+            randArray[i]=rand()%100;
+
+        std::vector<int>::iterator stl_it(&randArray[0]);
+        ft::vector<int>::iterator ft_it(&randArray[0]);
+
+        std::vector<int> stl_vector(stl_it, stl_it + size);
+        ft::vector<int> ft_vector(ft_it, ft_it + size);
+
+        printContent("./srcs/vector/output/Elem_access", "STL", stl_vector);
+        printContent("./srcs/vector/output/Elem_access", "FT", ft_vector);
+        compareElemAccess("./srcs/vector/output/Elem_access", stl_vector, ft_vector);
+    }
+
+    std::cout << "\n\033[1;33m + MODIFIERS + \033[0m\n";
+    {
+        int             size = 15;
+        int             randArray[size];
+        std::fstream    os;
+
+        os.open("./srcs/vector/output/Capacity", std::fstream::in | std::fstream::out |  std::ios_base::app);
+        
+        for(int i = 0; i < size; i++)
+            randArray[i]=rand()%100;
+
+        std::vector<int>::iterator stl_it(&randArray[0]);
+        ft::vector<int>::iterator ft_it(&randArray[0]);
+        
+        std::vector<int> stl_vector(stl_it, stl_it + size);
+        ft::vector<int> ft_vector(ft_it, ft_it + size);
+        compareContent("./srcs/vector/output/Assign_range", stl_vector, ft_vector);
+
+        os << "            +++ ASSIGN RANGE VERSION +++\n" << std::endl;
+        /*ASSIGN RANGE VERSION */
+        stl_vector.assign(stl_it + 3, stl_it + 9);
+        ft_vector.assign(stl_it + 3, stl_it + 9);
+        compareContent("./srcs/vector/output/Assign_range", stl_vector, ft_vector);
+        os.close();
 
 
     }
