@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 20:40:14 by idouidi           #+#    #+#             */
-/*   Updated: 2022/12/23 18:50:08 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/26 18:12:54 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,9 @@ static void compareElemAccess(const char *file_name, std::vector<T>& stl_vector,
 }
 void vector_tester()
 {
+    mkdir("./srcs/vector/output", 0777);
     std::srand(time(NULL));
+
     std::cout<< "\n\033[1;31m             = = =>      VECTOR      <= = =\033[0m\n\n";
 
     std::cout<< "\033[1;33m + CONSTRUCTOR + \033[0m\n";
@@ -211,7 +213,7 @@ void vector_tester()
     
     std::cout << "\n\033[1;33m + CAPACITY + \033[0m\n";
     {
-        int             size = 2;
+        int             size = 4;
         int             randArray[size];
         const char      *ret; 
         std::fstream    os;
@@ -235,9 +237,9 @@ void vector_tester()
         std::cout << "EMPTY:                 " <<((stl_vector.empty() == ft_vector.empty()) ? OK : KO) << std::endl; 
 
         /* RESIZE WITH N < SIZE() */
-        os << "            ++ RESIZE WITH N < SIZE() ++\n" << std::endl;
-        stl_vector.resize(6);
-        ft_vector.resize(6);
+        os << "\n            ++ RESIZE WITH N < SIZE() ++\n\n" << std::endl;
+        stl_vector.resize(2);
+        ft_vector.resize(2);
         printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
         printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
 
@@ -246,7 +248,7 @@ void vector_tester()
         std::cout << "RESIZE:                " << (!std::strcmp(ret, OK) ? OK : KO) << " ";
 
         /* RESIZE WITH N > SIZE() */
-        os << "            +++ RESIZE WITH N > SIZE() +++\n" << std::endl;
+        os << "\n            +++ RESIZE WITH N > SIZE() +++\n\n" << std::endl;
         stl_vector.resize(10);
         ft_vector.resize(10);
         printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
@@ -258,14 +260,14 @@ void vector_tester()
 
 
         /* RESERVE WITH N > CAPACITY */
-        os << "            +++ RESERVE N > CAPACITY() +++\n" << std::endl;
-        stl_vector.reserve(100);
-        ft_vector.reserve(100);
+        os << "\n            +++ RESERVE N > CAPACITY() +++\n\n" << std::endl;
+        stl_vector.reserve(20);
+        ft_vector.reserve(20);
         printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
         printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
         std::cout << "RESERVE:               " << ((stl_vector.capacity() == ft_vector.capacity()) ? OK : KO) << " ";
         /* RESERVE WITH N < CAPACITY */
-        os << "            +++ RESERVE N < CAPACITY() +++\n" << std::endl;
+        os << "\n            +++ RESERVE N < CAPACITY() +++\n\n" << std::endl;
         stl_vector.reserve(3);
         ft_vector.reserve(3);
         printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
@@ -298,8 +300,6 @@ void vector_tester()
         int             size = 15;
         int             randArray[size];
         std::fstream    os;
-
-        os.open("./srcs/vector/output/Capacity", std::fstream::in | std::fstream::out |  std::ios_base::app);
         
         for(int i = 0; i < size; i++)
             randArray[i]=rand()%100;
@@ -311,7 +311,6 @@ void vector_tester()
         ft::vector<int> ft_vector(ft_it, ft_it + size);
         compareContent("./srcs/vector/output/Assign_range", stl_vector, ft_vector);
 
-        os << "            +++ ASSIGN RANGE VERSION +++\n" << std::endl;
         /*ASSIGN RANGE VERSION */
         stl_vector.assign(stl_it + 3, stl_it + 9);
         ft_vector.assign(stl_it + 3, stl_it + 9);

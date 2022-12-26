@@ -94,9 +94,17 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // Copy constructor
-		vector (const vector& x): __alloc(x.__alloc), __start(0), __end(0), __capacity(0)
+		vector (const vector& x)
 		{
-			this->assign(x.begin(), x.end());
+			this->__alloc = x.__alloc;
+			this->__start = __alloc.allocate(x.capacity());
+			this->__end = this->__start;
+			this->__capacity = x.__capacity;
+			for (size_type i = 0; i < x.size(); i ++)
+			{
+				__alloc.construct(this->__start + i, *(x.begin() + i));
+				__end++;
+			}
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -156,7 +164,12 @@ namespace ft
 		void 					resize (size_type n, value_type val = value_type())
 		{
 			if (n > this->size())
-				insert(this->end(), n - this->size(), val);
+			{
+				(this->capacity() * 2 >= n) ? 
+					this->reserve(this->capacity() * 2) : this->reserve(n);
+				for (size_type i = this->size(); i < n; i++)
+					push_back(val);
+			}
 			else
 			{
 				for (; this->size() > n; __end--)
@@ -299,9 +312,10 @@ namespace ft
 // The content of val is copied (or moved) to the new element.
 		void					push_back (const value_type& val)
 		{
-			if (__end == __capacity)
-				this->reserve(this->size() + 1);
-			__alloc.construct(__start + this->size(), val);
+			if (this->size() + 1 > this->capacity())
+				this->reserve(this->capacity() * 2);
+			__alloc.construct(__end, val);
+			__end++;
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
