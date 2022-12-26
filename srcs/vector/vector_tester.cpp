@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 20:40:14 by idouidi           #+#    #+#             */
-/*   Updated: 2022/12/26 18:12:54 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/26 18:42:13 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,9 +225,12 @@ void vector_tester()
 
         std::vector<int>::iterator stl_it(&randArray[0]);
         ft::vector<int>::iterator ft_it(&randArray[0]);
-
+ 
         std::vector<int> stl_vector(stl_it, stl_it + size);
         ft::vector<int> ft_vector(ft_it, ft_it + size);
+
+        /* ORIGINAL STATE */
+        os << "\n            ++ ORIGINAL STATE ++\n\n" << std::endl;
         printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
         printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
 
@@ -258,7 +261,6 @@ void vector_tester()
         ret = (*(stl_vector.end() - 1) == *(ft_vector.end() - 1) ? OK : KO);
         std::cout << (!std::strcmp(ret, OK) ? OK : KO) << std::endl;
 
-
         /* RESERVE WITH N > CAPACITY */
         os << "\n            +++ RESERVE N > CAPACITY() +++\n\n" << std::endl;
         stl_vector.reserve(20);
@@ -266,6 +268,7 @@ void vector_tester()
         printContent("./srcs/vector/output/Capacity", "STL", stl_vector);
         printContent("./srcs/vector/output/Capacity", "FT", ft_vector);
         std::cout << "RESERVE:               " << ((stl_vector.capacity() == ft_vector.capacity()) ? OK : KO) << " ";
+        
         /* RESERVE WITH N < CAPACITY */
         os << "\n            +++ RESERVE N < CAPACITY() +++\n\n" << std::endl;
         stl_vector.reserve(3);
@@ -300,7 +303,9 @@ void vector_tester()
         int             size = 15;
         int             randArray[size];
         std::fstream    os;
-        
+
+        os.open("./srcs/vector/output/Assign_range", std::fstream::in | std::fstream::out |  std::ios_base::app);
+  
         for(int i = 0; i < size; i++)
             randArray[i]=rand()%100;
 
@@ -309,14 +314,16 @@ void vector_tester()
         
         std::vector<int> stl_vector(stl_it, stl_it + size);
         ft::vector<int> ft_vector(ft_it, ft_it + size);
+
+        /* ORIGINAL STATE */
+        os << "\n            ++ ORIGINAL STATE ++\n\n" << std::endl;
         compareContent("./srcs/vector/output/Assign_range", stl_vector, ft_vector);
 
         /*ASSIGN RANGE VERSION */
+        os << "\n            ++ ASSIGN RANGE VERSION ++\n\n" << std::endl;
         stl_vector.assign(stl_it + 3, stl_it + 9);
         ft_vector.assign(stl_it + 3, stl_it + 9);
         compareContent("./srcs/vector/output/Assign_range", stl_vector, ft_vector);
         os.close();
-
-
     }
 }
