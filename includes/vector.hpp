@@ -13,11 +13,12 @@
 #ifndef __VECTOR_HPP__
 # define __VECTOR_HPP__
 
-# include <iostream>
-#include <vector>
-# include <cstddef>
+
 # include "iterator.hpp"
 # include "utils.hpp"
+# include <iostream>
+# include <vector>
+# include <cstddef>
 
 namespace ft
 {
@@ -40,8 +41,8 @@ namespace ft
 		private:
 			Allocator													__alloc;
 			pointer														__start;
-			pointer														__end;
-			pointer														__capacity;
+			size_type													__size;
+			size_type													__capacity;
 		public:
 
 		/*	
@@ -59,17 +60,13 @@ namespace ft
 
 // 📚 fill constructor
 		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
-		: __alloc(alloc), __start(0), __end(0), __capacity(0)
 		{
-			// 💡 __start = __alloc.allocate( sizeof(value_type)  * n ); 
-			__start = __alloc.allocate( n ); //Attempts to allocate a block of storage with a size large enough to contain n of member type value_type.
-			__end =	__start;
+			__alloc = alloc;
+			(n % 2 != 0) ? __capacity = n + 1 : __capacity = n; 
+			__start = __alloc.allocate( __capacity ); //Attempts to allocate a block of storage with a size large enough to contain n of member type value_type.
+			__size = n;
 			for (size_type i = 0; i < n; i++)
-			{
 				__alloc.construct( __start + i , val ); //Constructs an element object on the location pointed by __start + i.
-				__end++;
-			}
-			__capacity = __start + n;
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -81,14 +78,13 @@ namespace ft
 		{
 			difference_type n = ft::distance( first, last );
 			__start = __alloc.allocate( n );
-			__end =	__start;
+			__size = n;
+			__capacity = n;
 			for (difference_type i = 0; i < n; i++)
 			{
 				__alloc.construct(__start + i, *first);
-				__end++;
 				first++;
 			}
-			__capacity = __start + n;
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -97,14 +93,15 @@ namespace ft
 		vector (const vector& x)
 		{
 			this->__alloc = x.__alloc;
-			this->__start = __alloc.allocate(x.capacity());
-			this->__end = this->__start;
+			// this->__start = this->__alloc.allocate(x.__capacity);
+			this->__size = x.__size;
 			this->__capacity = x.__capacity;
-			for (size_type i = 0; i < x.size(); i ++)
-			{
-				__alloc.construct(this->__start + i, *(x.begin() + i));
-				__end++;
-			}
+
+			pointer vec_tmp = this->__alloc.allocate(x.__capacity);
+
+			for (size_type i = 0; i < x.__size; i ++)
+				__alloc.construct(vec_tmp + i, *(x.__start + i));
+			this->__start = vec_tmp;
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -131,8 +128,8 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns an iterator pointing to the last element in the vector.
-		iterator				end() { return (__end); }
-		const_iterator			end() const { return (__end); }
+		iterator				end() { return (__start + __size); }
+		const_iterator			end() const { return (__start + __size); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -150,7 +147,7 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns the number of elements in the vector.
-		size_type 				size() const { return (this->end() - this->begin()); }
+		size_type 				size() const { return (this->__size); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -167,20 +164,21 @@ namespace ft
 			{
 				(this->capacity() * 2 >= n) ? 
 					this->reserve(this->capacity() * 2) : this->reserve(n);
+
 				for (size_type i = this->size(); i < n; i++)
 					push_back(val);
 			}
 			else
 			{
-				for (; this->size() > n; __end--)
-					__alloc.destroy(__end);
+				for (size_type tmp_size = this->size(); tmp_size > n; tmp_size--)
+					pop_back();
 			}
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns the total number of elements that the vector can hold before needing to allocate more memory.
-		size_type 				capacity() const { return (__capacity - this->begin()); }
+		size_type 				capacity() const { return (this->__capacity); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -196,20 +194,18 @@ namespace ft
 				throw (std::length_error("the parameter is greater than max_size()"));
 			else if (n > this->capacity())
 			{
-				pointer		tmp_start = this->begin();
-				size_type   tmp_size = this->size();
+				pointer		tmp_start = __alloc.allocate(n);
 				size_type	tmp_capacity = this->capacity();
 
-				__start = __alloc.allocate(n);
-				__end = this->begin();
-				for (size_type i = 0; i < n && i < tmp_size; i++)
-				{
-					__alloc.construct(__start + i, tmp_start[i]);
-					__end++;
-					__alloc.destroy(tmp_start + i);
-				}
-				__alloc.deallocate(tmp_start, tmp_capacity);
-				__capacity = __start + n;
+				for (size_type i = 0; i < n && i < this->size(); i++)
+					__alloc.construct(tmp_start + i, __start[i]);
+				
+				for (size_type i = 0; i < n && i < this->size(); i++)
+					__alloc.destroy(__start + i);
+				
+				__alloc.deallocate(__start, tmp_capacity);
+				__capacity = n;
+				__start = tmp_start;
 			}
 		}
 
@@ -246,8 +242,8 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns a reference to the last element in the vector.
-		reference 				back() { return (*(__end - 1)); }
-		const_reference			back() const { return (*(__end - 1)); }
+		reference 				back() { return  ((__size) ?_  *(__start + __size - 1) : *(__start + __size)) ; }
+		const_reference			back() const { return ((__size) ?  *(__start + __size - 1) : *(__start + __size)) ; }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -260,50 +256,17 @@ namespace ft
 								typename ft::enable_if<!ft::is_integral<InputIterator>::value, T>::type * = 0)
 		{
 			this->clear();
-			size_type dist = (size_type)ft::distance(first, last);
-			if (this->capacity() >= dist)
-			{
-				for (;first != last; first++)
-					push_back(*first);
-			}
-			else
-			{
-				__alloc.deallocate(__start, this->capacity());
-				__start = __alloc.allocate(dist);
-				__end = __start;
-				__capacity = __start + dist;
-				for (;first != last; first++)
-				{
-					push_back(*first);
-					__end++;
-				}
-			}
+			for (;first != last; first++)
+				push_back(*first);
+
 		}
 
 //In the fill version, the new contents are n elements, each initialized to a copy of val.
 		void 					assign (size_type n, const value_type& val)
 		{
 			this->clear();
-			if (this->capacity() >= n)
-			{
-				for (size_type i = 0; i < n; i++)
-				{
-					__alloc.construct(__start + i, val);
-					__end++;
-				}
-			}
-			else
-			{
-				__alloc.deallocate(__start, __capacity);
-				__start = __alloc.allocate(n);
-				__end = __start;
-				__capacity = __start + n;
-				for (size_type i = 0; i < n; i++)
-				{
-					__alloc.construct(__start + i, val);
-					__end++;
-				}
-			}
+			for (size_type i = 0; i < n; i++)
+				push_back(val);
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -314,14 +277,19 @@ namespace ft
 		{
 			if (this->size() + 1 > this->capacity())
 				this->reserve(this->capacity() * 2);
-			__alloc.construct(__end, val);
-			__end++;
+			__alloc.construct(__start + __size, val);
+			__size += 1;
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Removes the last element in the vector, effectively reducing the container size by one.
-		void					pop_back() { this->resize((this->size() - 1)); }
+		void					pop_back() 
+		{ 
+			__alloc.destroy(__start[__size - 1]);
+			this->__size--;
+		
+		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -331,31 +299,35 @@ namespace ft
 // Insert an elem val at the position 
 		iterator 				insert (iterator position, const value_type& val)
 		{
+			if (n > this->max_size())
+				throw (std::length_error("the parameter is greater than max_size()"));
+
 			size_type anchor = position - __start;
-			this->insert(position, 1, val);
+	
+			ft::vector<T> tmp_vec(*this);
+
+			this->clear();
+			if (postion == this->end())
+			{
+				push_back(val);
+				return (position);
+			}	
+				
+			for (size_type i = 0; i < tmp_vec.size(); i++)
+			{
+				if (i == anchor)
+					push_back(val);
+				push_back(tmp_vec[i]);
+			}
 			return (__start + anchor);
 		}
 
 // Insert n elem val at the position
 		void 					insert (iterator position, size_type n, const value_type& val)
 		{
-				if (n > this->max_size())
-					throw (std::length_error("the parameter is greater than max_size()"));
-			
-			size_type anchor = position - __start;
-
-			(this->capacity() * 2 >= this->size() + n) ? 
-				this->reserve(this->capacity() * 2) : this->reserve(this->size() + n);
 
 			for (size_type i = 0; i < n; i++)
-				__alloc.construct(__start + this->size() + i, val);
-
-			for (size_type i = this->size() - 1; i > 0 ; i--)
-				__start[i + n] = __start[i];
-			
-			for (size_type i = anchor; i < anchor + n; i++)
-				__start[i] = val;
-			__end += n;
+				this->insert(position, val);
 		}
 
 // Insert the elem in the range [first, last) at the position
@@ -364,7 +336,7 @@ namespace ft
 								typename ft::enable_if<!ft::is_integral<InputIterator>::value, T>::type * = 0)
 		{
 			for (; first != last; first++, position++)
-				this->insert(position, first);
+				this->insert(position, *first);
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -426,12 +398,8 @@ namespace ft
 // 📚 Removes all elements from the vector (which are destroyed), leaving the container with a size of 0.
 		void 					clear()
 		{
-			size_type tmp_size = this->size();
-			for (size_type i = 0; i < tmp_size; i++)
-			{
-				__end--;
-				__alloc.destroy(__end);
-			}
+			while(this->size())
+				pop_back();
 			
 		}
 
