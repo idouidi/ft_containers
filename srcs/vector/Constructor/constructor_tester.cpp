@@ -6,11 +6,11 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:30:36 by idouidi           #+#    #+#             */
-/*   Updated: 2022/12/29 20:56:19 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/29 21:33:33 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../../includes/vector.hpp"
+# include "../../../includes/ftnspace.hpp"
 
 #if STD == 1
    std::string __name_space__ = "std";
@@ -18,27 +18,9 @@
   std::string __name_space__ = "ft"; 
 #endif
 
-int compareFile(FILE* f1, FILE* f2) {
-  int N = 10000;
-  char buf1[N];
-  char buf2[N];
-
-  do {
-    size_t r1 = fread(buf1, 1, N, f1);
-    size_t r2 = fread(buf2, 1, N, f2);
-
-    if (r1 != r2 ||
-        memcmp(buf1, buf2, r1)) {
-      return 0;
-    }
-  } while (!feof(f1) || !feof(f2));
-
-  return 1;
-}
 
 void constructor_tester()
 {
-
 
      std::cout<< "Default Constructor:   ";
     {

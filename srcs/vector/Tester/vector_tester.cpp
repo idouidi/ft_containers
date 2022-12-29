@@ -6,11 +6,13 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:23:15 by idouidi           #+#    #+#             */
-/*   Updated: 2022/12/29 19:04:52 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/29 21:34:26 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include  "../../../includes/vector.hpp"
+# include  "../../../includes/ftnspace.hpp"
+
+void constructor_tester();
 
 void vector_tester()
 {

@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/29 21:12:42 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/29 21:38:55 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 
 # include "./vector.hpp"
+// # include "./stack.hpp"
+// # include "./map.hpp"
 # include "./utils.hpp"
 # include <fstream>
 # include <cstdlib>
@@ -53,6 +55,13 @@
 # define OK "\033[1;32m[OK]\033[0m"
 # define KO "\033[1;31m[KO]\033[0m"
 
+
+
+int compareFile(FILE* f1, FILE* f2);
+
+void vector_tester();
+
+
 template <class T>
 static void printContent(const char *filename, T &vec)
 {
@@ -79,7 +88,7 @@ static void printIterator(const char *filename, T &vec)
 {
     std::fstream os;
 
-    os.open(file_name , std::fstream::in | std::fstream::out |  std::ios_base::trunc);
+    os.open(filename , std::fstream::in | std::fstream::out |  std::ios_base::trunc);
 
     os << "BEGIN    ->  END:   ";
     typename T::iterator it = vec.begin();
