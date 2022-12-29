@@ -6,7 +6,7 @@
 #    By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 00:45:13 by idouidi           #+#    #+#              #
-#    Updated: 2022/12/27 18:56:11 by idouidi          ###   ########.fr        #
+#    Updated: 2022/12/28 15:56:43 by idouidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -220,6 +220,19 @@ $(NAME_STD):
 
 vector: fclean
 	@clear;
+	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+
+	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
+		$(CXX) $(CXXFLAGS) -o $(FT)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
+	else \
+		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+	fi
+
+	@if [ -f $(FT)$(EXEC_V) ]; then \
+		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+	fi
 	
 	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
 

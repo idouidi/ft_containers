@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/27 18:57:11 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/29 15:14:47 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 // # include "header.hpp"
 
-// #include "./vector.hpp"
+#include "./vector.hpp"
 # include <memory>
 # include <cmath>
 # include <stdlib.h>
@@ -65,7 +65,7 @@ namespace ft{
 	
 	void		print(NAMESPACE::vector<int> &tab, std::string msg){
 		for (size_t i = 0; i < tab.size(); i++){
-			std:: cout <<  GREEN << "| " << RESET;
+			std:: cout <<  GREEN << "\\ " << RESET;
 			std::cout << msg << "[" << GREEN << tab[i] << RESET << "]" << std::endl;
 		}
 		std::cout << std::endl << "capacity: [" << GREEN << tab.capacity() << RESET << "]"<< std::endl;
@@ -77,7 +77,7 @@ namespace ft{
 	void		print( NAMESPACE::vector< NAMESPACE::vector<int> > &tab, std::string msg){
 		for (size_t i = 0; i < tab.size(); i++){
 			for (size_t j = 0; j < tab.at(i).size(); j++){
-				std:: cout <<  GREEN << "| " << RESET;
+				std:: cout <<  GREEN << "\\ " << RESET;
 				std::cout << msg << "[" << GREEN << tab.at(i).at(j) << RESET << "]" << std::endl;
 			}
 		}

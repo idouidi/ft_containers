@@ -6,27 +6,22 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/27 19:14:17 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/29 16:08:05 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../includes/ftnspace.hpp"
 # include <iostream>
+#if STD == 1
+	std::string		print_tmp = "STD";
+#else
+	std::string		print_tmp = "FT";
+#endif
 
 
 int		main(void)
 {
-
-	{
-		NAMESPACE::vector<int>										tab_bis(5, 10);
-		// tab_bis.clear();
-		tab_bis.insert(tab_bis.begin() + 6, 42);
-		// std::cout<< *(tab_bis.begin()) << std::endl;
-		// tab_bis.insert(tab_bis.begin() + 5, 42);
-		// std::cout<< *(tab_bis.begin() + 5) << std::endl;
-
-	}
-
+	std::cout << print_tmp << std::endl;
 	////////////////////////////////////////////////////////////////////////////////
 	/*                              VECTOR                                        */
 	////////////////////////////////////////////////////////////////////////////////
@@ -81,6 +76,10 @@ int		main(void)
 		{
 	
 			NAMESPACE::vector<int>		std_tab2 = std_tab;
+
+			ft::print(std_tab,"std_tab: " );		
+			std::cout << std::endl;
+			ft::print(std_tab2, "std_tab2: " );
 	
 			std_tab.push_back(100);
 			std::cout << std::boolalpha << (std_tab < std_tab2) << std::endl;
@@ -371,7 +370,7 @@ int		main(void)
 			std::cout << "cap: [" << more_test.capacity() << "]" << std::endl; 
 			more_test.insert(more_test.begin(), 9, 42);
 			std::cout << "cap: [" << more_test.capacity() << "]" << std::endl;
-			ft::print(test, "test 2: ");
+			ft::print(more_test, "test 2: ");
 
 			
 			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
