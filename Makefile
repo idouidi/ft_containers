@@ -6,51 +6,44 @@
 #    By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 00:45:13 by idouidi           #+#    #+#              #
-#    Updated: 2022/12/28 15:56:43 by idouidi          ###   ########.fr        #
+#    Updated: 2022/12/29 20:14:49 by idouidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# SRCDIR 		= ./srcs
-# SRCS     	= $(shell find $(SRCDIR) -name "*.cpp")
-# OBJS		= $(SRCS:.cpp=.o)
-# CXX			=  c++
-# CXXFLAGS	= -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address 
-# INCLUDES 	= $(shell find . -type f -name "*.hpp" | cut -c 3-)
-# NAME		= ft_containers
+SRCDIR 		= ./srcs
+SRCS     	= $(shell find $(SRCDIR) -name "*.cpp")
+OBJS		= $(SRCS:.cpp=.o)
+CXX			=  c++
+CXXFLAGS	= -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address 
+INCLUDES 	= $(shell find . -type f -name "*.hpp" | cut -c 3-)
+NAME		= ft_containers
 # NAME_STD 	= std_containers
 
 
-# %.o			: %.cpp $(INCLUDES)
-# 	$(CXX) $(CXXFLAGS) -c $< -o $@
+%.o			: %.cpp $(INCLUDES)
+	$(CXX) $(CXXFLAGS) -D STD=1 -c $< -o $@
 
-# $(NAME)		: $(OBJS) $(INCLUDES)
-# 	$(CXX) $(CXXFLAGS)  -o $(NAME) $(OBJS)
-# 	# make clean
+$(NAME)		: $(OBJS) $(INCLUDES)
+	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
+	make clean
 
 # $(NAME_STD) :  $(INCLUDES)
 # 	$(CXX) $(CXXFLAGS) -D STD=1 -o $(NAME_STD) $(SRCS)
 
-# test		: $(NAME) $(NAME_STD) 
+all			: $(NAME)
 
 # all			: test
-# # all			: $(NAME) test
 
-# clean		:
-# 	rm -rf $(OBJS)
-# 	rm -rf ./srcs/vector/Constructor/output/*
-# 	rm -rf ./srcs/vector/Capacity/output/*
-# 	rm -rf ./srcs/vector//output/*
-# 	rm -rf ./srcs/vector//output/*
-# 	rm -rf ./srcs/vector//output/*
-# 	rm -rf ./srcs/vector//output/*
+clean		:
+	rm -rf $(OBJS)
 
 
-# fclean		: clean
-# 	rm -rf $(NAME)
+fclean		: clean
+	rm -rf $(NAME)
 
-# re			: fclean all
+re			: fclean all
 
-# .PHONY: all clean fclean re
+.PHONY: all clean fclean re
 
 
 #  🚧 ==> progress 
@@ -62,244 +55,244 @@
 #  📚 ==> brief
 
 
-NAME		:=	ft_container
+# NAME		:=	ft_container
 
-NAME_STD	:=	std_container
+# NAME_STD	:=	std_container
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                              SHELL                              #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# #                              SHELL                              #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-CXX				:=	c++
+# CXX				:=	c++
 
-CXXFLAGS		:=	-Wall -Wextra -Werror -std=c++98 -g3
+# CXXFLAGS		:=	-Wall -Wextra -Werror -std=c++98 -g3
 
-INC				:= -I./includes/ftnspace.hpp 
+# INC				:= -I./includes/ftnspace.hpp 
 
-MKDIR			=	/bin/mkdir -p
+# MKDIR			=	/bin/mkdir -p
 
-RM				=	/bin/rm -rf
+# RM				=	/bin/rm -rf
 
-SRC_DIR			:=	./srcs/vector/
+# SRC_DIR			:=	./srcs/vector/
 
-TEMPLATE_DIR	:=	./templates/
+# TEMPLATE_DIR	:=	./templates/
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                              SRC                                #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-
-MAIN_V		:=	main_vector.cpp
-
-MAIN_S		:=	main_stack.cpp
-
-MAIN_M		:=	main_map.cpp
-
-EXEC_V		:=	vector_output
-
-EXEC_S		:=	stack_output
-
-EXEC_M		:=	map_output
-
-FT_OUT		:=	ft_output
-
-STD_OUT		:=	std_output
-
-RES			:=	diff
-
-FT			:=	ft_
-
-STD			:=	std_
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                              VECTOR                             #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# #                              SRC                                #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                              COLORS                             #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# MAIN_V		:=	main_vector.cpp
 
-YELLOW 		= \033[1;33m
-GREEN		= \033[1;32m
-RED			= \033[1;31m
-BLACK		= \033[1;30m
-CYAN		= \033[1;36m
-RESET		= \033[0m
-VALIDATE	= ✅
-UNVALIDATE	= ❌
+# MAIN_S		:=	main_stack.cpp
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                              RULES                              #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# MAIN_M		:=	main_map.cpp
 
-all: test
+# EXEC_V		:=	vector_output
 
-$(NAME):
-	@clear;
-	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+# EXEC_S		:=	stack_output
 
-	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
-		$(CXX) $(CXXFLAGS) -o $(FT)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
-	else \
-		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
-	fi
+# EXEC_M		:=	map_output
 
-	@if [ -f $(FT)$(EXEC_V) ]; then \
-		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
-	fi
+# FT_OUT		:=	ft_output
+
+# STD_OUT		:=	std_output
+
+# RES			:=	diff
+
+# FT			:=	ft_
+
+# STD			:=	std_
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# #                              VECTOR                             #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# #                              COLORS                             #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# YELLOW 		= \033[1;33m
+# GREEN		= \033[1;32m
+# RED			= \033[1;31m
+# BLACK		= \033[1;30m
+# CYAN		= \033[1;36m
+# RESET		= \033[0m
+# VALIDATE	= ✅
+# UNVALIDATE	= ❌
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# #                              RULES                              #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# all: test
+
+# $(NAME):
+# 	@clear;
+# 	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+
+# 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
+# 		$(CXX) $(CXXFLAGS) -o $(FT)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
+# 	else \
+# 		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+# 	fi
+
+# 	@if [ -f $(FT)$(EXEC_V) ]; then \
+# 		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+# 	else \
+# 		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+# 	fi
 	
-	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
-		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
-	else \
-		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
-	fi
+# 	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
+# 		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
+# 	else \
+# 		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
+# 	fi
 
-	@if [ -f $(FT)$(EXEC_S) ]; then \
-		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
-	fi
+# 	@if [ -f $(FT)$(EXEC_S) ]; then \
+# 		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
+# 	else \
+# 		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
+# 	fi
 
-	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
-		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
-	else \
-		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
-	fi
+# 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
+# 		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
+# 	else \
+# 		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+# 	fi
 
-	@if [ -f $(FT)$(EXEC_M) ]; then \
-		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED)Error during creation of tests for map$(RESET)"; \
-	fi
+# 	@if [ -f $(FT)$(EXEC_M) ]; then \
+# 		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+# 	else \
+# 		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+# 	fi
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-$(NAME_STD): 
-	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
+# $(NAME_STD): 
+# 	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
 
-	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
-		$(CXX) $(CXXFLAGS) -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
-	else \
-		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
-	fi
+# 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
+# 		$(CXX) $(CXXFLAGS) -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
+# 	else \
+# 		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+# 	fi
 
-	@if [ -f $(STD)$(EXEC_V) ]; then \
-		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
-	fi
+# 	@if [ -f $(STD)$(EXEC_V) ]; then \
+# 		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+# 	else \
+# 		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+# 	fi
 	
-	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
-		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
-	else \
-		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
-	fi
+# 	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
+# 		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
+# 	else \
+# 		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
+# 	fi
 
-	@if [ -f $(STD)$(EXEC_S) ]; then \
-		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
-	fi
+# 	@if [ -f $(STD)$(EXEC_S) ]; then \
+# 		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
+# 	else \
+# 		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
+# 	fi
 
-	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
-		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
-	else \
-		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
-	fi
+# 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
+# 		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
+# 	else \
+# 		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+# 	fi
 
-	@if [ -f $(STD)$(EXEC_M) ]; then \
-		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED)Error during creation of tests for map$(RESET)"; \
-	fi
+# 	@if [ -f $(STD)$(EXEC_M) ]; then \
+# 		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+# 	else \
+# 		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+# 	fi
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-vector: fclean
-	@clear;
-	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+# vector: fclean
+# 	@clear;
+# 	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
 
-	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
-		$(CXX) $(CXXFLAGS) -o $(FT)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
-	else \
-		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
-	fi
+# 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
+# 		$(CXX) $(CXXFLAGS) -o $(FT)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
+# 	else \
+# 		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+# 	fi
 
-	@if [ -f $(FT)$(EXEC_V) ]; then \
-		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
-	fi
+# 	@if [ -f $(FT)$(EXEC_V) ]; then \
+# 		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+# 	else \
+# 		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+# 	fi
 	
-	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
+# 	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
 
-	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
-		$(CXX) $(CXXFLAGS) -D STD=1 -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
-	else \
-		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
-	fi
+# 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
+# 		$(CXX) $(CXXFLAGS) -D STD=1 -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
+# 	else \
+# 		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+# 	fi
 
-	@if [ -f $(STD)$(EXEC_V) ]; then \
-		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
-	fi
+# 	@if [ -f $(STD)$(EXEC_V) ]; then \
+# 		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+# 	else \
+# 		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+# 	fi
 
-	@mkdir -p res
-	@mv *_output res/
+# 	@mkdir -p res
+# 	@mv *_output res/
 
-# stack: fclean
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # stack: fclean
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-map: fclean
-	@clear;
-	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+# map: fclean
+# 	@clear;
+# 	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
 
-	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
-		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
-	else \
-		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
-	fi
+# 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
+# 		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
+# 	else \
+# 		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+# 	fi
 
-	@if [ -f $(FT)$(EXEC_M) ]; then \
-		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED)Error during creation of tests for map$(RESET)"; \
-	fi
+# 	@if [ -f $(FT)$(EXEC_M) ]; then \
+# 		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+# 	else \
+# 		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+# 	fi
 	
-	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
+# 	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
 
-	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
-		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
-	else \
-		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
-	fi
+# 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
+# 		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
+# 	else \
+# 		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+# 	fi
 
-	@if [ -f $(STD)$(EXEC_M) ]; then \
-		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED)Error during creation of tests for map$(RESET)"; \
-	fi
+# 	@if [ -f $(STD)$(EXEC_M) ]; then \
+# 		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+# 	else \
+# 		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+# 	fi
 
-test:
-	@$(MAKE) -i $(NAME)
-	@$(MAKE) -i $(NAME_STD)
-	@mkdir -p res
-	@mv *_output res/
+# test:
+# 	@$(MAKE) -i $(NAME)
+# 	@$(MAKE) -i $(NAME_STD)
+# 	@mkdir -p res
+# 	@mv *_output res/
 
-go: re
-	./$(NAME)
+# go: re
+# 	./$(NAME)
 
-clean:
-	@clear
-	$(RM) ./res/$(NAME) ./res/$(NAME_STD)
+# clean:
+# 	@clear
+# 	$(RM) ./res/$(NAME) ./res/$(NAME_STD)
 
-fclean: clean
-	$(RM) ./res/
+# fclean: clean
+# 	$(RM) ./res/
 
-re: fclean all
+# re: fclean all
 
-.PHONY: all re clean fclean
+# .PHONY: all re clean fclean

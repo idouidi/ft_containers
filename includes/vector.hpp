@@ -13,12 +13,10 @@
 #ifndef __VECTOR_HPP__
 # define __VECTOR_HPP__
 
-// # include "ftnspace.hpp"
-# include "iterator.hpp"
-# include "utils.hpp"
-# include <iostream>
-# include <vector>
-# include <cstddef>
+# include "./iterator.hpp"
+# include "./utils.hpp"
+# include "./ftnspace.hpp"
+
 
 namespace ft
 {
@@ -467,7 +465,6 @@ namespace ft
 		void 					swap (vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	: 	:	:	:	*/
-
 }
 #endif
 

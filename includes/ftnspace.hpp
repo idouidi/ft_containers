@@ -6,35 +6,23 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/29 15:14:47 by idouidi          ###   ########.fr       */
+/*   Updated: 2022/12/29 21:12:42 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __FT_NAMESPACE__
 # define __FT_NAMESPACE__
 
-// # include "header.hpp"
 
-#include "./vector.hpp"
-# include <memory>
-# include <cmath>
-# include <stdlib.h>
-
-/* lib for exception */
-# include <stdexcept>
-
-/* stream lib, std::cout / cin  */
-# include <iostream>
-
-/* vector for std */
-# include <vector>
-
-/* lib for system fctn */
+# include "./vector.hpp"
+# include "./utils.hpp"
+# include <fstream>
 # include <cstdlib>
-
-/* structur ft::pair */
-// # include <pair.hpp>
-
+# include <sys/stat.h>
+# include <cstring>
+# include <iostream>
+# include <vector>
+# include <cstddef>
 
 # if STD == 1 
 #	define NAMESPACE std
@@ -42,6 +30,7 @@
 #	define NAMESPACE ft
 # endif 
 
+// # include "header.hpp"
 // # include <is_integral.hpp>
 // # include <enable_if.hpp>
 // # include <iterator_traits.hpp>
@@ -61,33 +50,68 @@
 # define CYAN	"\033[1;36m"
 # define RESET	"\033[0m"
 
-namespace ft{
-	
-	void		print(NAMESPACE::vector<int> &tab, std::string msg){
-		for (size_t i = 0; i < tab.size(); i++){
-			std:: cout <<  GREEN << "\\ " << RESET;
-			std::cout << msg << "[" << GREEN << tab[i] << RESET << "]" << std::endl;
-		}
-		std::cout << std::endl << "capacity: [" << GREEN << tab.capacity() << RESET << "]"<< std::endl;
-		std::cout << std::endl << "size: [" << GREEN << tab.size() << RESET << "]" << std::endl;
-		std::cout << std::endl << "max size: [" << GREEN << tab.max_size() << RESET << "]" << std::endl;
-		std::cout << GREEN << std::string(42, '-') << RESET << std::endl;
-	}
-	
-	void		print( NAMESPACE::vector< NAMESPACE::vector<int> > &tab, std::string msg){
-		for (size_t i = 0; i < tab.size(); i++){
-			for (size_t j = 0; j < tab.at(i).size(); j++){
-				std:: cout <<  GREEN << "\\ " << RESET;
-				std::cout << msg << "[" << GREEN << tab.at(i).at(j) << RESET << "]" << std::endl;
-			}
-		}
-		std::cout << std::endl << "capacity: [" <<  GREEN << tab.capacity() << RESET << "]"<< std::endl;
-		std::cout << std::endl << "size: [" << GREEN << tab.size() << RESET << "]" << std::endl;
-		std::cout << std::endl << "max size: [" << GREEN << tab.max_size() << RESET << "]" << std::endl;
-		std::cout << GREEN << std::string(42, '-') << RESET << std::endl;
-	}
-	
+# define OK "\033[1;32m[OK]\033[0m"
+# define KO "\033[1;31m[KO]\033[0m"
 
+template <class T>
+static void printContent(const char *filename, T &vec)
+{
+     std::fstream os;
+     os.open(filename, std::fstream::in | std::fstream::out |  std::ios_base::trunc);
+
+    os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
+    os << "SIZE     = "   << vec.size() << std::endl;
+    os << "MAXSIZE  = " << vec.max_size() << std::endl;
+    os << "CAPACITY = " << vec.capacity() << std::endl;
+    os << "EMPTY    = " << (vec.empty() ? "true" : "false") << std::endl;
+
+    typename T::iterator it = vec.begin();
+    os << "CONTENT  = ";
+    for (; it < vec.end(); it++)
+        os << "[" << *it << "]";
+    os << std::endl;
+    os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
+    os.close();
+}
+
+template <class T>
+static void printIterator(const char *filename, T &vec)
+{
+    std::fstream os;
+
+    os.open(file_name , std::fstream::in | std::fstream::out |  std::ios_base::trunc);
+
+    os << "BEGIN    ->  END:   ";
+    typename T::iterator it = vec.begin();
+    for (;it != vec.end(); it++)
+        os << "[" << *it << "]";
+    os << std::endl;
+
+    os << "RBEGIN   ->  REND:  ";
+    typename T::reverse_iterator r_it = vec.rbegin();
+    for (; r_it != vec.rend(); r_it++)
+        os << "[" << *r_it << "]";
+    os << std::endl;
+    os << std::endl;
+    os.close();
+}
+
+template <class T>
+static void printElemAccess(const char *file_name, const char * __name_space__, T &vec)
+{
+    std::fstream os;
+
+    os.open(file_name , std::fstream::in | std::fstream::out |  std::ios_base::app);
+
+    os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
+    os << __name_space__ << ":" <<  std::endl;
+    os << "Operator[2]  = " << vec[2] << std::endl;
+    os << "At           = " << vec.at(4) << std::endl;
+    os << "Front        = " << vec.front() << std::endl;
+    os << "Back         = " << vec.back() << std::endl;
+    os << std::endl;
+    os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
+     os.close();
 }
 
 #endif
