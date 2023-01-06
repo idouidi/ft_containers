@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/29 21:38:55 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/06 17:11:26 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 # define __FT_NAMESPACE__
 
 
-# include "./vector.hpp"
 // # include "./stack.hpp"
 // # include "./map.hpp"
-# include "./utils.hpp"
 # include <fstream>
 # include <cstdlib>
 # include <sys/stat.h>
@@ -26,15 +24,24 @@
 # include <vector>
 # include <cstddef>
 
+
+
 # if STD == 1 
 #	define NAMESPACE std
 # else
 #	define NAMESPACE ft
 # endif 
 
+extern std::string __name_space__;
+
+
 // # include "header.hpp"
 // # include <is_integral.hpp>
 // # include <enable_if.hpp>
+# include "./iterator.hpp"
+# include "./utils.hpp"
+# include "./vector.hpp"
+
 // # include <iterator_traits.hpp>
 // # include <iterator.hpp>
 // # include <reverse_iterator.hpp> 
@@ -55,10 +62,6 @@
 # define OK "\033[1;32m[OK]\033[0m"
 # define KO "\033[1;31m[KO]\033[0m"
 
-
-
-int compareFile(FILE* f1, FILE* f2);
-
 void vector_tester();
 
 
@@ -72,15 +75,7 @@ static void printContent(const char *filename, T &vec)
     os << "SIZE     = "   << vec.size() << std::endl;
     os << "MAXSIZE  = " << vec.max_size() << std::endl;
     os << "CAPACITY = " << vec.capacity() << std::endl;
-    os << "EMPTY    = " << (vec.empty() ? "true" : "false") << std::endl;
-
-    typename T::iterator it = vec.begin();
-    os << "CONTENT  = ";
-    for (; it < vec.end(); it++)
-        os << "[" << *it << "]";
-    os << std::endl;
-    os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
-    os.close();
+    os << "EMPTY    = " << vec.empty() << std::endl;
 }
 
 template <class T>
@@ -106,14 +101,14 @@ static void printIterator(const char *filename, T &vec)
 }
 
 template <class T>
-static void printElemAccess(const char *file_name, const char * __name_space__, T &vec)
+static void printElemAccess(const char *file_name, const char *name_space, T &vec)
 {
     std::fstream os;
 
     os.open(file_name , std::fstream::in | std::fstream::out |  std::ios_base::app);
 
     os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
-    os << __name_space__ << ":" <<  std::endl;
+    os << name_space << ":" <<  std::endl;
     os << "Operator[2]  = " << vec[2] << std::endl;
     os << "At           = " << vec.at(4) << std::endl;
     os << "Front        = " << vec.front() << std::endl;

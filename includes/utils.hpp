@@ -6,13 +6,15 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:17:11 by idouidi           #+#    #+#             */
-/*   Updated: 2022/12/06 16:25:39 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/06 14:23:36 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #ifndef __UTILS_HPP__
 # define __UTILS_HPP__
+
+# include "./ftnspace.hpp"
 
 namespace ft
 {

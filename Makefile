@@ -6,7 +6,7 @@
 #    By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 00:45:13 by idouidi           #+#    #+#              #
-#    Updated: 2022/12/29 20:14:49 by idouidi          ###   ########.fr        #
+#    Updated: 2023/01/06 17:01:51 by idouidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,34 +17,54 @@ CXX			=  c++
 CXXFLAGS	= -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address 
 INCLUDES 	= $(shell find . -type f -name "*.hpp" | cut -c 3-)
 NAME		= ft_containers
-# NAME_STD 	= std_containers
+SWAP_COMPIL = 1
 
+###################################################
+
+all			: other
+
+###################################################
 
 %.o			: %.cpp $(INCLUDES)
-	$(CXX) $(CXXFLAGS) -D STD=1 -c $< -o $@
+ifeq ($(SWAP_COMPIL), 1)
+	$(CXX) $(CXXFLAGS) -D STD=1 -c $< -o $@ ;
+else
+	$(CXX) $(CXXFLAGS) -D STD=2 -c $< -o $@ ;
+endif
+
+###################################################
 
 $(NAME)		: $(OBJS) $(INCLUDES)
 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
-	make clean
+	@./$(NAME)
+	# @rm -f $(NAME)
+	@make clean
 
-# $(NAME_STD) :  $(INCLUDES)
-# 	$(CXX) $(CXXFLAGS) -D STD=1 -o $(NAME_STD) $(SRCS)
+###################################################
 
-all			: $(NAME)
+other		: $(NAME)
+	make -e  SWAP_COMPIL=2 $(NAME)
+# override SWAP_COMPIL = 2
 
-# all			: test
+####################################################
 
 clean		:
 	rm -rf $(OBJS)
 
+####################################################
 
 fclean		: clean
 	rm -rf $(NAME)
 
+####################################################
+
 re			: fclean all
+
+####################################################
 
 .PHONY: all clean fclean re
 
+####################################################
 
 #  🚧 ==> progress 
 #  💥 ==> crash

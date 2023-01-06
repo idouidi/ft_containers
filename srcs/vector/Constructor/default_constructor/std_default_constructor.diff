@@ -3,7 +3,4 @@
 SIZE     = 0
 MAXSIZE  = 2305843009213693951
 CAPACITY = 0
-EMPTY    = true
-CONTENT  = 
-#    #   #   #   #   #   #   #   #   #   #   #   #
-
+EMPTY    = 1

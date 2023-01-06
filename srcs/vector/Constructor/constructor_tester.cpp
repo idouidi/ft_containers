@@ -6,23 +6,17 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:30:36 by idouidi           #+#    #+#             */
-/*   Updated: 2022/12/29 21:33:33 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/06 17:03:40 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../../includes/ftnspace.hpp"
 
-#if STD == 1
-   std::string __name_space__ = "std";
-#else
-  std::string __name_space__ = "ft"; 
-#endif
-
-
 void constructor_tester()
 {
 
-     std::cout<< "Default Constructor:   ";
+    /* DEFAULT CONSTRUCTOR */
+    STD != 1 ? std::cout<< "Default Constructor:   " : 0;
     {
         mkdir("./srcs/vector/Constructor/default_constructor", 0777);
 
@@ -31,15 +25,13 @@ void constructor_tester()
         NAMESPACE::vector<int> vec;
 
         printContent(file_name.c_str(), vec);
-        if (STD == 1)
+        if (STD != 1)
         {
             FILE *f1 = std::fopen("./srcs/vector/Constructor/default_constructor/std_default_constructor.diff", "r");
             FILE *f2 = std::fopen("./srcs/vector/Constructor/default_constructor/ft_default_constructor.diff", "r");
             std::cout << (compareFile(f1, f2) ? OK : KO) << std::endl;
         }
         
-        // std::cout << (compareContent("./srcs/vector/Constructor/output/Default_constructor", stl_vector, ft_vector))<< std::endl;
-
     }
 
     // std::cout<< "Fill Constructor:      ";
