@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:30:36 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/12 12:57:50 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/12 18:54:44 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,21 @@ void constructor_tester()
     {
         mkdir("./srcs/vector/Constructor/default_constructor", 0777);
 
-        std::string file_name = "./srcs/vector/Constructor/default_constructor/" + __name_space__ + "_default_constructor" + ".diff";
-
+        std::string filename = "./srcs/vector/Constructor/default_constructor/" + __NAME_SPACE__ + "_default_constructor" + ".diff";
+        std::string filetime = "./srcs/vector/Constructor/default_constructor/time.diff";
+        
         NAMESPACE::vector<int> vec;
 
-        printContent(file_name.c_str(), vec);
+        printContent(filename.c_str(), vec);
+        printTime(filetime.c_str());
         if (STD != 1)
         {
             FILE *f1 = std::fopen("./srcs/vector/Constructor/default_constructor/std_default_constructor.diff", "r");
             FILE *f2 = std::fopen("./srcs/vector/Constructor/default_constructor/ft_default_constructor.diff", "r");
-            std::cout << (compareFile(f1, f2) ? OK : KO) << std::endl;
+            
+            std::cout << (compareFile(f1, f2) && compareTime(filetime.c_str()) ? OK : KO) << std::endl;
+            std::fclose(f1);
+            std::fclose(f2);                        
         }
         
     }
