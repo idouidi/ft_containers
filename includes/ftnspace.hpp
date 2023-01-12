@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/06 17:11:26 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/12 13:06:22 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@
 extern std::string __name_space__;
 
 
-// # include "header.hpp"
-// # include <is_integral.hpp>
-// # include <enable_if.hpp>
 # include "./iterator.hpp"
 # include "./utils.hpp"
 # include "./vector.hpp"
 
+// # include "header.hpp"
+// # include <is_integral.hpp>
+// # include <enable_if.hpp>
 // # include <iterator_traits.hpp>
 // # include <iterator.hpp>
 // # include <reverse_iterator.hpp> 
@@ -62,9 +62,12 @@ extern std::string __name_space__;
 # define OK "\033[1;32m[OK]\033[0m"
 # define KO "\033[1;31m[KO]\033[0m"
 
+
+/*FUNCTION TO TEST */
+int compareFile(FILE* f1, FILE* f2);
 void vector_tester();
 
-
+/*FUNCTION TO PRINT*/
 template <class T>
 static void printContent(const char *filename, T &vec)
 {

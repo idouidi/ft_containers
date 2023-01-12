@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:30:36 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/06 17:03:40 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/12 12:57:50 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void constructor_tester()
         mkdir("./srcs/vector/Constructor/default_constructor", 0777);
 
         std::string file_name = "./srcs/vector/Constructor/default_constructor/" + __name_space__ + "_default_constructor" + ".diff";
-        
+
         NAMESPACE::vector<int> vec;
 
         printContent(file_name.c_str(), vec);
