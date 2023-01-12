@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/12 13:44:28 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/12 14:16:55 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ int compareFile(FILE* f1, FILE* f2)
   int size = 10000;
   char buf1[size];
   char buf2[size];
+
+  if (!f1|| !f2)
+  {
+    std::cerr << RED << "\n /!\\ YOU HAVE A PROBLEM WITH YOUR FILES, CHECK THEIR VALIDITY" << RESET << std::endl;
+    exit (1);
+  }
 
   do 
   {
@@ -39,5 +45,6 @@ int main()
 {
     __name_space__ = (STD == 1) ? "std" : "ft" ;
     vector_tester();
+
     return (0);
 }

@@ -6,7 +6,7 @@
 #    By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 00:45:13 by idouidi           #+#    #+#              #
-#    Updated: 2023/01/12 13:51:57 by idouidi          ###   ########.fr        #
+#    Updated: 2023/01/12 14:19:00 by idouidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,19 +45,19 @@ endif
 
 other		: $(NAME)
 	@clear
-	@make -e --no-print-directory SWAP_COMPIL=2 $(NAME)
+	@make -e  --no-print-director SWAP_COMPIL=2 $(NAME)
 	@make print
 
 ####################################################
 
 clean		:
 	@rm -rf $(OBJS)
-	@ rm -rf $(shell find . -type f -name "*.diff" | cut -c 3-)
 
 ####################################################
 
 fclean		: clean
 	@rm -rf $(NAME)
+	@ rm -rf $(shell find . -type f -name "*.diff" | cut -c 3-)
 
 ####################################################
 
