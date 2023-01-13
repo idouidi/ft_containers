@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:23:15 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/06 16:38:57 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/13 18:37:16 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ void vector_tester()
     mkdir("./srcs/vector/output", 0777);
     std::srand(time(NULL));
 
-    STD !=  1 ?  std::cout<< "\n\033[1;31m             = = =>      VECTOR      <= = =\033[0m\n\n" : 0;
-    STD !=  1 ?  std::cout<< "\033[1;33m + CONSTRUCTOR + \033[0m\n" : 0;
-    
+    STD !=  1 ?  std::cout<< "\n" << MAGENTA << "        = = =>      VECTOR      <= = =\n" << RESET << std::endl : 0;
+
     constructor_tester();
 
     // std::cout<< "\n\033[1;33m + ITERATOR + \033[0m\n";

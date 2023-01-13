@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/12 18:57:39 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/13 19:36:10 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void  printTime(const char *filename)
 
   if (!os.is_open()) 
   {
-      std::cerr << "Could not open the file - '" << filename << "'" << std::endl;
+      std::cerr << RED << "Could not open the file - '" << filename << "'" << RESET << std::endl;
       exit(EXIT_FAILURE);
   }
 
@@ -97,6 +97,11 @@ int main()
 {
     __CURRENT_TIME__ = t_time();
     __NAME_SPACE__ = (STD == 1) ? "std" : "ft" ;
+
+    std::vector<int> vec;
+    for (int i = 0; i < 5; i++)
+      vec.push_back(i);
+    std::cout << vec.capacity() << std::endl;
     vector_tester();
 
     return (0);

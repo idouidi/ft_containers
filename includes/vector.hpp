@@ -123,7 +123,7 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-// 📚 Returns an iterator pointing to the last element in the vector.
+// 📚 Returns an iterator pointing to the last element in the vector.`
 		iterator				end() { return (this->__start + this->__size); }
 		const_iterator			end() const { return (this->__start + this->__size); }
 
