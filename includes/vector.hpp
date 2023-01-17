@@ -78,15 +78,15 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-// Copy constructor
+// 📚 Copy constructor
 		vector (const ft::vector<T> &x): __alloc(x.__alloc), __size(x.__size), __capacity(x.__capacity)
 		{
 
-			pointer vec_tmp = this->__alloc.allocate(x.__capacity);
+			this->__start = this->__alloc.allocate(x.__capacity);
 
 			for (size_type i = 0; i < x.__size; i++)
-				__alloc.construct(vec_tmp + i, *(x.__start + i));
-			this->__start = vec_tmp;
+				__alloc.construct(this->__start + i, *(x.__start + i));
+			// this->__start = vec_tmp;
 		}
 
 		vector<T>& operator=(const ft::vector<T> &other)
@@ -102,7 +102,7 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-// Destructor
+// 📚 Destructor
 		~vector()
 		{
 			this->clear();
@@ -156,9 +156,10 @@ namespace ft
 // 📚 Resizes the container so that it contains n elements.
 		void 					resize (size_type n, value_type val = value_type())
 		{
-			if (n + this->size()> this->capacity())
+			if (n > this->size())
 			{
-				(this->size() * 2 >= n) ? this->reserve(this->size() * 2) : this->reserve(n);
+				if (n > this->capacity())
+					(this->size() * 2 >= n) ? this->reserve(this->size() * 2) : this->reserve(n);
 				for (size_type i = this->size(); i < n; i++)
 					push_back(val);
 			}

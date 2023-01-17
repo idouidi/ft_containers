@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/29 19:11:02 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/17 15:06:09 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,78 +19,6 @@
 // #endif
 
 
-// int		main(void)
-// {
-// 	std::cout << print_tmp << std::endl;
-// 	////////////////////////////////////////////////////////////////////////////////
-// 	/*                              VECTOR                                        */
-// 	////////////////////////////////////////////////////////////////////////////////
-	
-// 	std::cout << std::endl << YELLOW << "##########VECTOR##########" << RESET << std::endl << std::endl;
-
-// 	////////////////////////////////////////////////////////////////////////////////
-// 	{	
-// 		std::cout << CYAN << "=========CONSTRUCTOR=========" << RESET << std::endl;
-		
-// 		NAMESPACE::vector<int>										tab(1, 40);
-// 		NAMESPACE::vector<int>										tab_bis(2, 10);
-		
-// 		////////////////////////////////////////////////////////////////////////////////
-// 		{
-// 			std::cout << CYAN << "=> Test Default Constructor " << RESET << std::endl << std::endl;
-// 			NAMESPACE::vector< int >			test;
-
-// 			ft::print(test, "default: ");
-
-// 			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
-// 		}
-// 		////////////////////////////////////////////////////////////////////////////////
-// 		{
-// 			std::cout << CYAN << "=> Test copy Constructor" << RESET << std::endl << std::endl;
-// 			NAMESPACE::vector< int >			copy(tab);
-
-// 			ft::print(tab, "original: ");
-// 			std::cout << "sortie" << std::endl;
-// 			ft::print(copy, "copy: ");
-
-// 			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
-// 		}
-// 		////////////////////////////////////////////////////////////////////////////////
-// 		{
-// 			std::cout << CYAN << "=> Test range constructor" << RESET << std::endl << std::endl;
-			
-// 			NAMESPACE::vector< int >		fill(tab.begin() + 1, tab.end());
-			
-// 			ft::print(tab, "tab utilise pour fill: ");
-// 			ft::print(fill, "fill by range + 1: ");
-
-// 			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
-// 		}
-// 	}	
-// 	////////////////////////////////////////////////////////////////////////////////
-// 	{
-// 		std::cout << CYAN << "=========OPERATOR=========" << RESET << std::endl;
-		
-// 			NAMESPACE::vector<int>		std_tab(10,20);
-// 		////////////////////////////////////////////////////////////////////////////////
-// 		{
-	
-// 			NAMESPACE::vector<int>		std_tab2 = std_tab;
-
-// 			ft::print(std_tab,"std_tab: " );		
-// 			std::cout << std::endl;
-// 			ft::print(std_tab2, "std_tab2: " );
-	
-// 			std_tab.push_back(100);
-// 			std::cout << std::boolalpha << (std_tab < std_tab2) << std::endl;
-			
-// 			for (NAMESPACE::vector<int>::iterator std_it = std_tab2.begin(), std_ite = std_tab2.end();
-// 			std_it != std_ite; std_it++){
-// 				std::cout << *std_it << std::endl;
-// 			}
-// 		}
-// 		////////////////////////////////////////////////////////////////////////////////
-// 	}
 
 // 	////////////////////////////////////////////////////////////////////////////////
 // 	{
@@ -134,7 +62,7 @@
 // 		}
 // 		////////////////////////////////////////////////////////////////////////////////
 // 		{
-// 			std::cout << CYAN << "=> Test capacity section:" << RESET << std::endl << std::endl;
+// 			std::cout << CYAN << "=> Test capacity section:" << RESET << std::endl << std::endl; %%%%%%%
 
 // 			NAMESPACE::vector< NAMESPACE::vector<int> >			test;
 

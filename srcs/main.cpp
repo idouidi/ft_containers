@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/13 19:36:10 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/17 14:32:59 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,8 @@ CHECK THEIR VALIDITY" << RESET << std::endl;
     size_t r1 = std::fread(buf1, 1, size, f1);
     size_t r2 = std::fread(buf2, 1, size, f2);
 
-    if (r1 != r2 ||
-        std::memcmp(buf1, buf2, r1)) {
+    if (r1 != r2 || std::memcmp(buf1, buf2, r1))
       return (0);
-    }
   }
   while (!feof(f1) || !feof(f2));
   return (1);
@@ -97,11 +95,6 @@ int main()
 {
     __CURRENT_TIME__ = t_time();
     __NAME_SPACE__ = (STD == 1) ? "std" : "ft" ;
-
-    std::vector<int> vec;
-    for (int i = 0; i < 5; i++)
-      vec.push_back(i);
-    std::cout << vec.capacity() << std::endl;
     vector_tester();
 
     return (0);

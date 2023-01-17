@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/13 18:34:40 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/17 14:09:02 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ static void             printContent(const char *filename, const char *msg, T &v
     if (msg)
         os << "\n               " << msg << std::endl;
     os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
-    os << "SIZE     = "   << vec.size() << std::endl;
+    os << "SIZE     = " << vec.size() << std::endl;
     os << "MAXSIZE  = " << vec.max_size() << std::endl;
     os << "CAPACITY = " << vec.capacity() << std::endl;
     os << "EMPTY    = " << vec.empty() << std::endl;

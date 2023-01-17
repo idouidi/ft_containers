@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:30:36 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/13 19:36:02 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/17 15:21:34 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,7 @@ void constructor_tester()
 		
 		/* 📌 */ NAMESPACE::vector<int> vec;
 
-		printContent(filename.c_str(), NULL, vec);
-
-        // /* 📌 */ NAMESPACE::vector< NAMESPACE::vector<int> > **vec_of_vec;
-
-        // printContent(filename.c_str(), "VECTOR OF VECTORS PART", vec_of_vec);
-		
+		printContent(filename.c_str(), NULL, vec);		
         printTime(filetime.c_str());
 
 		
@@ -40,7 +35,7 @@ void constructor_tester()
 		{
 			FILE *f1 = std::fopen("./srcs/vector/Constructor/default_constructor/std_default_constructor.diff", "r");
 			FILE *f2 = std::fopen("./srcs/vector/Constructor/default_constructor/ft_default_constructor.diff", "r");
-			
+
 			std::cout << "Default Constructor:            " << (compareFile(f1, f2) ? OK : KO);
 			std::cout << " TIME: " << (compareTime(filetime.c_str()) ? OK : KO) << std::endl;
 			std::fclose(f1);
@@ -70,7 +65,7 @@ void constructor_tester()
 		{
 			FILE *f1 = std::fopen("./srcs/vector/Constructor/fill_constructor/std_fill_constructor.diff", "r");
 			FILE *f2 = std::fopen("./srcs/vector/Constructor/fill_constructor/ft_fill_constructor.diff", "r");
-			
+
 			std::cout << "Fill Constructor:               " << (compareFile(f1, f2) ? OK : KO);
 			std::cout << " TIME: " << ((compareTime(filetime.c_str()) && compareTime(filetime_val.c_str())) ? OK : KO) << std::endl;
 			std::fclose(f1);
@@ -100,7 +95,7 @@ void constructor_tester()
 		{
 			FILE *f1 = std::fopen("./srcs/vector/Constructor/copy_constructor/std_copy_constructor.diff", "r");
 			FILE *f2 = std::fopen("./srcs/vector/Constructor/copy_constructor/ft_copy_constructor.diff", "r");
-			
+
 			std::cout << "Copy Constructor:               " << (compareFile(f1, f2) ? OK : KO);
 			std::cout << " TIME: " << (compareTime(filetime.c_str()) ? OK : KO) << std::endl;
 			std::fclose(f1);
@@ -132,7 +127,7 @@ void constructor_tester()
 		{
 			FILE *f1 = std::fopen("./srcs/vector/Constructor/range_constructor/std_range_constructor.diff", "r");
 			FILE *f2 = std::fopen("./srcs/vector/Constructor/range_constructor/ft_range_constructor.diff", "r");
-			
+
 			std::cout << "Range Constructor:              " << (compareFile(f1, f2) ? OK : KO);
 			std::cout << " TIME: " << (compareTime(filetime.c_str()) ? OK : KO) << std::endl;
 			std::fclose(f1);
@@ -156,7 +151,7 @@ void constructor_tester()
 		{
 			FILE *f1 = std::fopen("./srcs/vector/Constructor/assigning_operator_constructor/std_assigning_operator_constructor.diff", "r");
 			FILE *f2 = std::fopen("./srcs/vector/Constructor/assigning_operator_constructor/ft_assigning_operator_constructor.diff", "r");
-			
+
 			std::cout << "Assigning operator Constructor:	" << (compareFile(f1, f2) ? OK : KO);
 			std::cout << " TIME: " << (compareTime(filetime.c_str()) ? OK : KO) << std::endl;
 			std::fclose(f1);

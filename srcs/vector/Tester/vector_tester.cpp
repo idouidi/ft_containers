@@ -6,22 +6,24 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:23:15 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/13 18:37:16 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/17 15:42:32 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include  "../../../includes/ftnspace.hpp"
 
 void constructor_tester();
+void capacity_tester();
 
 void vector_tester()
 {
-    mkdir("./srcs/vector/output", 0777);
     std::srand(time(NULL));
 
     STD !=  1 ?  std::cout<< "\n" << MAGENTA << "        = = =>      VECTOR      <= = =\n" << RESET << std::endl : 0;
 
     constructor_tester();
+    capacity_tester();
+
 
     // std::cout<< "\n\033[1;33m + ITERATOR + \033[0m\n";
     // {
