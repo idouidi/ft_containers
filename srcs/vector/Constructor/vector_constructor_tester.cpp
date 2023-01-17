@@ -6,13 +6,13 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:30:36 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/17 15:21:34 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/17 19:28:10 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../../includes/ftnspace.hpp"
 
-void constructor_tester()
+void vector_constructor_tester()
 {
     STD !=  1 ?  std::cout<< YELLOW <<" + CONSTRUCTOR +  " << RESET << std::endl : 0;
 	

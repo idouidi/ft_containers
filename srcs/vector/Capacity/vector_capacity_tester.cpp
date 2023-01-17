@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   capacity_tester.cpp                                :+:      :+:    :+:   */
+/*   vector_capacity_tester.cpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:55:23 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/17 19:01:13 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/17 19:42:56 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../../includes/ftnspace.hpp"
 
-void capacity_tester()
+void vector_capacity_tester()
 {
     STD !=  1 ?  std::cout<< YELLOW <<" + CAPACITY +  " << RESET << std::endl : 0;
 
@@ -228,7 +228,39 @@ void capacity_tester()
 
     /*EMPTY */
     {
-          mkdir("./srcs/vector/Capacity/reserve", 0777);
+        mkdir("./srcs/vector/Capacity/empty", 0777);
+        std::string filename = path + "empty/" + __NAME_SPACE__ + "_empty" + ".diff";
+		std::string filetime = path + "empty/time.diff";
+        
+        os.open(filename.c_str(), std::fstream::in | std::fstream::out |  std::ios_base::app);
+        if (!os.is_open()) 
+        {
+            std::cerr << "Could not open the file - '" << filename << "'" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        
+        NAMESPACE::vector<int> vec;
+        os << "#    #   #   #   #   #   #   #   #   #   #   #   #"<<std::endl; 
+        /* 📌 */ os << "EMPTY = " << vec.empty() << std::endl;
+        vec.push_back(42);
+        /* 📌 */ os << "EMPTY = " << vec.empty() << std::endl;
+        vec.pop_back();
+        /* 📌 */ os << "EMPTY = " << vec.empty() << std::endl;
+        os << "#    #   #   #   #   #   #   #   #   #   #   #   #"<<std::endl;
+
+        printTime(filetime.c_str());
+
+        if (STD != 1)
+		{
+			FILE *f1 = std::fopen("./srcs/vector/Capacity/empty/std_empty.diff", "r");
+			FILE *f2 = std::fopen("./srcs/vector/Capacity/empty/ft_empty.diff", "r");
+
+			std::cout << "Empty:                          " << (compareFile(f1, f2) ? OK : KO);
+			std::cout << " TIME: " << (compareTime(filetime.c_str()) ? OK : KO) << std::endl;
+			std::fclose(f1);
+			std::fclose(f2);
+		}
+        os.close();
     }
     
 }

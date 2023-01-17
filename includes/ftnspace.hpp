@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/17 14:09:02 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/17 20:47:49 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ extern  unsigned long   __CURRENT_TIME__;
 
 /*      *       *       *   FUNCTION TO TEST       *       *       */
 
-int                     compareFile(FILE* f1, FILE* f2);
 unsigned long	        current_time();
 void                    printTime(const char *filename);
 bool                    compareTime(const char *filename);
+int                     compareFile(FILE* f1, FILE* f2);
 void                    vector_tester();
 // void                 stack_tester();
 // void                 map_tester();
