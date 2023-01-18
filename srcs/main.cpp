@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/17 14:32:59 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/18 16:35:46 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ bool compareTime(const char *filename)
   std::ifstream fd(filename);
   std::string str;
   int i = 0;
-  unsigned long time[2];
+  unsigned long time[2] = {0, 0};
   unsigned long number;
 
   if (!fd.is_open()) 
@@ -88,6 +88,8 @@ bool compareTime(const char *filename)
       time[i++] = number;
   }
   fd.close();
+  if (time[0] == 0)
+    time[0] = 1;
   return (time[0] * 20 >= time[1]);
 }
 

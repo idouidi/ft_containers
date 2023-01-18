@@ -237,8 +237,16 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns a reference to the last element in the vector.
-		reference 				back() { return  ((this->__size) ?  *(this->__start + this->__size - 1) : *(this->__start + this->__size)) ; }
-		const_reference			back() const { return ((this->__size) ?  *(this->__start + this->__size - 1) : *(this->__start + this->__size)) ; }
+		reference 				back() { return  ((this->__size) ?  *(this->__start + this->__size - 1) : *(this->__start)) ; }
+		const_reference			back() const { return ((this->__size) ?  *(this->__start + this->__size - 1) : *(this->__start)) ; }
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+// 📚  Returns a direct pointer to the memory array used internally by the vector to store its owned elements.
+
+        value_type              *data() { return (this->__start); }
+        const value_type        *data() const { return (this->__start); }
+
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 

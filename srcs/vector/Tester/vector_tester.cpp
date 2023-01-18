@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:23:15 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/17 20:55:18 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/18 16:36:49 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void vector_tester()
 {
     std::srand(time(NULL));
 
-    STD !=  1 ?  std::cout<< "\n" << MAGENTA << "        = = =>      VECTOR      <= = =\n" << RESET << std::endl : 0;
+    if (STD != 1)
+        std::cout<< "\n" << MAGENTA << "        = = =>      VECTOR      <= = =\n" << RESET << std::endl;
 
     vector_constructor_tester();
     vector_iterator_tester();

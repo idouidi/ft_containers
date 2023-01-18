@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   constructor_tester.cpp                             :+:      :+:    :+:   */
+/*   vector_constructor_tester.cpp                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:30:36 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/17 19:28:10 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/18 16:09:34 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void vector_constructor_tester()
 {
-    STD !=  1 ?  std::cout<< YELLOW <<" + CONSTRUCTOR +  " << RESET << std::endl : 0;
+    if (STD != 1)
+        std::cout<< YELLOW <<" + CAPACITY +  " << RESET << std::endl;
 	
     std::string path = "./srcs/vector/Constructor/";
 

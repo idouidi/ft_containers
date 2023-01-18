@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 14:55:23 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/17 19:42:56 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/18 16:08:58 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void vector_capacity_tester()
 {
-    STD !=  1 ?  std::cout<< YELLOW <<" + CAPACITY +  " << RESET << std::endl : 0;
+    if (STD != 1)
+        std::cout<< YELLOW <<" + CAPACITY +  " << RESET << std::endl;
 
     std::string path = "./srcs/vector/Capacity/";
     std::fstream os;
