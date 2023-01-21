@@ -358,17 +358,13 @@ namespace ft
 // 📚 Removes from the vector either a single element (position) or a range of elements ([first,last)).
 
 // remove a elem at position
-		iterator				erase (iterator position)
+		iterator	erase(iterator position)
 		{
-			size_type anchor = position - this->__start;
+			for (size_type i = position - this->begin() ; i < this->__size - 1 ; i++)
+				this->__start[i] = this->__start[i + 1];
 
-			for (size_type i = anchor; i < this->size(); i++)
-			{
-				this->__alloc.destroy(this->__start + i);
-				if (i + 1 < this->size())
-					this->__alloc.construct(this->__start + i, this->__start[i + 1]);
-			}
 			this->__size--;
+			this->__alloc.destroy(this->__start + this->__size);
 			return (position);
 		}
 
@@ -378,10 +374,7 @@ namespace ft
 			difference_type dist = ft::distance(first, last);
 
 			for (difference_type i = 0; i < dist; i++)
-			{
 				this->erase(first);
-				first++;
-			}
 			return (first);
 		}
 

@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:23:15 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/18 16:36:49 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/21 17:51:03 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@ void vector_constructor_tester();
 void vector_iterator_tester();
 void vector_capacity_tester();
 void vector_elem_access_tester();
-// void vector_modifier_tester();
+void vector_modifiers_tester();
+void vector_non_member_func_tester();
 
 void vector_tester()
 {
-    std::srand(time(NULL));
-
     if (STD != 1)
         std::cout<< "\n" << MAGENTA << "        = = =>      VECTOR      <= = =\n" << RESET << std::endl;
 
@@ -29,5 +28,6 @@ void vector_tester()
     vector_iterator_tester();
     vector_capacity_tester();
     vector_elem_access_tester();
-    // vector_modifier_tester();
+    vector_modifiers_tester();
+    vector_non_member_func_tester();
 }
