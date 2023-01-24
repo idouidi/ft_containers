@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 13:28:30 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/24 17:41:35 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/24 21:07:20 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ namespace ft
     {
         typedef std::ptrdiff_t              difference_type;
         typedef T                           value_type;
-        typedef value_type*                 pointer;
-        typedef value_type&                 reference;
+        typedef const value_type*           pointer;
+        typedef const value_type&           reference;
         typedef random_access_iterator_tag  iterator_category;     
     };
 
@@ -84,6 +84,9 @@ namespace ft
             typedef typename ft::iterator_traits<Iterator>::difference_type    difference_type;
             typedef typename ft::iterator_traits<Iterator>::pointer            pointer;
             typedef typename ft::iterator_traits<Iterator>::reference          reference;
+        protected:
+            iterator_type   __elem;
+        public:
 
 		/*	
 		*	📌 CONSTRUCTOR 
@@ -135,8 +138,10 @@ namespace ft
        // 📚 Returns a reference to the element pointed to by the iterator.
         reference operator*() const
        {
-            iterator_type tmp(this->__elem);
-            return (*--tmp);
+            iterator_type tmp;
+
+            tmp = (this->__elem);
+            return *(--tmp);
        }
 
        // 📚 Returns a reverse iterator pointing to the element located n 
@@ -146,13 +151,13 @@ namespace ft
        // 📚 Advances the reverse_iterator by one position.
        reverse_iterator& operator++()
        {
-            --this->__elem;
+            this->__elem--;
             return (*this);
        }
        reverse_iterator operator++(int)
        {
-            reverse_iterator tmp(*this);
-            ++(*this);
+            reverse_iterator tmp = (*this);
+            --this->__elem;
             return (tmp);
        }
 
@@ -175,7 +180,7 @@ namespace ft
        }
        reverse_iterator operator--(int)
        {
-            reverse_iterator tmp(*this);
+            reverse_iterator tmp = (*this);
             --(*this);
             return (tmp);
        }
@@ -193,8 +198,6 @@ namespace ft
        // 📚 Accesses the element located n positions away from the element currently pointed to by the iterator.
        reference operator[](difference_type n) const { return *(this->operator+(n)); }
         
-        protected:
-            iterator_type   __elem;
     };
 
     // 📚 Performs the appropriate comparison operation between the reverse_iterator objects lhs and rhs.
@@ -282,12 +285,12 @@ namespace ft
     template<class Iterator>
     typename ft::reverse_iterator<Iterator>::difference_type operator-(const ft::reverse_iterator<Iterator>& lhs, const ft::reverse_iterator<Iterator>& rhs)
     {
-        return (lhs.base() - rhs.base()) ;
+        return (rhs.base() - lhs.base()) ;
     }
     template<class U, class X>
     typename ft::reverse_iterator<U>::difference_type operator-(const ft::reverse_iterator<U>& lhs, const ft::reverse_iterator<X>& rhs)
     {
-        return (lhs.base() - rhs.base()) ;
+        return (rhs.base() - lhs.base()) ;
     }
 }
 
