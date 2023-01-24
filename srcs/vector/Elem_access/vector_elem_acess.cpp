@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 20:51:31 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/18 17:29:03 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/24 14:13:46 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void vector_elem_access_tester()
 {
     if (STD != 1)
-        std::cout<< YELLOW <<" + CAPACITY +  " << RESET << std::endl;
+        std::cout<< YELLOW <<" + ELEM ACESS +  " << RESET << std::endl;
 
     std::string path = "./srcs/vector/Elem_access/";
     std::fstream os;

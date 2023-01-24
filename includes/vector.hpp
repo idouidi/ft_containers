@@ -15,7 +15,6 @@
 
 # include "./ftnspace.hpp"
 
-
 namespace ft
 {
 	template < class T, class Allocator = std::allocator<T> >
@@ -52,9 +51,9 @@ namespace ft
 		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): __alloc(alloc)
 		{
 			this->__capacity = n;
-			this->__start = __alloc.allocate( this->__capacity ); //Attempts to allocate a block of storage with a size large enough to contain n of member type value_type.
+			this->__start = __alloc.allocate( this->__capacity );
 			for (size_type i = 0; i < n; i++)
-				__alloc.construct(this->__start + i , val); //Constructs an element object on the location pointed by __start + i.
+				__alloc.construct(this->__start + i , val); 
 			this->__size = n;
 		}
 
@@ -79,24 +78,29 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Copy constructor
-		vector (const ft::vector<T> &x): __alloc(x.__alloc), __size(x.__size), __capacity(x.__capacity)
+		vector (const ft::vector<T> &x): __alloc(x.__alloc), __size(x.__size), __capacity(x.__size)
 		{
+			this->__start = this->__alloc.allocate(this->__capacity);
 
-			this->__start = this->__alloc.allocate(x.__capacity);
-
-			for (size_type i = 0; i < x.__size; i++)
-				__alloc.construct(this->__start + i, *(x.__start + i));
-			// this->__start = vec_tmp;
+			for (size_type i = 0; i < this->__size; i++)
+				__alloc.construct(this->__start + i, x[i]);
 		}
 
 		vector<T>& operator=(const ft::vector<T> &other)
 		{
-			if (this->__capacity == other.__capacity && this->__start == other.__start)
+			if (this == &other)
 				return (*this);
+			
 			if (this->__capacity)
+			{
+				this->clear();
 				this->__alloc.deallocate(this->__start, this->__capacity);
-			vector<T> tmp_vec(other);
-			*this = tmp_vec;
+				this->__capacity = other.size();
+				this->__start = this->__alloc.allocate(this->__capacity);
+			}
+
+			for (size_type i = 0; i < other.size(); i++)
+				this->push_back(other[i]);
 			return(*this);
 		}
 

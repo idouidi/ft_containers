@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:30:36 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/18 16:09:34 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/24 13:15:02 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void vector_constructor_tester()
 {
     if (STD != 1)
-        std::cout<< YELLOW <<" + CAPACITY +  " << RESET << std::endl;
+        std::cout<< YELLOW <<" + CONSTRUCTOR +  " << RESET << std::endl;
 	
     std::string path = "./srcs/vector/Constructor/";
 

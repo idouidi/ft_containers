@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 19:35:14 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/18 16:11:40 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/24 14:12:33 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void vector_iterator_tester()
 {
     if (STD != 1)
-        std::cout<< YELLOW <<" + CAPACITY +  " << RESET << std::endl;
+        std::cout<< YELLOW <<" + ITERATOR +  " << RESET << std::endl;
 
     std::string path = "./srcs/vector/Iterator/";
     std::fstream os;
