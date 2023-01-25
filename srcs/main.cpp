@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/18 16:35:46 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/25 19:34:40 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int main()
     __CURRENT_TIME__ = t_time();
     __NAME_SPACE__ = (STD == 1) ? "std" : "ft" ;
     vector_tester();
+    stack_tester();
 
     return (0);
 }

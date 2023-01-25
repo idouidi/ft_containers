@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/25 14:55:23 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/25 20:32:20 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,16 @@
 # include <cstring>
 # include <cstddef>
 # include <sys/stat.h>
-#include <sys/time.h>
+# include <sys/time.h>
 # include <vector>
+# include <stack>
+// # include <map>
 
 # include "./iterator.hpp"
 # include "./utils.hpp"
 # include "./vector.hpp"
 # include "./stack.hpp"
 // # include "./map.hpp"
-
-/* 
-# include "header.hpp"
-# include <is_integral.hpp>
-# include <enable_if.hpp>
-# include <iterator_traits.hpp>
-# include <iterator.hpp>
-# include <reverse_iterator.hpp> 
-# include <vector.hpp>
-# include <stack.hpp>
-# include <map.hpp>
-# include <Bst.hpp>
-# include <pair.hpp>*/
 
 # if STD == 1 
 #	define NAMESPACE    std
@@ -73,29 +62,26 @@ void                    stack_tester();
 
 /*      *       *       *       *       *          *       *       */
 
-
-
-/*      *       *       *   FUNCTION TO PRINT       *       *      */
-
+/*      *       *       *       VECTOR      *       *       *       */
 
 template <class T>
-static void             printIterator(std::fstream  &os, T &vec)
+static void             printIterator(std::fstream  &os, NAMESPACE::vector<T> &vec)
 {
     os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
     os << "BEGIN    ->  END:   ";
-    typename T::iterator it = vec.begin();
+    typename NAMESPACE::vector<T>::iterator it = vec.begin();
     for (;it != vec.end(); it++)
         os << "[" << *it << "]";
     os << std::endl;
     os << "RBEGIN   ->  REND:  ";
-    typename T::reverse_iterator r_it = vec.rbegin();
+    typename NAMESPACE::vector<T>::reverse_iterator r_it = vec.rbegin();
     for (; r_it != vec.rend(); r_it++)
         os << "[" << *r_it << "]";
     os << "\n\n#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
 }
 
 template <class T>
-static void             printElemAccess(std::fstream &os, T &vec)
+static void             printElemAccess(std::fstream &os, NAMESPACE::vector<T> &vec)
 {
     os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
     os << "Operator[2]  = " << vec[2] << std::endl;
@@ -106,7 +92,7 @@ static void             printElemAccess(std::fstream &os, T &vec)
 }
 
 template <class T>
-static void             printContent(const char *filename, const char *msg, T &vec)
+static void             printContent(const char *filename, const char *msg,  NAMESPACE::vector<T> &vec)
 {
     std::fstream os;
     os.open(filename, std::fstream::in | std::fstream::out |  std::ios_base::app);
@@ -133,6 +119,27 @@ static void             printContent(const char *filename, const char *msg, T &v
     os.close();
 }
 
-/*      *       *       *       *       *          *       *       */
+/*      *       *       *       STACK      *       *       *       */  
 
+template <class T>
+static void             printCapacity(const char *filename, const char *msg,  NAMESPACE::stack<T> &stk)
+{
+    std::fstream os;
+    os.open(filename, std::fstream::in | std::fstream::out |  std::ios_base::app);
+    if (!os.is_open()) 
+    {
+        std::cerr << "Could not open the file - '" << filename << "'" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    if (msg)
+        os << "\n               " << msg << std::endl;
+    os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
+    os << "SIZE     = " << stk.size() << std::endl;
+    os << "EMPTY    = " << stk.empty() << std::endl;
+    if (stk.size())
+        os << "TOP = " << stk.top() << std::endl;
+    else
+        os << "\n#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl;
+    os.close();
+}
 #endif

@@ -421,6 +421,8 @@ namespace ft
 // 📚 Returns a copy of the allocator object associated with the vector.
 		allocator_type 			get_allocator() const { return (this->__alloc); } 
 
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	: 	:	:	:	*/
+
 		private:
 			Allocator													__alloc;
 			pointer														__start;
