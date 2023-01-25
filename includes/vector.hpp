@@ -91,7 +91,7 @@ namespace ft
 			if (this == &other)
 				return (*this);
 			
-			if (this->__capacity)
+			if (other.size > this->__capacity)
 			{
 				this->clear();
 				this->__alloc.deallocate(this->__start, this->__capacity);
@@ -100,7 +100,7 @@ namespace ft
 			}
 
 			for (size_type i = 0; i < other.size(); i++)
-				this->push_back(other[i]);
+				this->push_back(other[i]); //💡 OTHER WAY TO CONSTRCUT ELEM
 			return(*this);
 		}
 
