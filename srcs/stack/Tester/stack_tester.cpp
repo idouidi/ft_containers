@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 14:52:37 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/25 20:46:02 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/26 17:00:24 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void stack_tester()
 {
     if (STD != 1)
         std::cout<< "\n\n" << MAGENTA << "        = = =>      STACK      <= = =\n\n"\
-        << YELLOW <<" + MEMBER FUNCTION +  " << RESET << std::endl;;
+        << YELLOW <<" + MEMBER FUNCTION +  " << RESET << std::endl;
 
     std::fstream os;
     std::string path;
@@ -116,6 +116,7 @@ void stack_tester()
             os << "The size of the stack is = " << stk.size() << std::endl;
             stk.pop();
         }
+        os << "The size of the stack is = " << stk.size() << std::endl;
 
         printTime(filetime.c_str());
 		

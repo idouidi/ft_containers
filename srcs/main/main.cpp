@@ -6,11 +6,11 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/25 19:34:40 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/26 16:33:59 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "../includes/ftnspace.hpp"
+#include  "../../includes/ftnspace.hpp"
 
 std::string   __NAME_SPACE__;
 unsigned long __CURRENT_TIME__;

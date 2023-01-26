@@ -6,22 +6,21 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/25 20:32:20 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/26 16:40:40 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __FT_NAMESPACE__
 # define __FT_NAMESPACE__
 
-# include <iostream>
-# include <fstream>
-# include <cstdlib>
-# include <cstring>
-# include <cstddef>
-# include <sys/stat.h>
-# include <sys/time.h>
-# include <vector>
-# include <stack>
+# include <iostream>    // for stL
+# include <fstream>     // for fd
+# include <cstdlib>     // for exit
+# include <cstring>     // for memcmp
+# include <sys/stat.h>  // for mdkir
+# include <sys/time.h>  // for gettimeofday
+# include <vector>      // for vector
+# include <stack>       // for stack
 // # include <map>
 
 # include "./iterator.hpp"
@@ -107,7 +106,7 @@ static void             printContent(const char *filename, const char *msg,  NAM
     os << "SIZE     = " << vec.size() << std::endl;
     os << "MAXSIZE  = " << vec.max_size() << std::endl;
     os << "CAPACITY = " << vec.capacity() << std::endl;
-    os << "EMPTY    = " << vec.empty() << std::endl;
+    os << "EMPTY    = " << (vec.empty() ? "YES" : "NO")  << std::endl;
     if (vec.size())
     {
         os << std::endl;
@@ -135,11 +134,10 @@ static void             printCapacity(const char *filename, const char *msg,  NA
         os << "\n               " << msg << std::endl;
     os << "#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl; 
     os << "SIZE     = " << stk.size() << std::endl;
-    os << "EMPTY    = " << stk.empty() << std::endl;
+    os << "EMPTY    = " << (stk.empty() ? "YES" : "NO") << std::endl;
     if (stk.size())
-        os << "TOP = " << stk.top() << std::endl;
-    else
-        os << "\n#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl;
+        os << "TOP      = " << stk.top() << std::endl;
+    os << "\n#    #   #   #   #   #   #   #   #   #   #   #   #\n"<<std::endl;
     os.close();
 }
 #endif

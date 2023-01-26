@@ -62,7 +62,7 @@ namespace ft
 // 📚 range constructor
 		template < class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
-			typename ft::enable_if<!ft::is_integral<InputIterator>::value, T>::type * = 0): __alloc(alloc)
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, T>::type* = 0): __alloc(alloc)
 		{
 			difference_type n = ft::distance(first, last);
 			this->__start = __alloc.allocate(n);
