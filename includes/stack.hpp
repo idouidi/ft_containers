@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 02:11:41 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/26 16:26:00 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/30 20:11:33 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,26 @@ size_type   size() const { return(this->__ctnr.size()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
+// 📚 relational operator
+	template< class U, class Ctnr >
+	friend bool operator==(const stack<U,Ctnr>& lhs, const stack<U,Ctnr>& rhs);
+
+	template< class U, class Ctnr >
+	friend bool operator!=(const stack<U,Ctnr>& lhs, const stack<U,Ctnr>& rhs);
+
+	template< class U, class Ctnr >
+    friend 	bool operator<(const stack<U,Ctnr>& lhs, const stack<U,Ctnr>& rhs);
+
+	template< class U, class Ctnr >
+	friend bool operator<=(const stack<U,Ctnr>& lhs, const stack<U,Ctnr>& rhs);
+
+	template< class U, class Ctnr >
+    friend 	bool operator>(const stack<U,Ctnr>& lhs, const stack<U,Ctnr>& rhs);
+
+	template< class U, class Ctnr >
+	friend bool operator>=(const stack<U,Ctnr>& lhs, const stack<U,Ctnr>& rhs);
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
         protected:
             container_type __ctnr;
     };
@@ -91,37 +111,37 @@ size_type   size() const { return(this->__ctnr.size()); }
 	template< class T, class Container >
 	bool operator==(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.container == rhs.container);
+		return (lhs.__ctnr == rhs.__ctnr);
 	}
 
 	template< class T, class Container >
 	bool operator!=(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.container != rhs.container);
+		return (lhs.__ctnr != rhs.__ctnr);
 	}
 
 	template< class T, class Container >
 	bool operator<(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.container < rhs.container);
+		return (lhs.__ctnr < rhs.__ctnr);
 	}
 
 	template< class T, class Container >
 	bool operator<=(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.container <= rhs.container);
+		return (lhs.__ctnr <= rhs.__ctnr);
 	}
 
 	template< class T, class Container >
 	bool operator>(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.container > rhs.container);
+		return (lhs.__ctnr > rhs.__ctnr);
 	}
 
 	template< class T, class Container >
 	bool operator>=(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.container >= rhs.container);
+		return (lhs.__ctnr >= rhs.__ctnr);
 	}
 }
 

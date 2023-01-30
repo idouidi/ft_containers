@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:02:40 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/26 21:09:22 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/01/30 18:51:56 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ template <  class Key,
                         }
                 };
         
-            /*	
-		    *	📌 CONSTRUCTOR / DESTRCUTOR
-		    */
+                /*	
+	        *	📌 CONSTRUCTOR / DESTRCUTOR
+	        */
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -114,9 +114,9 @@ template <  class Key,
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-            /*	
-		    *	📌 ITERATOR
-		    */
+                /*	
+		*	📌 ITERATOR
+		*/
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -146,9 +146,9 @@ template <  class Key,
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-            /*	
-		    *	📌 CAPACITY
-		    */
+                /*	
+		*	📌 CAPACITY
+		*/
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
     
@@ -167,9 +167,9 @@ template <  class Key,
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-            /*	
-		    *	📌 ELEMENT ACCESS
-		    */
+                /*	
+		*	📌 ELEMENT ACCESS
+		*/
     
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
     
@@ -197,6 +197,20 @@ template <  class Key,
 
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/    
+
+                /*	
+		*	📌 MODIFIERS
+		*/
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+// 📚 Extends the container by inserting new elements,
+// effectively increasing the container size by the number of elements inserted.
+
+        //
+        // pair<iterator,bool> insert (const value_type& val)
+        // {
+        // }
     
     
     };

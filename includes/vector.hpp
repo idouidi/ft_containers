@@ -91,9 +91,9 @@ namespace ft
 			if (this == &other)
 				return (*this);
 			
-			if (other.size > this->__capacity)
+			this->clear();
+			if (other.size() > this->__capacity)
 			{
-				this->clear();
 				this->__alloc.deallocate(this->__start, this->__capacity);
 				this->__capacity = other.size();
 				this->__start = this->__alloc.allocate(this->__capacity);
@@ -292,10 +292,12 @@ namespace ft
 
 // 📚 Removes the last element in the vector, effectively reducing the container size by one.
 		void					pop_back() 
-		{ 
-			this->__alloc.destroy(this->__start + this->__size - 1);
-			this->__size--;
-		
+		{
+			if (this->__size)
+			{
+				this->__alloc.destroy(this->__start + this->__size - 1);
+				this->__size--;
+			}
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
