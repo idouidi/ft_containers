@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 02:11:41 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/30 20:11:33 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/09 14:43:53 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Constructs a stack container adaptor object.
-        explicit stack (const container_type& ctnr = container_type()): __ctnr(ctnr) {}
+        explicit stack (const container_type& ctnr = container_type()): c(ctnr) {}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -45,7 +45,7 @@ namespace ft
     {
         if (this == &other)
             return (*this);
-        this->__ctnr = other.__ctnr;
+        this->c = other.c;
     }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -56,29 +56,29 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns whether the stack is empty: i.e. whether its size is zero.
-bool   empty() const { return(this->__ctnr.empty()); }
+bool   empty() const { return(this->c.empty()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns the number of elements in the stack.
-size_type   size() const { return(this->__ctnr.size()); }
+size_type   size() const { return(this->c.size()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns a reference to the top element in the stack.
-    reference    top() { return (this->__ctnr.back()); }
-    const_reference top() const { return (this->__ctnr.back()); }
+    reference    top() { return (this->c.back()); }
+    const_reference top() const { return (this->c.back()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Inserts a new element at the top of the stack, above its current top element.
 // The content of this new element is initialized to a copy of val.
-    void    push(const value_type& val) { this->__ctnr.push_back(val); }
+    void    push(const value_type& val) { this->c.push_back(val); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Removes the element on top of the stack, effectively reducing its size by one.
-    void    pop() { this->__ctnr.pop_back(); }
+    void    pop() { this->c.pop_back(); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -103,7 +103,7 @@ size_type   size() const { return(this->__ctnr.size()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
         protected:
-            container_type __ctnr;
+            container_type c;
     };
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -111,37 +111,37 @@ size_type   size() const { return(this->__ctnr.size()); }
 	template< class T, class Container >
 	bool operator==(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.__ctnr == rhs.__ctnr);
+		return (lhs.c == rhs.c);
 	}
 
 	template< class T, class Container >
 	bool operator!=(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.__ctnr != rhs.__ctnr);
+		return (lhs.c != rhs.c);
 	}
 
 	template< class T, class Container >
 	bool operator<(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.__ctnr < rhs.__ctnr);
+		return (lhs.c < rhs.c);
 	}
 
 	template< class T, class Container >
 	bool operator<=(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.__ctnr <= rhs.__ctnr);
+		return (lhs.c <= rhs.c);
 	}
 
 	template< class T, class Container >
 	bool operator>(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.__ctnr > rhs.__ctnr);
+		return (lhs.c > rhs.c);
 	}
 
 	template< class T, class Container >
 	bool operator>=(const stack<T,Container>& lhs, const stack<T,Container>& rhs) 
     {
-		return (lhs.__ctnr >= rhs.__ctnr);
+		return (lhs.c >= rhs.c);
 	}
 }
 
