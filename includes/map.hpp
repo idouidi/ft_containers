@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:02:40 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/09 16:44:29 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/10 15:14:27 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,27 @@ template <  class Key,
 		{
 
 			public:
-				typedef Key															key_type;               // the type of the key in the key value pair;
-				typedef T															mapped_type;            // the type of the value in the key value pair
-				typedef ft::pair<key_type, mapped_type>								value_type;             // the type of elements contained in the Node
-				typedef std::size_t													size_type;
-				typedef std::ptrdiff_t												difference_type;
-				typedef Compare														key_compare;            // for compare key
-				typedef Alloc														allocator_type;         // the allocator used to allocate memory
-				typedef typename allocator_type::reference							reference;
-				typedef typename allocator_type::const_reference					const_reference;
-				typedef typename allocator_type::pointer							pointer;
-				typedef typename allocator_type::const_pointer						const_pointer;
-				typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
-				typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
-				typedef typename ft::Rb_tree<Key, T, Compare, Alloc>				tree;
-				typedef typename ft::Rb_tree_iterator<Key, T, Compare, Alloc>		iterator;
-				typedef typename ft::Rb_tree_const_iterator<Key, T, Compare, Alloc>	const_iterator;
+				typedef Key																			key_type;               // the type of the key in the key value pair;
+				typedef T																			mapped_type;            // the type of the value in the key value pair
+				typedef ft::pair<key_type, mapped_type>												value_type;             // the type of elements contained in the Node
+				typedef std::size_t																	size_type;
+				typedef std::ptrdiff_t																difference_type;
+				typedef Compare																		key_compare;            // for compare key
+				typedef Alloc																		allocator_type;         // the allocator used to allocate memory
+				typedef typename allocator_type::reference											reference;
+				typedef typename allocator_type::const_reference									const_reference;
+				typedef typename allocator_type::pointer											pointer;
+				typedef typename allocator_type::const_pointer										const_pointer;
+				typedef typename ft::reverse_iterator<iterator>										reverse_iterator;
+				typedef typename ft::reverse_iterator<const_iterator>								const_reverse_iterator;
+				typedef typename ft::Rb_tree<Key, T, Compare, Alloc>								tree;
+				typedef typename ft::Rb_tree_iterator<Key, T, Compare, Alloc>::iterator				iterator;
+				typedef typename ft::Rb_tree_const_iterator<Key, T, Compare, Alloc>::const_iterator	const_iterator;
 			
 			private:
-				key_compare															__comp;
-				allocator_type														__alloc;
-				tree																__tree;
+				key_compare																			__comp;
+				allocator_type																		__alloc;
+				tree																				__tree;
 			
 			public:
 				class value_compare

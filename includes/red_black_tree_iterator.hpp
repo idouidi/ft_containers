@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 17:03:39 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/09 19:07:41 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/10 15:23:37 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,25 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-// 📚 Returns a reference to the element pointed to by the iterator.
+// 📚 Returns a const reference to the element pointed to by the Iterator;
         reference operator*() const
 		{
 			return (__node->__key)
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+// 📚 Returns a const pointer to the element pointed to by the Iterator;
+		pointer operator->() const
+		{
+			return (&this->__node->__key);
+		}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+// 📚 Increment the iterator to the next elem
+
+
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 

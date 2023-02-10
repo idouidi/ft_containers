@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/09 18:55:12 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/10 15:15:28 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@
 
 namespace ft
 {
-	template <typename T>
+	template <typename Key, typename Value>
 	struct Node
 	{
-		typedef T                           	value_type;
+		typedef Key								key_type;	
+		typedef Value                           value_type;
 		typedef ft::Node<key_type, value_type>  node_type;
 
 		value_type								__key;
@@ -101,8 +102,8 @@ namespace ft
 			typedef Value											value_type;
 			typedef Compare											key_compare;
 			typedef Allocator										allocator_type;
-			typedef ft::Node<key_type, value_type>					node;
 			typedef std::size_t										size_type;
+			typedef ft::Node<key_type, value_type>					node;
 			typedef typename ft::Rb_tree_iterator<Node>				iterator;
 			typedef typename ft::Rb_tree_const_iterator<Node>		const_iterator;
 			typedef typename ft::reverse_iterator<iterator>			reverse_iterator;
