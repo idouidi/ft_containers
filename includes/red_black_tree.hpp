@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/10 15:15:28 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/13 19:55:16 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,10 @@ namespace ft
 	template <typename Key, typename Value>
 	struct Node
 	{
-		typedef Key								key_type;	
-		typedef Value                           value_type;
-		typedef ft::Node<key_type, value_type>  node_type;
+		typedef ft::pair<Key, Value>			pair_type;
+		typedef ft::Node<Key, Value>			node_type;
 
-		value_type								__key;
+		pair_type								__pair;
 		node_type*								__parent;
 		node_type*								__left;
 		node_type*								__right;
@@ -40,15 +39,15 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 default constructor
-		Node(const value_type& key = value_type()): __key(key), __parent(0x0), __left(0x0), __right(0x0), __isBlack(false),
+		Node(const pair_type& pair = pair_type()): __pair(pair), __parent(0x0), __left(0x0), __right(0x0), __isBlack(false),
 		__isLeftChlid(false)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Copy constructor
-		Node(const Node& n): __parent(n.__parent), __left(n.__left), __right(n.__right),
-		__isBlack(n.__isBlack), __isLeftChlid(n.__isLeftChlid), __pair(n.pair)
+		Node(const Node& n): __pair(n.pair), __parent(n.__parent), __left(n.__left), __right(n.__right),
+		__isBlack(n.__isBlack), __isLeftChlid(n.__isLeftChlid),
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -61,19 +60,19 @@ namespace ft
 // 📚 relational operator
 			bool		operator==(const node_type& n) const 
 			{
-				return (this->pair.first == n.pair.first && this->pair.second == n.pair.second);
+				return (this->__pair.first == n.__pair.first && this->__pair.second == n.__pair.second);
 			}
 			
 			bool		operator<(const node_type& n) const 
 			{
-				if (this->pair.first == n.pair.first)
-					return (this->pair.second < n.pair.second);
-				return (this->pair.first < n.pair.first);
+				if (this->__pair.first == n.__pair.first)
+					return (this->__pair.second < n.__pair.second);
+				return (this->__pair.first < n.__pair.first);
 			}
 
 			bool		operator<=(const node_type& n) const 
 			{
-				return (this->pair.first <= n.pair.first);
+				return (this->__pair.first <= n.__pair.first);
 			}
 
 			bool		operator>(const node_type& n) const 
@@ -103,13 +102,16 @@ namespace ft
 			typedef Compare											key_compare;
 			typedef Allocator										allocator_type;
 			typedef std::size_t										size_type;
-			typedef ft::Node<key_type, value_type>					node;
-			typedef typename ft::Rb_tree_iterator<Node>				iterator;
-			typedef typename ft::Rb_tree_const_iterator<Node>		const_iterator;
+			typedef ft::Node<key_type, value_type>					node_type;
+			typedef typename node_type::pair_type					pair_type;
+			typedef typename ft::Rb_tree_iterator<node_type>		iterator;
+			typedef typename ft::Rb_tree_const_iterator<node_type>	const_iterator;
 			typedef typename ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
-        /*	
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
+
+		/*	
 		*	📌 CONSTRUCTOR / DESTRCUTOR
 		*/
 
@@ -128,6 +130,12 @@ namespace ft
 			clear_tree(__root);
 		}
 
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
+
+		/*	
+		*	📌 CAPACITY
+		*/
+
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns whether the tree is empty: i.e. whether its size is zero.
@@ -135,7 +143,7 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-// 📚 Returns the number of Nodes in the tree.
+// 📚 Returns the number of tree's node
 		size_type	size() const { return (this->__size); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -144,15 +152,233 @@ namespace ft
 // This is the maximum potential size the tree can reach due to known system.
 		size_type	max_size const { return (this->__alloc.max_size()); }
 
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
+
+		/*	
+		*	📌 MODIFIERS
+		*/
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+		void left_rotate(iterator *x)
+		{
+		    iterator *y = x->__right;
+
+		    x->__right = y->__left;
+		    if (y->__left != __null)
+		        y->__left->__parent = x;
+		    y->__parent = x->__parent;
+		    if (x->__parent == __null)
+		        __root = y;
+		    else if (x->__isLeftChild)
+		        x->__parent->__left = y;
+		    else
+		        x->__parent->__right = y;
+		    y->__left = x;
+		    x->__parent = y;
+		}
+
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 
+		void	right_rotate(iterator *x)
+		{
+		    iterator *y = x->__left;
+
+		    x->__left = y->__right;
+		    if (y->__right)
+		        y->__right->__parent = x;
+		    y->__parent = x->__parent;
+		    if (!x->__parent)
+		        __root = y;
+		    else if (x->__isLeftChild)
+		        x->__parent->__left = y;
+		    else
+		        x->__parent->__right = y;
+		    y->__right = x;
+		    x->__parent = y;
+		}
+
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+
+		void	insert_fixup(iterator *z)
+		{
+		    iterator *y = nullptr;
+
+		    while (z != this->__root && z->__parent->__isBlack == false)
+		    {
+		        if (z->__parent == z->__parent->__parent->__left)
+		        {
+		            y = z->__parent->__parent->__right;
+		            if (y && y->__isBlack == false)
+		            {
+		                z->__parent->__isBlack = true;
+		                y->__isBlack = true;
+		                z->__parent->__parent->__isBlack = false;
+		                z = z->__parent->__parent;
+		            }
+		            else
+		            {
+		                if (z == z->__parent->__right)
+		                {
+		                    z = z->__parent;
+		                    left_rotate(z);
+		                }
+		                z->__parent->__isBlack = true;
+		                z->__parent->__parent->__isBlack = false;
+		                right_rotate(z->__parent->__parent);
+		            }
+		        }
+		        else
+		        {
+		            y = z->__parent->__parent->__left;
+		            if (y && y->__isBlack == false)
+		            {
+		                z->__parent->__isBlack = true;
+		                y->__isBlack = true;
+		                z->__parent->__parent->__isBlack = false;
+		                z = z->__parent->__parent;
+		            }
+		            else
+		            {
+		                if (z == z->__parent->__left)
+		                {
+		                    z = z->__parent;
+		                    right_rotate(z);
+		                }
+		                z->__parent->__isBlack = true;
+		                z->__parent->__parent->__isBlack = false;
+		                left_rotate(z->__parent->__parent);
+		            }
+		        }
+		    }
+		   this->__root->__isBlack = true;
+		}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+// 📚 The purpose of this function is to find the appropriate location
+// for the new node, by comparing the key with the keys of the current nodes.
+// If a similar key is found, it returns an iterator to that existing node and a boolean false 
+// indicating that the insertion did not occur. If the appropriate location is found, the function allocates a new node, 
+// initializes its fields and inserts it into the tree. Finally, it calls a function called insert_fixup to ensure 
+// that the properties of the red-black tree are maintained.
+
+
+	ft::pair<iterator, bool> insert(const pair_type& p)
+	{
+		iterator 	*parent = __root;
+    	iterator 	*current = __root;
+    	bool 		isLeft = false;
+
+    	while (current != nullptr)
+    	{
+        	parent = current;
+        	if (this->__comp(p.first, current->__pair.first))
+        	{
+        	    current = current->__left;
+        	    isLeft = true;
+        	}
+        	else if (this->__comp(current->__pair.first, p.first))
+        	{
+        	    current = current->__right;
+        	    isLeft = false;
+        	}
+        	else
+        	    return ft::pair<iterator, bool>(iterator(current), false);
+    	}
+    	current = __alloc.allocate(sizeof(iterator));
+    	__alloc.construct(current, iterator(p, parent, nullptr, nullptr, true, isLeft));
+    	if (parent == nullptr)
+    	    __root = current;
+    	else if (isLeft)
+    	    parent->__left = current;
+    	else
+    	    parent->__right = current;
+
+    	insert_fixup(current);
+    	this->__size += 1;
+    	return (ft::pair<iterator, bool>(iterator(current), true));
+	}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+		
+		void switched(iterator *u, iterator *v)
+		{
+    		if (!u->__parent)
+    		    __root = v;
+    		else if (u == u->__parent->__left)
+    		    u->__parent->__left = v;
+    		else
+    		    u->__parent->__right = v;
+    		if (v)
+    		    v->__parent = u->__parent;
+		}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+// find the smallest elem from the tree
+		iterator *min(const iterator* z) const
+		{
+			if (!z)
+				return (nullptr);
+			while (z->__left)
+				z = z->__left;
+			return (iterator(z));
+		}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+		void delete_node(iterator position)
+		{
+		    bool 		oldColor = y->__isBlack;
+		    iterator 	*z = position;
+		    iterator 	*y = z;
+		    iterator 	*x = nullptr;
+
+		    if (z->__left == nullptr)
+		    {
+		        x = z->__right;
+		        switched(z, z->__right);
+		    }
+		    else if (z->__right == nullptr)
+		    {
+		        x = z->__left;
+		        switched(z, z->__left);
+		    }
+		    else
+		    {
+		        y = min(z->__right);
+		        oldColor = y->__isBlack;
+		        x = y->__right;
+		        if (y->__parent == z)
+		            x->__parent = y;
+		        else
+		        {
+		            switched(y, y->__right);
+		            y->__right = z->__right;
+		            y->__right->__parent = y;
+		        }
+		        switched(z, y);
+		        y->__left = z->__left;
+		        y->__left->__parent = y;
+		        y->__isBlack = z->__isBlack;
+		    }
+		    if (oldColor == true)
+		        delete_node_fixup(x); // 🚧 fonction to check the balance of the tree
+		    this->__alloc.destroy(z);
+		    this->__alloc.deallocate(z, 1);
+		    this->__size -= 1;
+		}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
 
 		private:
 			key_compare												__comp;
 			allocator_type											__alloc;
-			node													*__root;
+			iterator												*__root;
 			size_type												__size;
 	};
 

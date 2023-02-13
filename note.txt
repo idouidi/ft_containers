@@ -1,0 +1,36 @@
+
+
+        AJOUTER UN NOEUD
+
+|) Ajouter un élément à un arbre rouge-noir consiste en plusieurs étapes. 
+Les étapes générales sont les suivantes :
+
+1.  Insérer le nouveau noeud dans l'arbre comme un nouveau noeud rouge dans un arbre binaire 
+    de recherche équilibré.
+
+2.  Rebalance l'arbre en fonction des propriétés de l'arbre rouge-noir.
+
+||) Les règles à respecter pour maintenir l'arbre rouge-noir équilibré sont les suivantes :
+
+1.  Chaque noeud est soit rouge soit noir.
+
+2.  La racine de l'arbre est toujours noire.
+
+3.  Tous les feuilles (noeuds NULL) sont noirs.
+
+4.  Pour chaque noeud, le nombre de noeuds noirs sur la voie allant du noeud à 
+    une feuille NULL est le même.
+
+5.  Pour chaque noeud rouge, les deux fils sont noirs.
+
+6.  Pour chaque noeud, toutes les voies descendantes à gauche et à droite 
+    ne contiennent pas deux noeuds rouges consécutifs.
+
+En général, pour ajouter un nouveau noeud à un arbre rouge-noir, nous devons d'abord insérer
+le noeud comme un noeud rouge et faire les ajustements nécessaires pour maintenir 
+les propriétés de l'arbre rouge-noir. Cela peut impliquer la rotation d'un noeud, 
+la modification de la couleur d'un noeud, ou les deux.
+L'implémentation détaillée dépendra du choix de l'algorithme d'insertion.
+Il existe plusieurs algorithmes d'insertion pour les arbres rouge-noir, 
+chacun avec ses propres avantages et inconvénients. Les algorithmes les plus couramment
+utilisés comprennent l'algorithme de RB-INSERT-FIXUP et l'algorithme de RB-INSERT-RECURSE.
