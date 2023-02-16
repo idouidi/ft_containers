@@ -6,12 +6,12 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:02:40 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/10 15:14:27 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/16 20:24:26 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MAP_HPP__
-#define __MAP_HPP_
+# define __MAP_HPP__
 
 # include "./ftnspace.hpp"
 
@@ -36,11 +36,11 @@ template <  class Key,
 				typedef typename allocator_type::const_reference									const_reference;
 				typedef typename allocator_type::pointer											pointer;
 				typedef typename allocator_type::const_pointer										const_pointer;
+				typedef typename ft::Rb_tree<Key, T, Compare, Alloc>								tree;
+				typedef typename ft::Rb_tree_iterator<ft::Node<Key, T> >::iterator					iterator;
+				typedef typename ft::Rb_tree_iterator<ft::Node<Key, T> >::const_iterator			const_iterator;
 				typedef typename ft::reverse_iterator<iterator>										reverse_iterator;
 				typedef typename ft::reverse_iterator<const_iterator>								const_reverse_iterator;
-				typedef typename ft::Rb_tree<Key, T, Compare, Alloc>								tree;
-				typedef typename ft::Rb_tree_iterator<Key, T, Compare, Alloc>::iterator				iterator;
-				typedef typename ft::Rb_tree_const_iterator<Key, T, Compare, Alloc>::const_iterator	const_iterator;
 			
 			private:
 				key_compare																			__comp;
@@ -98,7 +98,7 @@ template <  class Key,
 		}
 
 // 📚 operator assigning copy
-		operator=(const map& x)
+		map& operator=(const map& x)
 		{
 			if (this ==&x)
 				return (*this);
@@ -153,7 +153,7 @@ template <  class Key,
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 	
 // 📚 Returns whether the map container is empty (i.e. whether its size is 0).
-		bool empty() const { (return (this->__tree.empty())); }
+		bool empty() const { return (this->__tree.empty()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 

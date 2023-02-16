@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 17:03:39 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/13 19:12:04 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/16 20:15:13 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 namespace ft
 {
     template < class Iterator>
-    struct Rb_tree_iterartor
+    class Rb_tree_iterator
     {
         public:
 			typedef typename ft::iterator_traits<Iterator>::difference_type		differeence_type;
@@ -36,24 +36,24 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
 
 // 📚 default constructor
-		Rb_tree_iterartor(): __node(0x0), __end(0x0)
+		Rb_tree_iterator(): __node(0x0), __end(0x0)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 fill constructor
-		Rb_tree_iterartor(iterator_type node, iterator_type end): __node(node), __end(end)
+		Rb_tree_iterator(iterator_type node, iterator_type end): __node(node), __end(end)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 copy constructor
 
-		Rb_tree_iterartor(const Rb_tree_iterartor& rbt_it): __node(rbt_it.__node), __end(rbt_it.__end)
+		Rb_tree_iterator(const Rb_tree_iterator& rbt_it): __node(rbt_it.__node), __end(rbt_it.__end)
 		{}
 
 // operator assigning copy
-		Rb_tree_iterartor& Rb_tree_iterartor(const Rb_tree_iterartor& rbt_it)
+		Rb_tree_iterator& operator=(const Rb_tree_iterator& rbt_it)
 		{
 			if (this != &rbt_it)
 			{
@@ -66,7 +66,7 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Destructor
-		~Rb_tree_iterartor() {}
+		~Rb_tree_iterator() {}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -77,12 +77,12 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 relational operator
-		bool operator==(const Rb_tree_iterartor& rbt_it)
+		bool operator==(const Rb_tree_iterator& rbt_it)
 		{
 			return (this->__node == rbt_it.__node);
 		}
 
-		bool operator!=(const Rb_tree_iterartor& rbt_it)
+		bool operator!=(const Rb_tree_iterator& rbt_it)
 		{
 			return (!(this->__node == rbt_it.__node));
 		}
@@ -92,7 +92,7 @@ namespace ft
 // 📚 Returns a const reference to the element pointed to by the Iterator;
         reference operator*() const
 		{
-			return (__node->__key)
+			return (__node->__key);
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -106,16 +106,16 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Increment the iterator to the next elem
-		Rb_tree_iterartor&	operator++()
+		Rb_tree_iterator&	operator++()
 		{
 			icrem_iterator();
 			return (*this);
 		}
 
 // 📚 PostIncrement the iterator to the next elem
-		Rb_tree_iterartor&	operator++(int)
+		Rb_tree_iterator&	operator++(int)
 		{
-			Rb_tree_iterartor tmp;
+			Rb_tree_iterator tmp;
 
 			tmp = *this;
 			icrem_iterator();
@@ -125,16 +125,16 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Decrement the iterator to the previous elem
-		Rb_tree_iterartor&	operator--()
+		Rb_tree_iterator&	operator--()
 		{
 			decrem_iterator();
 			return (*this);
 		}
 
 // 📚 Postdecrement the iterator to the previous elem
-		Rb_tree_iterartor&	operator--(int)
+		Rb_tree_iterator&	operator--(int)
 		{
-			Rb_tree_iterartor tmp;
+			Rb_tree_iterator tmp;
 
 			tmp = *this;
 			decrem_iterator();
@@ -179,7 +179,7 @@ namespace ft
 			}
 			else // go to the next right parent
 			{
-				while (this->__node->parent && this->__node == this->__node->__parent->-_left)
+				while (this->__node->parent && this->__node == this->__node->__parent->__left)
 					this->__node = this->__node->parent;
 				this->__node = this->__node->__parent;
 			}
@@ -193,11 +193,11 @@ namespace ft
 		*/
 
     template < class Iterator>
-    struct Rb_tree_const_iterartor
+    class Rb_tree_const_iterator 
     {
         public:
 			typedef typename ft::iterator_traits<Iterator>::difference_type		differeence_type;
-        	typedef typename ft::iterator_traits<Iterator>::value_type			constvalue_type;
+        	typedef typename ft::iterator_traits<Iterator>::value_type			const value_type;
 			typedef typename ft::iterator_traits<Iterator>::value_type*			pointer;
 			typedef typename ft::iterator_traits<Iterator>::value_type&			reference;
 			typedef typename ft::iterator_traits<Iterator>::iterator_category	iterator_category;
@@ -210,24 +210,24 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
 
 // 📚 default constructor
-		Rb_tree_const_iterartor(): __node(0x0), __end(0x0)
+		Rb_tree_const_iterator(): __node(0x0)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 fill constructor
-		Rb_tree_const_iterartor(iterator_type node, iterator_type end): __node(node), __end(end)
+		Rb_tree_const_iterator(iterator_type node): __node(node)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 copy constructor
 
-		Rb_tree_const_iterartor(const Rb_tree_const_iterartor& rbt_it): __node(rbt_it.__node), __end(rbt_it.__end)
+		Rb_tree_const_iterator(const Rb_tree_const_iterator& rbt_it): __node(rbt_it.__node)
 		{}
 
 // operator assigning copy
-		Rb_tree_const_iterartor& Rb_tree_const_iterartor(const Rb_tree_const_iterartor& rbt_it)
+		Rb_tree_const_iterator& operator=(const Rb_tree_const_iterator& rbt_it)
 		{
 			if (this != &rbt_it)
 			{
@@ -240,7 +240,7 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Destructor
-		~Rb_tree_const_iterartor() {}
+		~Rb_tree_const_iterator() {}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -251,45 +251,39 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 relational operator
-		bool operator==(const Rb_tree_const_iterartor& rbt_it)
+		bool operator==(const Rb_tree_const_iterator& rbt_it)
 		{
 			return (this->__node == rbt_it.__node);
 		}
 
-		bool operator!=(const Rb_tree_const_iterartor& rbt_it)
+		bool operator!=(const Rb_tree_const_iterator& rbt_it)
 		{
 			return (!(this->__node == rbt_it.__node));
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-// 📚 Returns a const reference to the element pointed to by the Iterator;
-        reference operator*() const
-		{
-			return (__node->__key)
-		}
+// 📚 Returns a const pointer to the element pointed to by the Iterator;
+		pointer operator->() const { return (&this->__node->__key); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-// 📚 Returns a const pointer to the element pointed to by the Iterator;
-		pointer operator->() const
-		{
-			return (&this->__node->__key);
-		}
+// 📚 Returns a const reference to the element pointed to by the Iterator;
+        reference operator*() const { return (__node->__key); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Increment the iterator to the next elem
-		Rb_tree_const_iterartor&	operator++()
+		Rb_tree_const_iterator&	operator++()
 		{
 			icrem_iterator();
 			return (*this);
 		}
 
 // 📚 PostIncrement the iterator to the next elem
-		Rb_tree_const_iterartor&	operator++(int)
+		Rb_tree_const_iterator&	operator++(int)
 		{
-			Rb_tree_const_iterartor tmp;
+			Rb_tree_const_iterator tmp;
 
 			tmp = *this;
 			icrem_iterator();
@@ -299,16 +293,16 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Decrement the iterator to the previous elem
-		Rb_tree_const_iterartor&	operator--()
+		Rb_tree_const_iterator&	operator--()
 		{
 			decrem_iterator();
 			return (*this);
 		}
 
 // 📚 Postdecrement the iterator to the previous elem
-		Rb_tree_const_iterartor&	operator--(int)
+		Rb_tree_const_iterator&	operator--(int)
 		{
-			Rb_tree_iterartor tmp;
+			Rb_tree_const_iterator(tmp);
 
 			tmp = *this;
 			decrem_iterator();
@@ -318,9 +312,8 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-		private:
+		protected:
 			iterator_type														__node;
-			iterator_type														__end;
 		
 
 		void	icrem_iterator()
@@ -353,7 +346,7 @@ namespace ft
 			}
 			else // go to the next right parent
 			{
-				while (this->__node->parent && this->__node == this->__node->__parent->-_left)
+				while (this->__node->parent && this->__node == this->__node->__parent->__left)
 					this->__node = this->__node->parent;
 				this->__node = this->__node->__parent;
 			}

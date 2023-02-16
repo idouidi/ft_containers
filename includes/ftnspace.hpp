@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/09 17:02:59 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/16 20:08:48 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@
 # include <iostream>    // for stL
 # include <vector>      // for vector
 # include <stack>       // for stack
-// # include <map>      // for map
+# include <map>      // for map
 # include <fstream>     // for fd
 # include <cstdlib>     // for exit
 # include <cstring>     // for memcmp
 # include <sys/stat.h>  // for mdkir
 # include <sys/time.h>  // for gettimeofday
 
-# include "./utils.hpp"
 # include "./iterator.hpp"
+# include "./utils.hpp"
 # include "./red_black_tree_iterator.hpp"
 # include "./red_black_tree.hpp" 
 # include "./vector.hpp"
+# include "./map.hpp"
 # include "./stack.hpp"
-// # include "./map.hpp"
 
 # if STD == 1 
 #	define NAMESPACE    std

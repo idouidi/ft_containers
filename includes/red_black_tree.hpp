@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/13 19:55:16 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/16 20:15:37 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ namespace ft
 
 // 📚 Copy constructor
 		Node(const Node& n): __pair(n.pair), __parent(n.__parent), __left(n.__left), __right(n.__right),
-		__isBlack(n.__isBlack), __isLeftChlid(n.__isLeftChlid),
+		__isBlack(n.__isBlack), __isLeftChlid(n.__isLeftChlid)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -91,6 +91,7 @@ namespace ft
 			}
 
 	};
+
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
 
 	template <typename Key, typename Value, typename Compare, class Allocator>
@@ -150,7 +151,7 @@ namespace ft
 
 // 📚 Returns the maximum number of elements that the tree can hold.
 // This is the maximum potential size the tree can reach due to known system.
-		size_type	max_size const { return (this->__alloc.max_size()); }
+		// size_type	max_size const { return (this->__alloc.max_size()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
 
@@ -204,7 +205,7 @@ namespace ft
 
 		void	insert_fixup(iterator *z)
 		{
-		    iterator *y = nullptr;
+		    iterator *y = 0x0;
 
 		    while (z != this->__root && z->__parent->__isBlack == false)
 		    {
@@ -266,41 +267,41 @@ namespace ft
 // that the properties of the red-black tree are maintained.
 
 
-	ft::pair<iterator, bool> insert(const pair_type& p)
-	{
-		iterator 	*parent = __root;
-    	iterator 	*current = __root;
-    	bool 		isLeft = false;
+		ft::pair<iterator, bool> insert(const pair_type& p)
+		{
+			iterator 	*parent = __root;
+    		iterator 	*current = __root;
+    		bool 		isLeft = false;
 
-    	while (current != nullptr)
-    	{
-        	parent = current;
-        	if (this->__comp(p.first, current->__pair.first))
-        	{
-        	    current = current->__left;
-        	    isLeft = true;
-        	}
-        	else if (this->__comp(current->__pair.first, p.first))
-        	{
-        	    current = current->__right;
-        	    isLeft = false;
-        	}
-        	else
-        	    return ft::pair<iterator, bool>(iterator(current), false);
-    	}
-    	current = __alloc.allocate(sizeof(iterator));
-    	__alloc.construct(current, iterator(p, parent, nullptr, nullptr, true, isLeft));
-    	if (parent == nullptr)
-    	    __root = current;
-    	else if (isLeft)
-    	    parent->__left = current;
-    	else
-    	    parent->__right = current;
+    		while (current != 0x0)
+    		{
+    	    	parent = current;
+    	    	if (this->__comp(p.first, current->__pair.first))
+    	    	{
+    	    	    current = current->__left;
+    	    	    isLeft = true;
+    	    	}
+    	    	else if (this->__comp(current->__pair.first, p.first))
+    	    	{
+    	    	    current = current->__right;
+    	    	    isLeft = false;
+    	    	}
+    	    	else
+    	    	    return ft::pair<iterator, bool>(iterator(current), false);
+    		}
+    		current = __alloc.allocate(sizeof(iterator));
+    		__alloc.construct(current, iterator(p, parent, 0x0, 0x0, true, isLeft));
+    		if (parent == 0x0)
+    		    __root = current;
+    		else if (isLeft)
+    		    parent->__left = current;
+    		else
+    		    parent->__right = current;
 
-    	insert_fixup(current);
-    	this->__size += 1;
-    	return (ft::pair<iterator, bool>(iterator(current), true));
-	}
+    		insert_fixup(current);
+    		this->__size += 1;
+    		return (ft::pair<iterator, bool>(iterator(current), true));
+		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 		
@@ -322,7 +323,7 @@ namespace ft
 		iterator *min(const iterator* z) const
 		{
 			if (!z)
-				return (nullptr);
+				return (0x0);
 			while (z->__left)
 				z = z->__left;
 			return (iterator(z));
@@ -330,19 +331,91 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
+		void	delete_node_fixup(iterator *x)
+		{
+			while (x != this->__root && x->__isBlack)
+			{
+			    if (x == x->__parent->__left)
+			    {
+			        iterator *w = x->__parent->__right;
+			        if (!w->__isBlack)
+			        {
+			            w->__isBlack = true;
+			            x->__parent->__isBlack = false;
+			            left_rotate(x->__parent);
+			            w = x->__parent->__right;
+			        }
+			        if (w->__left->__isBlack && w->__right->__isBlack)
+			        {
+			            w->__isBlack = false;
+			            x = x->__parent;
+			        }
+			        else
+			        {
+			            if (w->__right->__isBlack)
+			            {
+			                w->__left->__isBlack = true;
+			                w->__isBlack = false;
+			                right_rotate(w);
+			                w = x->__parent->__right;
+			            }
+			            w->__isBlack = x->__parent->__isBlack;
+			            x->__parent->__isBlack = true;
+			            w->__right->__isBlack = true;
+			            left_rotate(x->__parent);
+			            x = this->__root;
+			        }
+			    }
+			    else
+			    {
+			        iterator *w = x->__parent->__left;
+			        if (!w->__isBlack)
+			        {
+			            w->__isBlack = true;
+			            x->__parent->__isBlack = false;
+			            right_rotate(x->__parent);
+			            w = x->__parent->__left;
+			        }
+			        if (w->__right->__isBlack && w->__left->__isBlack)
+			        {
+			            w->__isBlack = false;
+			            x = x->__parent;
+			        }
+			        else
+			        {
+			            if (w->__left->__isBlack)
+			            {
+			                w->__right->__isBlack = true;
+			                w->__isBlack = false;
+			                left_rotate(w);
+			                w = x->__parent->__left;
+			            }
+			            w->__isBlack = x->__parent->__isBlack;
+			            x->__parent->__isBlack = true;
+			            w->__left->__isBlack = true;
+			            right_rotate(x->__parent);
+			            x = __root;
+			        }
+			    }
+			}
+			    x->__isBlack = true;
+		}
+	
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
 		void delete_node(iterator position)
 		{
-		    bool 		oldColor = y->__isBlack;
 		    iterator 	*z = position;
 		    iterator 	*y = z;
-		    iterator 	*x = nullptr;
+		    bool 		oldColor = y->__isBlack;
+		    iterator 	*x = 0x0;
 
-		    if (z->__left == nullptr)
+		    if (z->__left == 0x0)
 		    {
 		        x = z->__right;
 		        switched(z, z->__right);
 		    }
-		    else if (z->__right == nullptr)
+		    else if (z->__right == 0x0)
 		    {
 		        x = z->__left;
 		        switched(z, z->__left);
@@ -384,5 +457,4 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 }
-
 #endif
