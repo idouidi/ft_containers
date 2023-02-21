@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/16 20:08:48 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/21 16:18:21 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@
 # include <iostream>    // for stL
 # include <vector>      // for vector
 # include <stack>       // for stack
-# include <map>      // for map
+# include <map>         // for map
 # include <fstream>     // for fd
 # include <cstdlib>     // for exit
 # include <cstring>     // for memcmp
 # include <sys/stat.h>  // for mdkir
 # include <sys/time.h>  // for gettimeofday
+# include <iomanip>     //for setw
 
 # include "./iterator.hpp"
 # include "./utils.hpp"

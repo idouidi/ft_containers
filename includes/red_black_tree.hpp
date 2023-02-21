@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/21 15:53:34 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/21 16:17:51 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ namespace ft
 
 // 📚 Returns the maximum number of elements that the tree can hold.
 // This is the maximum potential size the tree can reach due to known system.
-		size_type	max_size const { return (this->__alloc.max_size()); }
+		// size_type	max_size const { return (this->__alloc.max_size()); }  🚧 ??????????????????
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
 
@@ -443,7 +443,7 @@ namespace ft
 			return (end);
 		}
 
-		const_iterator upper_bound(const key_type& k)
+		const_iterator upper_bound(const key_type& k) const
 		{
 			const_iterator	node = this->cbegin();
 			const_iterator	cend = this->cend();
@@ -469,7 +469,7 @@ namespace ft
 			return (ft::pair<iterator, iterator>(lower_bound(k), upper_bound(k)));
 		}
 
-		pair<const_iterator,const_iterator> equal_range (const key_type& k) 
+		pair<const_iterator,const_iterator> equal_range (const key_type& k) const
 		{
 			return (ft::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k)));
 		}
@@ -712,13 +712,13 @@ namespace ft
 
 		    if (!node)
 		        return;
-		    if (node->__right != nullptr)
+		    if (node->__right)
 		        printTree(node->__right);
 		    std::cout << std::setw(6) << " ";
-		    if (node->__right != nullptr) {
+		    if (node->__right)
 		        std::cout << " /\n" << std::setw(6) << " ";
 		    std::cout << node->__pair.seconde << std::endl;
-		    if (node->__left != nullptr) {
+		    if (node->__left) {
 		        std::cout << std::setw(6) << " " << " \\\n";
 		        printTree(node->__left, 6);
 		    }

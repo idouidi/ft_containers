@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 17:03:39 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/21 12:35:46 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/21 16:16:41 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 fill constructor
-		Rb_tree_iterator(iterator_type node, iterator_type end): __node(node)
+		Rb_tree_iterator(iterator_type node): __node(node)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
