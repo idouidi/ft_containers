@@ -13,7 +13,11 @@
 #ifndef __VECTOR_HPP__
 # define __VECTOR_HPP__
 
-# include "./ftnspace.hpp"
+// # include "./ftnspace.hpp"	//my test
+
+# include "iterator.hpp"	//tester
+# include "utils.hpp"	//teser
+
 
 namespace ft
 {
@@ -190,7 +194,7 @@ namespace ft
 		void 					reserve (size_type n)
 		{
 			if (n > this->max_size())
-				throw (std::length_error("the parameter is greater than max_size()"));
+				throw (std::length_error("vector::reserve"));
 			else if (n > this->capacity())
 			{
 				pointer		tmp_start = this->__alloc.allocate(n);

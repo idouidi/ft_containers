@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:17:11 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/24 13:53:59 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/21 18:13:31 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #ifndef __UTILS_HPP__
 # define __UTILS_HPP__
 
-# include "./ftnspace.hpp"
+# include <iostream>
 
 namespace ft
 {
@@ -45,7 +45,6 @@ namespace ft
 		static const T                      value = v;
 		typedef T       					value_type;
 		typedef integral_constant< T, v > 	type;
-		// const operator T() { return v; } 🚧🚧
 	};
 
 	typedef integral_constant< bool, true > true_type;

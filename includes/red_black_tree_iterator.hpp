@@ -6,14 +6,16 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 17:03:39 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/21 16:16:41 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/21 21:34:11 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef __RED_BLACK_TREE_ITERATOR_HPP__
 # define __RED_BLACK_TREE_ITERATOR_HPP__
 
-# include "./ftnspace.hpp"
+// # include "./ftnspace.hpp"		//my test
+
+# include "iterator.hpp"		// tester
 
 
 namespace ft
@@ -91,7 +93,7 @@ namespace ft
 // 📚 Returns a const reference to the element pointed to by the Iterator;
         reference operator*() const
 		{
-			return (__node->__key);
+			return (this->__node->__pair);
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -99,7 +101,7 @@ namespace ft
 // 📚 Returns a const pointer to the element pointed to by the Iterator;
 		pointer operator->() const
 		{
-			return (&this->__node->__key);
+			return (&this->__node->__pair);
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/

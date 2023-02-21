@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/21 16:17:51 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/21 21:36:13 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 #ifndef __RED_BLACK_TREE_HPP__
 # define __RED_BLACK_TREE_HPP__
 
-# include "./ftnspace.hpp"
+// # include "./ftnspace.hpp"					// my test
+
+# include "red_black_tree_iterator.hpp"	// tester
+# include "utils.hpp"					// tester
 
 namespace ft
 {
@@ -128,7 +131,7 @@ namespace ft
 // 📚 Destructor
 		~Rb_tree()
 		{
-			clear_tree(__root);
+			this->clear();
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -142,24 +145,24 @@ namespace ft
 // 📚 Returns an iterator (i.e a node) referring to the first element in the tree.
 		iterator begin()
 		{
-			iterator tmp = this->__root;
+			node_type *tmp = this->__root;
 			if (tmp)
 			{
 				while (tmp->__left)
 					tmp = tmp->__left;
 			}
-			return (tmp);
+			return (iterator(tmp));
 		}
 
 		const_iterator cbegin() const
 		{
-			const_iterator tmp = this->__root;
+			node_type *tmp = this->__root;
 			if (tmp)
 			{
 				while (tmp->__left)
 					tmp = tmp->__left;
 			}
-			return (tmp);
+			return (const_iterator(tmp));
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -167,24 +170,24 @@ namespace ft
 // 📚 Returns an iterator (i.e a node) referring to the last element in the tree.
 		iterator end()
 		{
-			iterator tmp = this->__root;
+			node_type *tmp = this->__root;
 			if (tmp)
 			{
 				while (tmp->__right)
 					tmp = tmp->__right;
 			}
-			return (tmp);
+			return (iterator(tmp));
 		}
 
 		const_iterator cend() const
 		{
-			const_iterator tmp = this->__root;
+			node_type *tmp = this->__root;
 			if (tmp)
 			{
 				while (tmp->__right)
 					tmp = tmp->__right;
 			}
-			return (tmp);
+			return (const_iterator(tmp));
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -227,8 +230,8 @@ namespace ft
 
 		ft::pair<iterator, bool> insert(const pair_type& p)
 		{
-			iterator 	*parent = __root;
-    		iterator 	*current = __root;
+			node_type 	*parent = this->__root;
+    		node_type 	*current = this->__root;
     		bool 		isLeft = false;
 
     		while (current != 0x0)
@@ -247,7 +250,7 @@ namespace ft
     	    	else
     	    	    return ft::pair<iterator, bool>(iterator(current), false);
     		}
-    		current = __alloc.allocate(sizeof(iterator));
+    		current = __alloc.allocate(sizeof(node_type));
     		__alloc.construct(current, iterator(p, parent, 0x0, 0x0, true, isLeft));
     		if (parent == 0x0)
     		    __root = current;
@@ -313,7 +316,7 @@ namespace ft
 		{
 			key_compare		tmp_comp = this->__comp;
 			allocator_type	tmp_alloc = this->__alloc;
-			iterator		*tmp_root = this->__root;
+			node_type		*tmp_root = this->__root;
 			size_type		tmp_size = this->__size;
 
 			this->__comp = x.__comp;
@@ -349,7 +352,7 @@ namespace ft
 // an iterator to it if found, otherwise it returns an iterator to end().
 		iterator find(const key_type& k)
 		{
-			iterator *node = this->__root;
+			node_type *node = this->__root;
 			while (node)
 			{
 				if (this->__comp(k, node->__pair.first))
@@ -364,7 +367,7 @@ namespace ft
 		
 		const_iterator find(const key_type& k) const 
 		{
-			const_iterator *node = this->__root;
+			node_type *node = this->__root;
 			while (node)
 			{
 				if (this->__comp(k, node->__pair.first))
@@ -432,6 +435,7 @@ namespace ft
 			iterator	node = this->begin();
 			iterator	end = this->end();
 
+			
 			while (node != end())
 			{
 				if (this->__comp(node->__pair.first, k) 
@@ -490,7 +494,7 @@ namespace ft
 		private:
 			key_compare												__comp;
 			allocator_type											__alloc;
-			iterator												*__root;
+			node_type												*__root;
 			size_type												__size;
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -501,9 +505,9 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-		void left_rotate(iterator *x)
+		void left_rotate(node_type *x)
 		{
-		    iterator *y = x->__right;
+		    node_type *y = x->__right;
 
 		    x->__right = y->__left;
 		    if (y->__left != __null)
@@ -521,9 +525,9 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-		void	right_rotate(iterator *x)
+		void	right_rotate(node_type *x)
 		{
-		    iterator *y = x->__left;
+		    node_type *y = x->__left;
 
 		    x->__left = y->__right;
 		    if (y->__right)
@@ -542,9 +546,9 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 
-		void	insert_fixup(iterator *z)
+		void	insert_fixup(node_type *z)
 		{
-		    iterator *y = 0x0;
+		    node_type *y = 0x0;
 
 		    while (z != this->__root && z->__parent->__isBlack == false)
 		    {
@@ -598,7 +602,7 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 		
-		void switched(iterator *u, iterator *v)
+		void switched(node_type *u, node_type *v)
 		{
     		if (!u->__parent)
     		    __root = v;
@@ -613,7 +617,7 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // find the smallest elem from the tree
-		iterator *min(const iterator* z) const
+		iterator *min(const node_type* z) const
 		{
 			if (!z)
 				return (0x0);
@@ -624,13 +628,13 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-		void	erase_fixup(iterator *x)
+		void	erase_fixup(node_type *x)
 		{
 			while (x != this->__root && x->__isBlack)
 			{
 			    if (x == x->__parent->__left)
 			    {
-			        iterator *w = x->__parent->__right;
+			        node_type *w = x->__parent->__right;
 			        if (!w->__isBlack)
 			        {
 			            w->__isBlack = true;
@@ -661,7 +665,7 @@ namespace ft
 			    }
 			    else
 			    {
-			        iterator *w = x->__parent->__left;
+			        node_type *w = x->__parent->__left;
 			        if (!w->__isBlack)
 			        {
 			            w->__isBlack = true;
@@ -694,7 +698,7 @@ namespace ft
 			    x->__isBlack = true;
 		}
 
-		void to_clear(iterator *node)
+		void to_clear(node_type *node)
 		{
 			if (node)
 			{
@@ -706,23 +710,23 @@ namespace ft
 			}
 		}
 
-		void printTree() 
-		{
-			iterator *node = this->__root;
+		// void printTree() 
+		// {
+		// 	node_type *node = this->__root;
 
-		    if (!node)
-		        return;
-		    if (node->__right)
-		        printTree(node->__right);
-		    std::cout << std::setw(6) << " ";
-		    if (node->__right)
-		        std::cout << " /\n" << std::setw(6) << " ";
-		    std::cout << node->__pair.seconde << std::endl;
-		    if (node->__left) {
-		        std::cout << std::setw(6) << " " << " \\\n";
-		        printTree(node->__left, 6);
-		    }
-		}
+		//     if (!node)
+		//         return;
+		//     if (node->__right)
+		//         printTree(node->__right);
+		//     std::cout << std::setw(6) << " ";
+		//     if (node->__right)
+		//         std::cout << " /\n" << std::setw(6) << " ";
+		//     std::cout << node->__pair.seconde << std::endl;
+		//     if (node->__left) {
+		//         std::cout << std::setw(6) << " " << " \\\n";
+		//         printTree(node->__left, 6);
+		//     }
+		// }
 	};
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 }

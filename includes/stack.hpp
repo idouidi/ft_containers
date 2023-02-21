@@ -6,14 +6,16 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 02:11:41 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/09 14:43:53 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/21 18:08:58 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __STACK_HPP__
 #define __STACK_HPP__
 
-# include "./ftnspace.hpp"
+// # include "./ftnspace.hpp"	//my test
+
+# include "vector.hpp"	// tester
 
 namespace ft
 {
