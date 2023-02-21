@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:02:40 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/16 20:24:26 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/21 15:55:34 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ template <  class Key,
 				typedef typename allocator_type::const_pointer										const_pointer;
 				typedef typename ft::Rb_tree<Key, T, Compare, Alloc>								tree;
 				typedef typename ft::Rb_tree_iterator<ft::Node<Key, T> >::iterator					iterator;
-				typedef typename ft::Rb_tree_iterator<ft::Node<Key, T> >::const_iterator			const_iterator;
+				typedef typename ft::Rb_tree_const_iterator<ft::Node<Key, T> >::const_iterator		const_iterator;
 				typedef typename ft::reverse_iterator<iterator>										reverse_iterator;
 				typedef typename ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 			
@@ -134,15 +134,15 @@ template <  class Key,
 
 // 📚 Returns a reverse iterator to the first element of the reversed map. 
 // It corresponds to the last element of the non-reversed map. 
-		reverse_iterator rbegin() { return (reverse_iterator(this->end())); }
-		const_reverse_iterator crbegin() { return (const_reverse_iterator(this->end())); }
+		reverse_iterator rbegin() { return (reverse_iterator(this->__tree.end())); }
+		const_reverse_iterator crbegin() { return (const_reverse_iterator(this->__tree.end())); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns a reverse iterator to the last element of the reversed map. 
 // It corresponds to the first element of the non-reversed map. 
-		reverse_iterator rend() { return (reverse_iterator(this->begin())); }
-		const_reverse_iterator crend() { return (const_reverse_iterator(this->begin())); }
+		reverse_iterator rend() { return (reverse_iterator(this->__tree.begin())); }
+		const_reverse_iterator crend() { return (const_reverse_iterator(this->t__tree.begin())); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 

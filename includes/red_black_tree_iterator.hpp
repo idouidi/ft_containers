@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 17:03:39 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/16 20:15:13 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/21 12:35:46 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,20 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
 
 // 📚 default constructor
-		Rb_tree_iterator(): __node(0x0), __end(0x0)
+		Rb_tree_iterator(): __node(0x0)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 fill constructor
-		Rb_tree_iterator(iterator_type node, iterator_type end): __node(node), __end(end)
+		Rb_tree_iterator(iterator_type node, iterator_type end): __node(node)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 copy constructor
 
-		Rb_tree_iterator(const Rb_tree_iterator& rbt_it): __node(rbt_it.__node), __end(rbt_it.__end)
+		Rb_tree_iterator(const Rb_tree_iterator& rbt_it): __node(rbt_it.__node)
 		{}
 
 // operator assigning copy
@@ -58,7 +58,6 @@ namespace ft
 			if (this != &rbt_it)
 			{
 				this->__node = rbt_it.__node;
-				this->__end = rbt_it.__end;
 			}
 			return (*this);
 		}
@@ -146,7 +145,6 @@ namespace ft
 
 		private:
 			iterator_type														__node;
-			iterator_type														__end;
 		
 
 		void	icrem_iterator()
@@ -232,7 +230,6 @@ namespace ft
 			if (this != &rbt_it)
 			{
 				this->__node = rbt_it.__node;
-				this->__end = rbt_it.__end;
 			}
 			return (*this);
 		}
@@ -302,7 +299,7 @@ namespace ft
 // 📚 Postdecrement the iterator to the previous elem
 		Rb_tree_const_iterator&	operator--(int)
 		{
-			Rb_tree_const_iterator(tmp);
+			Rb_tree_const_iterator tmp;
 
 			tmp = *this;
 			decrem_iterator();
