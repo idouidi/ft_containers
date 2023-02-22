@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:02:40 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/21 21:00:53 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/22 21:14:56 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,20 +124,20 @@ template <  class Key,
 
 // 📚 Returns an iterator referring to the first element in the map container.
 		iterator begin() { return(this->__tree.begin()); }
-		const_iterator cbegin() { return (this->__tree.cbegin()); }
+		const_iterator begin() const { return (this->__tree.cbegin()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns an iterator referring to the last element in the map container.
 		iterator end() { return(this->__tree.end()); }
-		const_iterator cend() { return (this->__tree.cend()); }
+		const_iterator end() const { return (this->__tree.cend()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns a reverse iterator to the first element of the reversed map. 
 // It corresponds to the last element of the non-reversed map. 
 		reverse_iterator rbegin() { return (reverse_iterator(this->__tree.end())); }
-		const_reverse_iterator crbegin() { return (const_reverse_iterator(this->__tree.end())); }
+		const_reverse_iterator rbegin() const { return (const_reverse_iterator(this->__tree.cend())); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -261,7 +261,7 @@ template <  class Key,
 		{
 			iterator node = this->__tree.find(k);
 
-			if (node)
+			if (node != 0x0)
 			{
 				(this->__tree.erase(node));
 				return (1);

@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/22 18:06:06 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/22 21:11:03 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ namespace ft
 			typedef std::size_t													size_type;
 			typedef typename node_type::pair_type								pair_type;
 			typedef typename ft::Rb_tree_iterator<node_type>					iterator;
-			typedef typename ft::Rb_tree_const_iterator<const node_type>		const_iterator;
+			typedef typename ft::Rb_tree_const_iterator<node_type>				const_iterator;
 			typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
@@ -124,7 +124,7 @@ namespace ft
 
 // 📚 default constructor
 		Rb_tree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(), const node_alloc& Node_alloc = node_alloc() )
-		 :__comp(comp) , __alloc(alloc), __node_alloc(Node_alloc),__root(0x0), __size(0)
+		 :__comp(comp) , __node_alloc(Node_alloc), __alloc(alloc),__root(0x0), __size(0)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -267,47 +267,72 @@ namespace ft
 	
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-		void erase(node_type *position)
-		{
-		    node_type 	*z = position;
-		    node_type 	*y = z;
-		    node_type 	*x = 0x0;
-		    bool 		oldColor = y->__isBlack;
+void erase(iterator position)
+{
+    // On trouve le noeud à supprimer
+    node_type* node_to_delete = position.base();
 
-		    if (z->__left == 0x0)
-		    {
-		        x = z->__right;
-		        switched(z, z->__right);
-		    }
-		    else if (z->__right == 0x0)
-		    {
-		        x = z->__left;
-		        switched(z, z->__left);
-		    }
-		    else
-		    {
-		        y = min(z->__right);
-		        oldColor = y->__isBlack;
-		        x = y->__right;
-		        if (y->__parent == z)
-		            x->__parent = y;
-		        else
-		        {
-		            switched(y, y->__right);
-		            y->__right = z->__right;
-		            y->__right->__parent = y;
-		        }
-		        switched(z, y);
-		        y->__left = z->__left;
-		        y->__left->__parent = y;
-		        y->__isBlack = z->__isBlack;
-		    }
-		    if (oldColor == true)
-		        erase_fixup(x); // 🚧 fonction to check the balance of the tree
-		    this->__alloc.destroy(z);
-		    this->__alloc.deallocate(z, 1);
-		    this->__size -= 1;
-		}
+    // On déclare les variables nécessaires pour la suppression
+    node_type* successor = 0x0;
+    node_type* successor_child = 0x0;
+    bool original_color = node_to_delete->__isBlack;
+
+    if (node_to_delete->__left == 0x0)
+    {
+        // Si le noeud à supprimer n'a pas de fils gauche, on peut simplement
+        // remplacer le noeud à supprimer par son fils droit
+        successor_child = node_to_delete->__right;
+        replace_subtree(node_to_delete, node_to_delete->__right);
+    }
+    else if (node_to_delete->__right == 0x0)
+    {
+        // Si le noeud à supprimer n'a pas de fils droit, on peut simplement
+        // remplacer le noeud à supprimer par son fils gauche
+        successor_child = node_to_delete->__left;
+        replace_subtree(node_to_delete, node_to_delete->__left);
+    }
+    else
+    {
+        // Si le noeud à supprimer a deux fils, on doit trouver son successeur
+        successor = node_to_delete->__right;
+        while (successor->__left != 0x0)
+            successor = successor->__left;
+
+        // On sauvegarde la couleur originale du successeur
+        original_color = successor->__isBlack;
+
+        // On met le successeur à la place du noeud à supprimer
+        successor_child = successor->__right;
+        if (successor->__parent == node_to_delete)
+            successor_child->__parent = successor;
+        else
+        {
+            replace_subtree(successor, successor->__right);
+            successor->__right = node_to_delete->__right;
+            successor->__right->__parent = successor;
+        }
+        replace_subtree(node_to_delete, successor);
+        successor->__left = node_to_delete->__left;
+        successor->__left->__parent = successor;
+        successor->__isBlack = node_to_delete->__isBlack;
+    }
+
+    // Si on a supprimé un noeud noir, il peut y avoir une violation de la
+    // propriété 5 de l'arbre rouge-noir. On appelle donc la fonction
+    // erase_fixup pour la rétablir.
+    if (original_color == true)
+        erase_fixup(successor_child);
+
+    // On libère la mémoire allouée pour le noeud supprimé
+    this->__node_alloc.destroy(node_to_delete);
+    this->__node_alloc.deallocate(node_to_delete, 1);
+
+    // On met à jour la taille de l'arbre
+    this->__size -= 1;
+}
+
+
+
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -386,8 +411,8 @@ namespace ft
 // 📚 Searches the container for elements with a key equivalent to k and 
 // returns the number of matches.
 		size_type count(const key_type& k) const
-		{
-			bool _count = find(k) != this->end() ? 1 : 0; 
+		{	
+			size_type _count = find(k) != this->cend() ? 1 : 0; 
 			return (_count);
 		}
 
@@ -606,17 +631,21 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 		
-		void switched(node_type *u, node_type *v)
-		{
-    		if (!u->__parent)
-    		    __root = v;
-    		else if (u == u->__parent->__left)
-    		    u->__parent->__left = v;
-    		else
-    		    u->__parent->__right = v;
-    		if (v)
-    		    v->__parent = u->__parent;
-		}
+void replace_subtree(node_type *node_to_replace, node_type *replacement_node) 
+{
+    if (node_to_replace == this->__root)
+        this->__root = replacement_node;
+    else if (node_to_replace == node_to_replace->__parent->__left)
+	{
+        node_to_replace->__parent->__left = replacement_node;
+    }
+	else 
+	{
+        node_to_replace->__parent->__right = replacement_node;
+    }
+    replacement_node->__parent = node_to_replace->__parent;
+}
+
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
