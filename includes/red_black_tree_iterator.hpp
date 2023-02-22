@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 17:03:39 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/21 21:34:11 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/22 18:12:23 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ namespace ft
     class Rb_tree_iterator
     {
         public:
-			typedef typename ft::iterator_traits<Iterator>::difference_type		differeence_type;
-        	typedef typename ft::iterator_traits<Iterator>::value_type			value_type;
-			typedef typename ft::iterator_traits<Iterator>::value_type*			pointer;
-			typedef typename ft::iterator_traits<Iterator>::value_type&			reference;
-			typedef typename ft::iterator_traits<Iterator>::iterator_category	iterator_category;
-			typedef Iterator*													iterator_type;
+        	typedef std::ptrdiff_t              	difference_type;
+        	typedef typename Iterator::pair_type	value_type;
+        	typedef value_type*                 	pointer;
+        	typedef value_type&                 	reference;
+        	typedef random_access_iterator_tag  	iterator_category;  
+			typedef Iterator*						iterator_type;
 
         /*	
 		*	📌 CONSTRUCTOR / DESTRCUTOR
@@ -101,7 +101,7 @@ namespace ft
 // 📚 Returns a const pointer to the element pointed to by the Iterator;
 		pointer operator->() const
 		{
-			return (&this->__node->__pair);
+			return (&(this->__node->__pair));
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -114,7 +114,7 @@ namespace ft
 		}
 
 // 📚 PostIncrement the iterator to the next elem
-		Rb_tree_iterator&	operator++(int)
+		Rb_tree_iterator	operator++(int)
 		{
 			Rb_tree_iterator tmp;
 
@@ -133,7 +133,7 @@ namespace ft
 		}
 
 // 📚 Postdecrement the iterator to the previous elem
-		Rb_tree_iterator&	operator--(int)
+		Rb_tree_iterator	operator--(int)
 		{
 			Rb_tree_iterator tmp;
 
@@ -280,7 +280,7 @@ namespace ft
 		}
 
 // 📚 PostIncrement the iterator to the next elem
-		Rb_tree_const_iterator&	operator++(int)
+		Rb_tree_const_iterator	operator++(int)
 		{
 			Rb_tree_const_iterator tmp;
 
@@ -299,7 +299,7 @@ namespace ft
 		}
 
 // 📚 Postdecrement the iterator to the previous elem
-		Rb_tree_const_iterator&	operator--(int)
+		Rb_tree_const_iterator	operator--(int)
 		{
 			Rb_tree_const_iterator tmp;
 

@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/21 21:36:13 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/22 18:06:06 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace ft
 		node_type*								__left;
 		node_type*								__right;
 		bool									__isBlack;
-		bool									__isLeftChlid;
+		bool									__isLeftChild;
 
 
 		/*	
@@ -42,15 +42,15 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 default constructor
-		Node(const pair_type& pair = pair_type()): __pair(pair), __parent(0x0), __left(0x0), __right(0x0), __isBlack(false),
-		__isLeftChlid(false)
+		Node(const Key k, const Value v): __pair(k, v), __parent(0x0), __left(0x0), __right(0x0), __isBlack(false),
+		__isLeftChild(false)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Copy constructor
-		Node(const Node& n): __pair(n.pair), __parent(n.__parent), __left(n.__left), __right(n.__right),
-		__isBlack(n.__isBlack), __isLeftChlid(n.__isLeftChlid)
+		Node(const Node& n): __pair(n.__pair), __parent(n.__parent), __left(n.__left), __right(n.__right),
+		__isBlack(n.__isBlack), __isLeftChild(n.__isLeftChild)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -97,21 +97,22 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
 
-	template <typename Key, typename Value, typename Compare, class Allocator>
+	template <typename Key, typename T, typename Compare, class Allocator>
 	class Rb_tree
 	{
 		public:
-			typedef Key														key_type;
-			typedef Value													value_type;
-			typedef Compare													key_compare;
-			typedef Allocator												allocator_type;
-			typedef std::size_t												size_type;
-			typedef ft::Node<key_type, value_type>							node_type;
-			typedef typename node_type::pair_type							pair_type;
-			typedef typename ft::Rb_tree_iterator<node_type>				iterator;
-			typedef typename ft::Rb_tree_const_iterator<const node_type>	const_iterator;
-			typedef typename ft::reverse_iterator<iterator>					reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef Key															key_type;
+			typedef T															value_type;
+			typedef Compare														key_compare;
+			typedef Allocator													allocator_type;
+			typedef ft::Node<key_type, value_type>								node_type;
+			typedef typename allocator_type::template rebind<node_type>::other 	node_alloc; //redifine type of the allocation
+			typedef std::size_t													size_type;
+			typedef typename node_type::pair_type								pair_type;
+			typedef typename ft::Rb_tree_iterator<node_type>					iterator;
+			typedef typename ft::Rb_tree_const_iterator<const node_type>		const_iterator;
+			typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
 
@@ -122,8 +123,8 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
 
 // 📚 default constructor
-		Rb_tree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
-		 :__comp(comp) , __alloc(alloc), __root(0x0), __size(0)
+		Rb_tree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(), const node_alloc& Node_alloc = node_alloc() )
+		 :__comp(comp) , __alloc(alloc), __node_alloc(Node_alloc),__root(0x0), __size(0)
 		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -234,7 +235,7 @@ namespace ft
     		node_type 	*current = this->__root;
     		bool 		isLeft = false;
 
-    		while (current != 0x0)
+    		while (current)
     		{
     	    	parent = current;
     	    	if (this->__comp(p.first, current->__pair.first))
@@ -250,10 +251,10 @@ namespace ft
     	    	else
     	    	    return ft::pair<iterator, bool>(iterator(current), false);
     		}
-    		current = __alloc.allocate(sizeof(node_type));
-    		__alloc.construct(current, iterator(p, parent, 0x0, 0x0, true, isLeft));
+    		current = this->__node_alloc.allocate(sizeof(node_type));
+    		this->__node_alloc.construct(current, node_type(p.first, p.second));
     		if (parent == 0x0)
-    		    __root = current;
+    		    this->__root = current;
     		else if (isLeft)
     		    parent->__left = current;
     		else
@@ -266,12 +267,12 @@ namespace ft
 	
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-		void erase(iterator position)
+		void erase(node_type *position)
 		{
-		    iterator 	*z = position;
-		    iterator 	*y = z;
+		    node_type 	*z = position;
+		    node_type 	*y = z;
+		    node_type 	*x = 0x0;
 		    bool 		oldColor = y->__isBlack;
-		    iterator 	*x = 0x0;
 
 		    if (z->__left == 0x0)
 		    {
@@ -396,33 +397,35 @@ namespace ft
 // not considered to go before k (i.e., either it is equivalent or goes after).
 		iterator lower_bound(const key_type& k)
 		{
-			iterator	node = this->begin();
-			iterator	end = this->end();
+			iterator	it  = this->begin();
+			iterator	ite = this->end();
 
-			while (node != end)
+			
+			while (it != ite)
 			{
-				if (this->__comp(node->__pair.first, k))
-					node++;
+				if (this->__comp(k, it->first))
+					it++;
 				else
-					return (node);
+					return (it);
 			}
-			return (end);
+			return (ite);
 			
 		}
 
 		const_iterator lower_bound(const key_type& k) const
 		{
-			const_iterator	node = this->cbegin();
-			const_iterator	cend = this->cend();
+			const_iterator	it  = this->begin();
+			const_iterator	ite = this->end();
 
-			while (node != cend)
+			
+			while (it != ite)
 			{
-				if (this->__comp(node->__pair.first, k))
-					node++;
+				if (this->__comp(k, it->first))
+					it++;
 				else
-					return (node);
+					return (it);
 			}
-			return (cend);
+			return (ite);
 			
 		}
 
@@ -432,35 +435,35 @@ namespace ft
 // is considered to go after k.
 		iterator upper_bound(const key_type& k)
 		{
-			iterator	node = this->begin();
-			iterator	end = this->end();
+			iterator	it = this->begin();
+			iterator	ite = this->end();
 
 			
-			while (node != end())
+			while (it != ite)
 			{
-				if (this->__comp(node->__pair.first, k) 
-				|| ((!this->__comp(node->__pair.first, k)) && (!this->__comp(k, node->__pair.first))))
-					node++;
+				if (this->__comp(it->first, k) 
+				|| ((!this->__comp(it->first, k)) && (!this->__comp(k, it->first))))
+					it++;
 				else
-					return (node);
+					return (it);
 			}
-			return (end);
+			return (ite);
 		}
 
 		const_iterator upper_bound(const key_type& k) const
 		{
-			const_iterator	node = this->cbegin();
-			const_iterator	cend = this->cend();
+			const_iterator	it = this->cbegin();
+			const_iterator	ite = this->cend();
 
-			while (node != end())
+			while (it != ite)
 			{
-				if (this->__comp(node->__pair.first, k) 
-				|| ((!this->__comp(node->__pair.first, k)) && (!this->__comp(k, node->__pair.first))))
-					node++;
+				if (this->__comp(it->first, k) 
+				|| ((!this->__comp(it->first, k)) && (!this->__comp(k, it->first))))
+					it++;
 				else
-					return (node);
+					return (it);
 			}
-			return (cend);			
+			return (ite);	
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -493,6 +496,7 @@ namespace ft
 
 		private:
 			key_compare												__comp;
+			node_alloc												__node_alloc;
 			allocator_type											__alloc;
 			node_type												*__root;
 			size_type												__size;
@@ -515,7 +519,7 @@ namespace ft
 		    y->__parent = x->__parent;
 		    if (x->__parent == __null)
 		        __root = y;
-		    else if (x->__isLeftChild)
+			else if (x->__isLeftChild)
 		        x->__parent->__left = y;
 		    else
 		        x->__parent->__right = y;
@@ -704,8 +708,8 @@ namespace ft
 			{
 				to_clear(node->__left);
 				to_clear(node->__right);
-				this->__alloc.destroy(node);
-				this->__alloc.deallocate(node, 1);
+				this->__node_alloc.destroy(node);
+				this->__node_alloc.deallocate(node, 1);
 				node = 0x0;
 			}
 		}
