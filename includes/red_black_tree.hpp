@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/22 21:11:03 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/23 14:04:02 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,20 +101,20 @@ namespace ft
 	class Rb_tree
 	{
 		public:
-			typedef Key															key_type;
-			typedef T															value_type;
-			typedef Compare														key_compare;
-			typedef Allocator													allocator_type;
-			typedef ft::Node<key_type, value_type>								node_type;
-			typedef typename allocator_type::template rebind<node_type>::other 	node_alloc; //redifine type of the allocation
-			typedef std::size_t													size_type;
-			typedef typename node_type::pair_type								pair_type;
-			typedef typename ft::Rb_tree_iterator<node_type>					iterator;
-			typedef typename ft::Rb_tree_const_iterator<node_type>				const_iterator;
-			typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+			typedef Key																key_type;
+			typedef T																value_type;
+			typedef Compare															key_compare;
+			typedef Allocator														allocator_type;
+			typedef ft::Node<key_type, value_type>									node_type;
+			typedef typename allocator_type::template rebind<node_type>::other 		node_alloc; //redifine type of the allocation
+			typedef std::size_t														size_type;
+			typedef typename node_type::pair_type									pair_type;
+			typedef typename ft::Rb_tree_iterator<node_type>						iterator;
+			typedef typename ft::Rb_tree_const_iterator<node_type>					const_iterator;
+			typedef typename ft::Rb_tree_reverse_iterator<iterator>					reverse_iterator;
+			typedef typename ft::Rb_tree_const_reverse_iterator<const_iterator>		const_reverse_iterator;
 
-/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 		/*	
 		*	📌 CONSTRUCTOR / DESTRCUTOR
@@ -155,7 +155,7 @@ namespace ft
 			return (iterator(tmp));
 		}
 
-		const_iterator cbegin() const
+		const_iterator begin() const
 		{
 			node_type *tmp = this->__root;
 			if (tmp)
@@ -180,7 +180,7 @@ namespace ft
 			return (iterator(tmp));
 		}
 
-		const_iterator cend() const
+		const_iterator end() const
 		{
 			node_type *tmp = this->__root;
 			if (tmp)
@@ -190,6 +190,11 @@ namespace ft
 			}
 			return (const_iterator(tmp));
 		}
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+		reverse_iterator	rbegin(void) { return (reverse_iterator(this->end())); }
+
+		const_reverse_iterator	rbegin(void) const { return (const_reverse_iterator(this->end())); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -403,7 +408,7 @@ void erase(iterator position)
 				else
 					return const_iterator(node);
 			}
-			return (this->cend());
+			return (const_iterator(this->end()));
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -412,7 +417,7 @@ void erase(iterator position)
 // returns the number of matches.
 		size_type count(const key_type& k) const
 		{	
-			size_type _count = find(k) != this->cend() ? 1 : 0; 
+			size_type _count = find(k) != const_iterator(this->end()) ? 1 : 0; 
 			return (_count);
 		}
 

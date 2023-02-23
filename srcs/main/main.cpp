@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/22 20:18:39 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/23 13:46:59 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ int main()
     vector_tester();
     stack_tester();
 
-    ft::map<int,int> mp;
-    mp.count(4);
+
     return (0);
 }

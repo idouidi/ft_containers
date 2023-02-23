@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:02:40 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/22 21:14:56 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/23 13:59:40 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ template <  class Key,
 				typedef typename ft::Rb_tree<Key, T, Compare, Alloc>								tree;
 				typedef typename tree::iterator														iterator;
 				typedef typename tree::const_iterator												const_iterator;
-				typedef typename ft::reverse_iterator<iterator>										reverse_iterator;
-				typedef typename ft::reverse_iterator<const_iterator>								const_reverse_iterator;
+				typedef typename tree::reverse_iterator												reverse_iterator;
+				typedef typename tree::const_reverse_iterator										const_reverse_iterator;
 			
 			private:
 				key_compare																			__comp;
@@ -124,27 +124,27 @@ template <  class Key,
 
 // 📚 Returns an iterator referring to the first element in the map container.
 		iterator begin() { return(this->__tree.begin()); }
-		const_iterator begin() const { return (this->__tree.cbegin()); }
+		const_iterator begin() const { return (const_iterator(this->__tree.begin())); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns an iterator referring to the last element in the map container.
 		iterator end() { return(this->__tree.end()); }
-		const_iterator end() const { return (this->__tree.cend()); }
+		const_iterator end() const { return (const_iterator(this->__tree.end())); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns a reverse iterator to the first element of the reversed map. 
 // It corresponds to the last element of the non-reversed map. 
 		reverse_iterator rbegin() { return (reverse_iterator(this->__tree.end())); }
-		const_reverse_iterator rbegin() const { return (const_reverse_iterator(this->__tree.cend())); }
+		const_reverse_iterator rbegin() const { return (const_reverse_iterator(this->__tree.end())); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns a reverse iterator to the last element of the reversed map. 
 // It corresponds to the first element of the non-reversed map. 
 		reverse_iterator rend() { return (reverse_iterator(this->__tree.begin())); }
-		const_reverse_iterator crend() { return (const_reverse_iterator(this->t__tree.begin())); }
+		const_reverse_iterator rend() const { return (const_reverse_iterator(this->__tree.begin())); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
