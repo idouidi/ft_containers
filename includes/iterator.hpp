@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 13:28:30 by idouidi           #+#    #+#             */
-/*   Updated: 2023/01/24 21:07:20 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/24 01:06:26 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,35 +34,34 @@ namespace ft
     *   reference           : The type of a reference to an element the iterator can point to.
     *   iterator_category   : It can be imput_iterator/output_iterator/forward_iterator/bidirectional_iterator/random_acces_iterator
     *       *       *       *       *       *       *       *       */
-    template <class Iterator>
-    struct iterator_traits 
-    {
-        typedef std::ptrdiff_t              difference_type;
-        typedef Iterator                    value_type;
-        typedef value_type*                 pointer;
-        typedef value_type&                 reference;
-        typedef random_access_iterator_tag  iterator_category;  
-    };
-
+	template <class Iterator> 
+	class iterator_traits{
+		public:
+			typedef typename Iterator::difference_type      difference_type;
+			typedef typename Iterator::value_type           value_type;
+			typedef typename Iterator::pointer              pointer;
+			typedef typename Iterator::reference            reference;
+			typedef typename Iterator::iterator_category    iterator_category;
+	};
 
     template < class T >
     struct iterator_traits< T * >
     {
-        typedef std::ptrdiff_t              difference_type;
-        typedef T                           value_type;
-        typedef value_type*                 pointer;
-        typedef value_type&                 reference;
-        typedef random_access_iterator_tag  iterator_category;  
+        typedef std::ptrdiff_t                              difference_type;
+        typedef T                                           value_type;
+        typedef value_type*                                 pointer;
+        typedef value_type&                                 reference;
+        typedef random_access_iterator_tag                  iterator_category;  
     };
 
     template < class T >
     struct iterator_traits< const T * >
     {
-        typedef std::ptrdiff_t              difference_type;
-        typedef T                           value_type;
-        typedef const value_type*           pointer;
-        typedef const value_type&           reference;
-        typedef random_access_iterator_tag  iterator_category;     
+        typedef std::ptrdiff_t                              difference_type;
+        typedef T                                           value_type;
+        typedef const value_type*                           pointer;
+        typedef const value_type&                           reference;
+        typedef random_access_iterator_tag                  iterator_category;     
     };
 
 
@@ -135,14 +134,6 @@ namespace ft
        // 📚 Returns a copy of the base iterator.
        iterator_type base() const { return this->__elem; }
 
-       // 📚 Returns a reference to the element pointed to by the iterator.
-        reference operator*() const
-       {
-            iterator_type tmp;
-
-            tmp = (this->__elem);
-            return *(--tmp);
-       }
 
        // 📚 Returns a reverse iterator pointing to the element located n 
        //   positions away from the element the iterator currently points to.
@@ -192,6 +183,14 @@ namespace ft
             return (*this);
        }
 
+       // 📚 Returns a reference to the element pointed to by the iterator.
+        reference operator*() const
+       {
+            iterator_type tmp;
+
+            tmp = (this->__elem);
+            return *(--tmp);
+       }
        // 📚 Returns a pointer to the element pointed to by the iterator (in order to access one of its members).
        pointer operator->() const { return &(operator*()); }
 

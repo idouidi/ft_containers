@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:17:11 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/21 18:13:31 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/23 22:32:01 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,17 @@ namespace ft
 		return true;
 	}
 
-	template <class InputIterator1, class InputIterator2, class BinaryPredicate>
-	bool equal (InputIterator1 first1, InputIterator1 last1,InputIterator2 first2, BinaryPredicate pred)
+	template <class InputIterator1, class InputIterator2>
+	bool equal (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2)
 	{
-		for (; first1 != last1; ++first1, ++first2)
-			if (!pred(*first1,*first2))
+		while (first1 != last1)
+		{
+			if (first2 == last2 || *first1 != *first2)
 				return false;
-		return true;
+			first1++;
+			first2++;
+		}
+		return (first2 == last2);
 	}
 
 /*     :      :      :   LEXICOGRAPHICAL_COMPARE   :      :      	:
@@ -173,9 +177,12 @@ namespace ft
 		second_type	second;
 
 		pair(): first(), second() {};
+
 		pair (const first_type& a, const second_type& b): first(a), second(b) {};
+	
 		template <class U, class V>
 		pair(const pair<U, V>& pr): first(pr.first), second(pr.second) {};
+
 		pair& operator=(const pair& pr) 
 		{
 			first = pr.first;
@@ -183,20 +190,56 @@ namespace ft
 			return *this;
 		}
 
+		~pair(){}
+
 	};
-
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 	template < class T1, class T2 >
-	ft::pair< T1, T2 > make_pair(T1 x, T2 y)
-	{
-		return (ft::pair< T1, T2 >(x, y));
-		}
+	ft::pair< T1, T2 > make_pair(T1 x, T2 y) { return (ft::pair< T1, T2 >(x, y)); }
 
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+	template <class _T1, class _T2>
+	bool operator==(const ft::pair<_T1,_T2>& x, const ft::pair<_T1,_T2>& y)
+	{
+		return x.first == y.first && x.second == y.second;
+	}
+
+	template <class _T1, class _T2>
+	bool operator!=(const ft::pair<_T1,_T2>& x, const ft::pair<_T1,_T2>& y)
+	{
+		return !(x == y);
+	}
+
+	template <class _T1, class _T2>
+	bool operator< (const ft::pair<_T1,_T2>& x, const ft::pair<_T1,_T2>& y)
+	{
+		return x.first < y.first || (!(y.first < x.first) && x.second < y.second);
+	}
+
+	template <class _T1, class _T2>
+	bool operator> (const ft::pair<_T1,_T2>& x, const ft::pair<_T1,_T2>& y)
+	{
+		return y < x;
+	}
+
+	template <class _T1, class _T2>
+	bool operator>=(const ft::pair<_T1,_T2>& x, const ft::pair<_T1,_T2>& y)
+	{
+		return !(x < y);
+	}
+
+	template <class _T1, class _T2>
+	bool operator<=(const ft::pair<_T1,_T2>& x, const ft::pair<_T1,_T2>& y)
+	{
+		return !(y < x);
+	}
 
 /*     :      :      :   UTILS FUNCTIONS    :      :       :
 :
 :		:		:		:		:		:		:		:		*/
     template < class InputIterator >
-    typename ft::iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator last)
+    typename InputIterator::difference_type distance(InputIterator first, InputIterator last)
     {
         typename ft::iterator_traits<InputIterator>::difference_type distIt = 0;
         for(; first != last; first++, distIt++)

@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/23 14:04:02 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/24 00:03:42 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,8 @@ namespace ft
 
 			bool		operator!=(const node_type& n) const 
 			{
-				return (!(this == n));
+   				 return (this->__pair.first != n->__pair.first || this->__pair.second != n.__pair.second);
 			}
-
 	};
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
@@ -111,8 +110,8 @@ namespace ft
 			typedef typename node_type::pair_type									pair_type;
 			typedef typename ft::Rb_tree_iterator<node_type>						iterator;
 			typedef typename ft::Rb_tree_const_iterator<node_type>					const_iterator;
-			typedef typename ft::Rb_tree_reverse_iterator<iterator>					reverse_iterator;
-			typedef typename ft::Rb_tree_const_reverse_iterator<const_iterator>		const_reverse_iterator;
+			typedef typename ft::reverse_iterator<iterator>							reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -208,7 +207,6 @@ namespace ft
 		bool		empty() const { return (this->__size == 0); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
-
 // 📚 Returns the number of tree's node
 		size_type	size() const { return (this->__size); }
 
@@ -216,7 +214,7 @@ namespace ft
 
 // 📚 Returns the maximum number of elements that the tree can hold.
 // This is the maximum potential size the tree can reach due to known system.
-		// size_type	max_size const { return (this->__alloc.max_size()); }  🚧 ??????????????????
+		size_type	max_size() const { return (this->__alloc.max_size()); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/	
 
