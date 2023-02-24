@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/24 00:03:42 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/24 02:38:07 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ namespace ft
 			typedef T																value_type;
 			typedef Compare															key_compare;
 			typedef Allocator														allocator_type;
+			typedef std::size_t														size_type;
 			typedef ft::Node<key_type, value_type>									node_type;
 			typedef typename allocator_type::template rebind<node_type>::other 		node_alloc; //redifine type of the allocation
-			typedef std::size_t														size_type;
 			typedef typename node_type::pair_type									pair_type;
 			typedef typename ft::Rb_tree_iterator<node_type>						iterator;
 			typedef typename ft::Rb_tree_const_iterator<node_type>					const_iterator;
@@ -231,111 +231,265 @@ namespace ft
 // initializes its fields and inserts it into the tree. Finally, it calls a function called insert_fixup to ensure 
 // that the properties of the red-black tree are maintained.
 
+	void fix_insert(node_type* node)
+	{
+	    // tant que le parent du nœud nouvellement inséré est rouge
+	    while (node->__parent && node->__parent->__isBlack == false)
+	    {
+	        // si le parent du nœud nouvellement inséré est le fils gauche du grand-parent
+	        if (node->__parent == node->__parent->__parent->__left)
+	        {
+	            // pointeur vers l'oncle
+	            node_type* uncle = node->__parent->__parent->__right;
+	            // cas 1 : l'oncle est rouge
+	            if (uncle && uncle->__isBlack == false)
+	            {
+	                node->__parent->__isBlack = true;
+	                uncle->__isBlack = true;
+	                node->__parent->__parent->__isBlack = false;
+	                node = node->__parent->__parent;
+	            }
+	            else
+	            {
+	                // cas 2 : l'oncle est noir et le nœud nouvellement inséré est le fils droit de son parent
+	                if (node == node->__parent->__right)
+	                {
+	                    node = node->__parent;
+	                    left_rotate(node);
+	                }
+	                // cas 3 : l'oncle est noir et le nœud nouvellement inséré est le fils gauche de son parent
+	                node->__parent->__isBlack = true;
+	                node->__parent->__parent->__isBlack = false;
+	                right_rotate(node->__parent->__parent);
+	            }
+	        }
+	        else // le parent du nœud nouvellement inséré est le fils droit du grand-parent
+	        {
+	            // pointeur vers l'oncle
+	            node_type* uncle = node->__parent->__parent->__left;
+	            // cas 1 : l'oncle est rouge
+	            if (uncle && uncle->__isBlack == false)
+	            {
+	                node->__parent->__isBlack = true;
+	                uncle->__isBlack = true;
+	                node->__parent->__parent->__isBlack = false;
+	                node = node->__parent->__parent;
+	            }
+	            else
+	            {
+	                // cas 2 : l'oncle est noir et le nœud nouvellement inséré est le fils gauche de son parent
+	                if (node == node->__parent->__left)
+	                {
+	                    node = node->__parent;
+	                    right_rotate(node);
+	                }
+	                // cas 3 : l'oncle est noir et le nœud nouvellement inséré est le fils droit de son parent
+	                node->__parent->__isBlack = true;
+	                node->__parent->__parent->__isBlack = false;
+	                left_rotate(node->__parent->__parent);
+	            }
+	        }
+	    }
+	    // la racine de l'arbre doit être noire
+	    __root->__isBlack = true;
+	}
 
-		ft::pair<iterator, bool> insert(const pair_type& p)
-		{
-			node_type 	*parent = this->__root;
-    		node_type 	*current = this->__root;
-    		bool 		isLeft = false;
+	ft::pair<iterator, bool> insert(const pair_type& p)
+	{
+		node_type 	*parent = this->__root;
+    	node_type 	*current = this->__root;
+    	bool 		isLeft = false;
 
-    		while (current)
-    		{
-    	    	parent = current;
-    	    	if (this->__comp(p.first, current->__pair.first))
-    	    	{
-    	    	    current = current->__left;
-    	    	    isLeft = true;
-    	    	}
-    	    	else if (this->__comp(current->__pair.first, p.first))
-    	    	{
-    	    	    current = current->__right;
-    	    	    isLeft = false;
-    	    	}
-    	    	else
-    	    	    return ft::pair<iterator, bool>(iterator(current), false);
-    		}
-    		current = this->__node_alloc.allocate(sizeof(node_type));
-    		this->__node_alloc.construct(current, node_type(p.first, p.second));
-    		if (parent == 0x0)
-    		    this->__root = current;
-    		else if (isLeft)
-    		    parent->__left = current;
-    		else
-    		    parent->__right = current;
+    	while (current)
+    	{
+        	parent = current;
+        	if (this->__comp(p.first, current->__pair.first))
+        	{
+        	    current = current->__left;
+        	    isLeft = true;
+        	}
+        	else if (this->__comp(current->__pair.first, p.first))
+        	{
+        	    current = current->__right;
+        	    isLeft = false;
+        	}
+        	else
+        	    return ft::pair<iterator, bool>(iterator(current), false);
+    	}
 
-    		insert_fixup(current);
-    		this->__size += 1;
-    		return (ft::pair<iterator, bool>(iterator(current), true));
-		}
+    	current = this->__node_alloc.allocate(sizeof(node_type));
+    	this->__node_alloc.construct(current, node_type(p.first, p.second));
+    	if (parent == 0x0)
+    	    this->__root = current;
+    	else if (isLeft)
+    	    parent->__left = current;
+    	else
+    	    parent->__right = current;
+    	fix_insert(current);
+    	this->__size += 1;
+    	return (ft::pair<iterator, bool>(iterator(current), true));
+	}
 	
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-void erase(iterator position)
-{
-    // On trouve le noeud à supprimer
-    node_type* node_to_delete = position.base();
+	void fix_erase(node_type* node, node_type* parent)
+	{
+	    while (node != __root && (node == 0x0 || node->__isBlack))
+	    {
+	        if (node == parent->__left)
+	        {
+	            node_type* sibling = parent->__right;
+	            if (!sibling->__isBlack)
+	            {
+	                sibling->__isBlack = true;
+	                parent->__isBlack = false;
+	                left_rotate(parent);
+	                sibling = parent->__right;
+	            }
+	            if ((sibling->__left == 0x0 || sibling->__left->__isBlack) &&
+	                (sibling->__right == 0x0 || sibling->__right->__isBlack))
+	            {
+	                sibling->__isBlack = false;
+	                node = parent;
+	                parent = node->__parent;
+	            }
+	            else
+	            {
+	                if (sibling->__right == 0x0 || sibling->__right->__isBlack)
+	                {
+	                    sibling->__left->__isBlack = true;
+	                    sibling->__isBlack = false;
+	                    right_rotate(sibling);
+	                    sibling = parent->__right;
+	                }
+	                sibling->__isBlack = parent->__isBlack;
+	                parent->__isBlack = true;
+	                sibling->__right->__isBlack = true;
+	                left_rotate(parent);
+	                node = __root;
+	                break;
+	            }
+	        }
+	        else
+	        {
+	            node_type* sibling = parent->__left;
+	            if (!sibling->__isBlack)
+	            {
+	                sibling->__isBlack = true;
+	                parent->__isBlack = false;
+	                right_rotate(parent);
+	                sibling = parent->__left;
+	            }
+	            if ((sibling->__left == 0x0 || sibling->__left->__isBlack) &&
+	                (sibling->__right == 0x0 || sibling->__right->__isBlack))
+	            {
+	                sibling->__isBlack = false;
+	                node = parent;
+	                parent = node->__parent;
+	            }
+	            else
+	            {
+	                if (sibling->__left == 0x0 || sibling->__left->__isBlack)
+	                {
+	                    sibling->__right->__isBlack = true;
+	                    sibling->__isBlack = false;
+	                    left_rotate(sibling);
+	                    sibling = parent->__left;
+	                }
+	                sibling->__isBlack = parent->__isBlack;
+	                parent->__isBlack = true;
+	                sibling->__left->__isBlack = true;
+	                right_rotate(parent);
+	                node = __root;
+	                break;
+	            }
+	        }
+	    }
 
-    // On déclare les variables nécessaires pour la suppression
-    node_type* successor = 0x0;
-    node_type* successor_child = 0x0;
-    bool original_color = node_to_delete->__isBlack;
-
-    if (node_to_delete->__left == 0x0)
-    {
-        // Si le noeud à supprimer n'a pas de fils gauche, on peut simplement
-        // remplacer le noeud à supprimer par son fils droit
-        successor_child = node_to_delete->__right;
-        replace_subtree(node_to_delete, node_to_delete->__right);
-    }
-    else if (node_to_delete->__right == 0x0)
-    {
-        // Si le noeud à supprimer n'a pas de fils droit, on peut simplement
-        // remplacer le noeud à supprimer par son fils gauche
-        successor_child = node_to_delete->__left;
-        replace_subtree(node_to_delete, node_to_delete->__left);
-    }
-    else
-    {
-        // Si le noeud à supprimer a deux fils, on doit trouver son successeur
-        successor = node_to_delete->__right;
-        while (successor->__left != 0x0)
-            successor = successor->__left;
-
-        // On sauvegarde la couleur originale du successeur
-        original_color = successor->__isBlack;
-
-        // On met le successeur à la place du noeud à supprimer
-        successor_child = successor->__right;
-        if (successor->__parent == node_to_delete)
-            successor_child->__parent = successor;
-        else
-        {
-            replace_subtree(successor, successor->__right);
-            successor->__right = node_to_delete->__right;
-            successor->__right->__parent = successor;
-        }
-        replace_subtree(node_to_delete, successor);
-        successor->__left = node_to_delete->__left;
-        successor->__left->__parent = successor;
-        successor->__isBlack = node_to_delete->__isBlack;
-    }
-
-    // Si on a supprimé un noeud noir, il peut y avoir une violation de la
-    // propriété 5 de l'arbre rouge-noir. On appelle donc la fonction
-    // erase_fixup pour la rétablir.
-    if (original_color == true)
-        erase_fixup(successor_child);
-
-    // On libère la mémoire allouée pour le noeud supprimé
-    this->__node_alloc.destroy(node_to_delete);
-    this->__node_alloc.deallocate(node_to_delete, 1);
-
-    // On met à jour la taille de l'arbre
-    this->__size -= 1;
-}
+	    if (node != 0x0)
+	        node->__isBlack = true;
+	}
 
 
+	void erase(iterator position)
+	{
+	    if (position == end())
+	        return;
 
+	    node_type* node = position.base();
+	    node_type* to_remove;
+	    if (node->__left == 0x0 || node->__right == 0x0)
+	        to_remove = node;
+	    else
+	        to_remove = successor(node);
+
+	    node_type* child;
+	    if (to_remove->__left != 0x0)
+	        child = to_remove->__left;
+	    else
+	        child = to_remove->__right;
+
+	    if (child != 0x0)
+	        child->__parent = to_remove->__parent;
+
+	    if (to_remove->__parent == 0x0)
+	        __root = child;
+	    else if (to_remove == to_remove->__parent->__left)
+	        to_remove->__parent->__left = child;
+	    else
+	        to_remove->__parent->__right = child;
+
+	    if (to_remove != node)
+	        node->__pair = to_remove->__pair;
+
+	    if (to_remove->__isBlack)
+	        fix_erase(child, to_remove->__parent);
+
+	    destroy_node(to_remove);
+	    --__size;
+	}
+
+
+	size_type erase(const key_type& key)
+	{
+	    iterator it = find(key);
+	    if (it == end())
+	        return 0;
+	
+	    node_type* node = it.base();
+	    node_type* to_remove;
+	    if (node->__left == 0x0 || node->__right == 0x0)
+	        to_remove = node;
+	    else
+	        to_remove = successor(node);
+	
+	    node_type* child;
+	    if (to_remove->__left != 0x0)
+	        child = to_remove->__left;
+	    else
+	        child = to_remove->__right;
+	
+	    if (child != 0x0)
+	        child->__parent = to_remove->__parent;
+	
+	    if (to_remove->__parent == 0x0)
+	        __root = child;
+	    else if (to_remove == to_remove->__parent->__left)
+	        to_remove->__parent->__left = child;
+	    else
+	        to_remove->__parent->__right = child;
+	
+	    if (to_remove != node)
+	        node->__pair = to_remove->__pair;
+	
+	    if (to_remove->__isBlack)
+	        fix_erase(child, to_remove->__parent);
+	
+	    destroy_node(to_remove);
+	    --__size;
+	
+	    return 1;
+	}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -536,6 +690,26 @@ void erase(iterator position)
 		*/
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+	
+	void destroy_node(node_type* node)
+    {
+		this->__node_alloc.destroy(node);
+		this->__node_alloc.deallocate(node, 1);
+    }
+
+	void to_clear(node_type *node)
+	{
+		if (node)
+		{
+			to_clear(node->__left);
+			to_clear(node->__right);
+			this->__node_alloc.destroy(node);
+			this->__node_alloc.deallocate(node, 1);
+			node = 0x0;
+		}
+	}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 		void left_rotate(node_type *x)
 		{
@@ -576,175 +750,40 @@ void erase(iterator position)
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
-
-
-		void	insert_fixup(node_type *z)
-		{
-		    node_type *y = 0x0;
-
-		    while (z != this->__root && z->__parent->__isBlack == false)
-		    {
-		        if (z->__parent == z->__parent->__parent->__left)
-		        {
-		            y = z->__parent->__parent->__right;
-		            if (y && y->__isBlack == false)
-		            {
-		                z->__parent->__isBlack = true;
-		                y->__isBlack = true;
-		                z->__parent->__parent->__isBlack = false;
-		                z = z->__parent->__parent;
-		            }
-		            else
-		            {
-		                if (z == z->__parent->__right)
-		                {
-		                    z = z->__parent;
-		                    left_rotate(z);
-		                }
-		                z->__parent->__isBlack = true;
-		                z->__parent->__parent->__isBlack = false;
-		                right_rotate(z->__parent->__parent);
-		            }
-		        }
-		        else
-		        {
-		            y = z->__parent->__parent->__left;
-		            if (y && y->__isBlack == false)
-		            {
-		                z->__parent->__isBlack = true;
-		                y->__isBlack = true;
-		                z->__parent->__parent->__isBlack = false;
-		                z = z->__parent->__parent;
-		            }
-		            else
-		            {
-		                if (z == z->__parent->__left)
-		                {
-		                    z = z->__parent;
-		                    right_rotate(z);
-		                }
-		                z->__parent->__isBlack = true;
-		                z->__parent->__parent->__isBlack = false;
-		                left_rotate(z->__parent->__parent);
-		            }
-		        }
-		    }
-		   this->__root->__isBlack = true;
-		}
-
-/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
-		
-void replace_subtree(node_type *node_to_replace, node_type *replacement_node) 
+node_type* successor(node_type* node) const
 {
-    if (node_to_replace == this->__root)
-        this->__root = replacement_node;
-    else if (node_to_replace == node_to_replace->__parent->__left)
-	{
-        node_to_replace->__parent->__left = replacement_node;
+    if (node->__right != NULL)
+    {
+        node_type* n = node->__right;
+        while (n->__left != NULL)
+            n = n->__left;
+        return n;
     }
-	else 
-	{
-        node_to_replace->__parent->__right = replacement_node;
+    else
+    {
+        node_type* p = node->__parent;
+        while (p != NULL && node == p->__right)
+        {
+            node = p;
+            p = p->__parent;
+        }
+        return p;
     }
-    replacement_node->__parent = node_to_replace->__parent;
 }
 
-
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-// find the smallest elem from the tree
-		iterator *min(const node_type* z) const
-		{
-			if (!z)
-				return (0x0);
-			while (z->__left)
-				z = z->__left;
-			return (iterator(z));
-		}
+// // find the smallest elem from the tree
+// 		iterator *min(const node_type* z) const
+// 		{
+// 			if (!z)
+// 				return (0x0);
+// 			while (z->__left)
+// 				z = z->__left;
+// 			return (iterator(z));
+// 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
-
-		void	erase_fixup(node_type *x)
-		{
-			while (x != this->__root && x->__isBlack)
-			{
-			    if (x == x->__parent->__left)
-			    {
-			        node_type *w = x->__parent->__right;
-			        if (!w->__isBlack)
-			        {
-			            w->__isBlack = true;
-			            x->__parent->__isBlack = false;
-			            left_rotate(x->__parent);
-			            w = x->__parent->__right;
-			        }
-			        if (w->__left->__isBlack && w->__right->__isBlack)
-			        {
-			            w->__isBlack = false;
-			            x = x->__parent;
-			        }
-			        else
-			        {
-			            if (w->__right->__isBlack)
-			            {
-			                w->__left->__isBlack = true;
-			                w->__isBlack = false;
-			                right_rotate(w);
-			                w = x->__parent->__right;
-			            }
-			            w->__isBlack = x->__parent->__isBlack;
-			            x->__parent->__isBlack = true;
-			            w->__right->__isBlack = true;
-			            left_rotate(x->__parent);
-			            x = this->__root;
-			        }
-			    }
-			    else
-			    {
-			        node_type *w = x->__parent->__left;
-			        if (!w->__isBlack)
-			        {
-			            w->__isBlack = true;
-			            x->__parent->__isBlack = false;
-			            right_rotate(x->__parent);
-			            w = x->__parent->__left;
-			        }
-			        if (w->__right->__isBlack && w->__left->__isBlack)
-			        {
-			            w->__isBlack = false;
-			            x = x->__parent;
-			        }
-			        else
-			        {
-			            if (w->__left->__isBlack)
-			            {
-			                w->__right->__isBlack = true;
-			                w->__isBlack = false;
-			                left_rotate(w);
-			                w = x->__parent->__left;
-			            }
-			            w->__isBlack = x->__parent->__isBlack;
-			            x->__parent->__isBlack = true;
-			            w->__left->__isBlack = true;
-			            right_rotate(x->__parent);
-			            x = __root;
-			        }
-			    }
-			}
-			    x->__isBlack = true;
-		}
-
-		void to_clear(node_type *node)
-		{
-			if (node)
-			{
-				to_clear(node->__left);
-				to_clear(node->__right);
-				this->__node_alloc.destroy(node);
-				this->__node_alloc.deallocate(node, 1);
-				node = 0x0;
-			}
-		}
 
 		// void printTree() 
 		// {

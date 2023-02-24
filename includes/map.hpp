@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:02:40 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/23 23:51:44 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/24 02:18:52 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,21 +252,15 @@ template <  class Key,
 
 // 📚 Iterator pointing to a single element to be removed from the map.
 		void erase (iterator position)
-		{ 
+		{
 			this->__tree.erase(position); 
 		}
 
 // 📚 Key of the element to be removed from the map.
 		size_type erase (const key_type& k)
 		{
-			iterator node = this->__tree.find(k);
+			return (this->__tree.erase(k));
 
-			if (node != 0x0)
-			{
-				(this->__tree.erase(node));
-				return (1);
-			}
-			return  (0);
 		}
 
 // 📚 Iterators specifying a range within the map container to be removed: [first,last).
