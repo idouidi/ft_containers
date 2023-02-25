@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/24 02:38:07 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/25 23:15:52 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 namespace ft
 {
+	
 	template <typename Key, typename Value>
 	struct Node
 	{
@@ -123,8 +124,9 @@ namespace ft
 
 // 📚 default constructor
 		Rb_tree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(), const node_alloc& Node_alloc = node_alloc() )
-		 :__comp(comp) , __node_alloc(Node_alloc), __alloc(alloc),__root(0x0), __size(0)
-		{}
+		 :__comp(comp) , __node_alloc(Node_alloc), __alloc(alloc),__root(0x0), __sentinel(0x0) ,__size(0)
+		{
+		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -150,6 +152,7 @@ namespace ft
 			{
 				while (tmp->__left)
 					tmp = tmp->__left;
+				
 			}
 			return (iterator(tmp));
 		}
@@ -168,7 +171,8 @@ namespace ft
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Returns an iterator (i.e a node) referring to the last element in the tree.
-		iterator end()
+
+		node_type *find_end()
 		{
 			node_type *tmp = this->__root;
 			if (tmp)
@@ -176,7 +180,12 @@ namespace ft
 				while (tmp->__right)
 					tmp = tmp->__right;
 			}
-			return (iterator(tmp));
+			return (tmp);
+
+		}
+		iterator end()
+		{
+			return (iterator(this->__sentinel));
 		}
 
 		const_iterator end() const
@@ -300,6 +309,8 @@ namespace ft
     	node_type 	*current = this->__root;
     	bool 		isLeft = false;
 
+
+    		
     	while (current)
     	{
         	parent = current;
@@ -317,15 +328,36 @@ namespace ft
         	    return ft::pair<iterator, bool>(iterator(current), false);
     	}
 
+		if (this->__sentinel == 0x0)
+			this->__sentinel =  this->__node_alloc.allocate(sizeof(node_type));
+
     	current = this->__node_alloc.allocate(sizeof(node_type));
     	this->__node_alloc.construct(current, node_type(p.first, p.second));
-    	if (parent == 0x0)
+		current->__parent = parent;
+    	
+		if (parent == 0x0)
+		{
     	    this->__root = current;
+			this->__node_alloc.construct(this->__sentinel, node_type(current->__pair.first, current->__pair.second));
+		}
     	else if (isLeft)
-    	    parent->__left = current;
+		{
+    	    current->__parent->__left = current;
+			current->__isLeftChild = true;
+			current->__isBlack = false;
+		}
     	else
-    	    parent->__right = current;
-    	fix_insert(current);
+		{
+			current->__parent->__right = current;
+			current->__isLeftChild = false;
+			current->__isBlack = true;
+		}
+		if (current == find_end())
+		{
+			current->__right = this->__sentinel;
+			this->__sentinel->__parent = current;
+		}
+    	// fix_insert(current);
     	this->__size += 1;
     	return (ft::pair<iterator, bool>(iterator(current), true));
 	}
@@ -681,6 +713,7 @@ namespace ft
 			node_alloc												__node_alloc;
 			allocator_type											__alloc;
 			node_type												*__root;
+			node_type												*__sentinel;	
 			size_type												__size;
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/

@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/24 01:07:24 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/25 23:36:17 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,36 @@ int main()
 {
     __CURRENT_TIME__ = t_time();
     __NAME_SPACE__ = (STD == 1) ? "std" : "ft" ;
-    vector_tester();
-    stack_tester();
+    // vector_tester();
+    // stack_tester();
+
+std::cout << RED << "--> " << __NAME_SPACE__ << "<--" << RESET << std::endl;
+  NAMESPACE::map<int, std::string> test;
+  test.insert(NAMESPACE::pair<int, std::string>(8, "salut"));
+  test.insert(NAMESPACE::pair<int, std::string>(-4, "bar"));
+  test.insert(NAMESPACE::pair<int, std::string>(3, "foo"));
+  
+  NAMESPACE::map<int, std::string>::iterator it;
+  NAMESPACE::map<int, std::string>::iterator ite;
+
+  it = test.begin();
+  ite = test.end();
+  ite--;
+
+// test.insert(NAMESPACE::pair<int, std::string>(746, "Marcel"));
+// test.insert(NAMESPACE::pair<int, std::string>(1, "truc"));
+
+while (ite != it)
+{
+    std::cout << ite->first << ", " << ite->second << '\n';  
+    ite--;
+}
+
+// while (it != test.end())
+// {
+//   std::cout << it->first << ", " << it->second << '\n';
+//   it++;
+// }
 
     return (0);
 }

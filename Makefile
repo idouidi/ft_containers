@@ -6,7 +6,7 @@
 #    By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 00:45:13 by idouidi           #+#    #+#              #
-#    Updated: 2023/01/17 14:39:55 by idouidi          ###   ########.fr        #
+#    Updated: 2023/02/25 17:58:26 by idouidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,10 +44,11 @@ endif
 ###################################################
 
 other		: $(NAME)
-	@clear
+	# @clear 🚧
 	@make -e  --no-print-director SWAP_COMPIL=2 $(NAME)
-	@make clean
-	@make print
+	#@make clean 🚧
+	#@make print 🚧
+	@./$(NAME) #🚧
 
 ####################################################
 

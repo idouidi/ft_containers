@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 17:03:39 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/24 01:06:58 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/25 23:25:35 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ namespace ft
 			return (*this);
 		}
 
-// 📚 Postdecrement the iterator to the previous elem
+// 📚 Post decrement the iterator to the previous elem
 		Rb_tree_iterator	operator--(int)
 		{
 			Rb_tree_iterator tmp;
@@ -166,8 +166,10 @@ namespace ft
 				}
 				else // else go to the next left parent 
 				{
-					while (this->__node->__parent && this->__node == this->__node->__parent->__right)
+					while (this->__node->__parent && this->__node->__parent->__right == this->__node)
+					{
 						this->__node = this->__node->__parent;
+					}
 					this->__node = this->__node->__parent;
 				}
 			}
@@ -178,15 +180,17 @@ namespace ft
 			if (this->__node)
 			{
 				if (this->__node->__left) // if left child exist, go to the biger node from this sub tree
+				{
 					this->__node = this->__node->__left;
-				while (this->__node->__right)
-					this->__node = this->__node->__right;
-			}
-			else // go to the next right parent
-			{
-				while (this->__node->__parent && this->__node == this->__node->__parent->__left)
+					while (this->__node->__right)
+						this->__node = this->__node->__right;
+				}
+				else // go to the next right parent
+				{
+					while (this->__node->__parent && this->__node->__parent->__left == this->__node)
+						this->__node = this->__node->__parent;
 					this->__node = this->__node->__parent;
-				this->__node = this->__node->__parent;
+				}
 			}
 		}
     };
