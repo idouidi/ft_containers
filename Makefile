@@ -6,7 +6,7 @@
 #    By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 00:45:13 by idouidi           #+#    #+#              #
-#    Updated: 2023/02/25 17:58:26 by idouidi          ###   ########.fr        #
+#    Updated: 2023/02/26 14:04:50 by idouidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRCDIR 		= ./srcs
 SRCS     	= $(shell find $(SRCDIR) -name "*.cpp")
 OBJS		= $(SRCS:.cpp=.o)
 CXX			=  c++
-CXXFLAGS	= -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address 
+CXXFLAGS	= -Wall -Wextra -Werror -std=c++98 -g3 #-fsanitize=address 
 INCLUDES 	= $(shell find . -type f -name "*.hpp" | cut -c 3-)
 NAME		= ft_containers
 SWAP_COMPIL = 1

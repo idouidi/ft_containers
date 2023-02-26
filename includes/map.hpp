@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:02:40 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/24 02:18:52 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/26 21:59:52 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,10 @@ template <  class Key,
 		/*	
 		*	📌 ITERATOR
 		*/
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+	tree base() const { return(this->__tree); }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -345,6 +349,7 @@ template <  class Key,
 
 // 📚 Returns a copy of the allocator object associated with the map
 		allocator_type	get_allocator() const { return (this->__tree.get_allocator()); }
+
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 	};

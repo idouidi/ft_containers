@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/25 23:36:17 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/26 21:57:11 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ int main()
 
 std::cout << RED << "--> " << __NAME_SPACE__ << "<--" << RESET << std::endl;
   NAMESPACE::map<int, std::string> test;
-  test.insert(NAMESPACE::pair<int, std::string>(8, "salut"));
-  test.insert(NAMESPACE::pair<int, std::string>(-4, "bar"));
+  test.insert(NAMESPACE::pair<int, std::string>(1, "salut"));
+  test.insert(NAMESPACE::pair<int, std::string>(2, "bar"));
   test.insert(NAMESPACE::pair<int, std::string>(3, "foo"));
   
   NAMESPACE::map<int, std::string>::iterator it;
@@ -111,22 +111,20 @@ std::cout << RED << "--> " << __NAME_SPACE__ << "<--" << RESET << std::endl;
 
   it = test.begin();
   ite = test.end();
-  ite--;
-
-// test.insert(NAMESPACE::pair<int, std::string>(746, "Marcel"));
-// test.insert(NAMESPACE::pair<int, std::string>(1, "truc"));
-
-while (ite != it)
-{
-    std::cout << ite->first << ", " << ite->second << '\n';  
-    ite--;
-}
-
-// while (it != test.end())
-// {
-//   std::cout << it->first << ", " << it->second << '\n';
-//   it++;
-// }
+  while (it != test.end())
+  {
+    std::cout << it->first << ", " << it->second << '\n';
+    it++;
+  }
+  
+  // if (STD != 1)
+  // {
+  //   ft::map<int, std::string> toPrint;
+  //   toPrint.insert(ft::pair<int, std::string>(1, "salut"));
+  //   toPrint.insert(ft::pair<int, std::string>(2, "bar"));
+  //   toPrint.insert(ft::pair<int, std::string>(3, "foo"));
+  //   toPrint.base().printTree();
+  // }
 
     return (0);
 }
