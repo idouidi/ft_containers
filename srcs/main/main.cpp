@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/27 22:18:07 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/27 23:28:06 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,14 +120,17 @@ if (STD != 1)
     }
 
       long_map.base().printAllRb_tree();
-    it = long_map.begin();
-    ite = long_map.end();
+    long_map.erase(34);
+      long_map.base().printAllRb_tree();
+
+    // it = long_map.begin();
+    // ite = long_map.end();
     // ite--;
-      while (it != ite)
-      {
-        std::cout << it->first << ", " << it->second << '\n';
-        it++;
-      }
+      // while (it != ite)
+      // {
+      //   std::cout << it->first << ", " << it->second << '\n';
+      //   it++;
+      // }
 }
 
   

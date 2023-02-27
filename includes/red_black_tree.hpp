@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/27 22:20:45 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/28 00:00:16 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ namespace ft
 // 📚 Returns an iterator (i.e a node) referring to the first element in the tree.
 		iterator begin()
 		{
+			if (this->__size == 0)
+				return (this->end());
 			node_type *tmp = this->__root;
 			if (tmp)
 			{
@@ -165,6 +167,8 @@ namespace ft
 
 		const_iterator begin() const
 		{
+			if (this->__size == 0)
+				return (this->end());
 			node_type *tmp = this->__root;
 			if (tmp)
 			{
@@ -474,9 +478,12 @@ namespace ft
 	        node->__pair = to_remove->__pair;
 
 	    if (to_remove->__isBlack)
+		{
 	        fix_erase(child, to_remove->__parent);
+		}
 
-	    destroy_node(to_remove);
+		this->__node_alloc.destroy(to_remove);
+		this->__node_alloc.deallocate(to_remove, 1);
 	    --__size;
 	}
 
@@ -514,9 +521,12 @@ namespace ft
 	        node->__pair = to_remove->__pair;
 	
 	    if (to_remove->__isBlack)
+		{
 	        fix_erase(child, to_remove->__parent);
-	
-	    destroy_node(to_remove);
+		}
+		this->__node_alloc.destroy(to_remove);
+		this->__node_alloc.deallocate(to_remove, 1);
+		
 	    --__size;
 	
 	    return 1;
@@ -665,8 +675,8 @@ namespace ft
 
 		const_iterator upper_bound(const key_type& k) const
 		{
-			const_iterator	it = this->cbegin();
-			const_iterator	ite = this->cend();
+			const_iterator	it = this->begin();
+			const_iterator	ite = this->end();
 
 			while (it != ite)
 			{
@@ -768,11 +778,6 @@ namespace ft
 				}
 				std::cout  << std::endl << M_YELLOW << "-------------END OF Rb_tree PRINT-------------" << M_RESET << std::endl << std::endl;
 			}
-
-
-
-
-
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
