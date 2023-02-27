@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/26 21:57:11 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/27 22:18:07 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,21 +101,35 @@ int main()
     // stack_tester();
 
 std::cout << RED << "--> " << __NAME_SPACE__ << "<--" << RESET << std::endl;
-  NAMESPACE::map<int, std::string> test;
-  test.insert(NAMESPACE::pair<int, std::string>(1, "salut"));
-  test.insert(NAMESPACE::pair<int, std::string>(2, "bar"));
-  test.insert(NAMESPACE::pair<int, std::string>(3, "foo"));
-  
-  NAMESPACE::map<int, std::string>::iterator it;
-  NAMESPACE::map<int, std::string>::iterator ite;
 
-  it = test.begin();
-  ite = test.end();
-  while (it != test.end())
-  {
-    std::cout << it->first << ", " << it->second << '\n';
-    it++;
-  }
+if (STD != 1)
+{
+
+    // ft::map<int, std::string> test;
+    // test.insert(ft::pair<int, std::string>(1, "bar"));
+
+    ft::map<int, int>::iterator it;
+    ft::map<int, int>::iterator ite;
+
+
+    ft::map<int, int> long_map;
+
+    for (int i = 0; i < 42; i++)
+    {
+      long_map.insert(ft::pair<int, int>(i , i * 2));
+    }
+
+      long_map.base().printAllRb_tree();
+    it = long_map.begin();
+    ite = long_map.end();
+    // ite--;
+      while (it != ite)
+      {
+        std::cout << it->first << ", " << it->second << '\n';
+        it++;
+      }
+}
+
   
   // if (STD != 1)
   // {
@@ -124,7 +138,6 @@ std::cout << RED << "--> " << __NAME_SPACE__ << "<--" << RESET << std::endl;
   //   toPrint.insert(ft::pair<int, std::string>(2, "bar"));
   //   toPrint.insert(ft::pair<int, std::string>(3, "foo"));
   //   toPrint.base().printTree();
-  // }
 
     return (0);
 }

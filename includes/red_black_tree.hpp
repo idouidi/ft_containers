@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/26 22:01:35 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/27 22:20:45 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,15 +126,21 @@ namespace ft
 		Rb_tree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(), const node_alloc& Node_alloc = node_alloc() )
 		 :__comp(comp) , __node_alloc(Node_alloc), __alloc(alloc),__root(0x0), __sentinel(0x0) ,__size(0)
 		{
+			// create the node sentinel
+			this->__sentinel =  this->__node_alloc.allocate(1);
+			this->__node_alloc.construct(this->__sentinel, node_type(key_type(), value_type()));
+			this->__sentinel->__parent = 0x0;
+			this->__sentinel->__left = 0x0;	
+			this->__sentinel->__right = 0x0;	
+			this->__sentinel->__isLeftChild = false;
+			this->__sentinel->__isBlack = true; 
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 // 📚 Destructor
 		~Rb_tree()
-		{
-			this->clear();
-		}
+		{}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -235,61 +241,71 @@ namespace ft
 // that the properties of the red-black tree are maintained.
 
 
+
+	void uncle_is_black(node_type *node)
+	{
+		node_type *save_parent;
+
+		if (node->__parent->__isLeftChild)
+		{
+			if (node->__isLeftChild)
+				save_parent = right_rotate(node->__parent->__parent);
+			else
+				save_parent = left_right_rotate(node->__parent->__parent);
+		}
+		else
+		{
+			if (node->__isLeftChild == false)
+				save_parent = left_rotate(node->__parent->__parent);
+			else
+				save_parent = right_left_rotate(node->__parent->__parent);
+		}
+		save_parent->__left->__isBlack = false;
+		save_parent->__right->__isBlack = false;
+		save_parent->__isBlack  = true;
+	}
+
+	void uncle_is_red(node_type * node, node_type *uncle)
+	{
+		node->__parent->__isBlack = true;
+		uncle->__isBlack = true;
+		uncle->__parent->__isBlack = false;
+
+	}
+
+	void check_node(node_type *node)
+	{
+		node_type *uncle;
+
+		if (node->__parent->__isLeftChild)
+			uncle = node->__parent->__parent->__right;
+		else
+			uncle = node->__parent->__parent->__left;
+
+		if (!uncle || uncle->__isBlack)
+			uncle_is_black(node);
+		else
+			uncle_is_red(node, uncle);
+
+		this->__root->__isBlack = true;
+	}
+
 	void fix_insert(node_type *node)
 	{
-	    // continue until we reach the root node
-	    while (node != this->__root)
-	    {
-	        node_type *parent = node->__parent;
-	        node_type *grand_parent = parent->__parent;
-	
-	        // if the parent is black, the tree is still valid, so we exit the loop
-	        if (parent->__isBlack)
-	            return;
-	
-	        // get the uncle node
-	        node_type *uncle;
-	        if (parent == grand_parent->__left)
-	            uncle = grand_parent->__right;
-	        else
-	            uncle = grand_parent->__left;
-	
-	        // case 1: if the uncle is red, we recolor
-	        if (!uncle->__isBlack)
-	        {
-	            parent->__isBlack = true;
-	            uncle->__isBlack = true;
-	            grand_parent->__isBlack = false;
-	            node = grand_parent;
-	        }
-	        else
-	        {
-	            // case 2: if the node is a right child, we left rotate
-	            if (node == parent->__right)
-	            {
-	                node = parent;
-	                left_rotate(node);
-	                parent = node->__parent;
-	            }
-	
-	            // case 3: if the node is a left child, we right rotate and recolor
-	            parent->__isBlack = true;
-	            grand_parent->__isBlack = false;
-	            right_rotate(grand_parent);
-	            node = parent;
-	        }
-	    }
-	
-	    // if we get here, the root must be black
-	    this->__root->__isBlack = true;
+		if (node == this->__root)
+			return ;
+		if (node->__isBlack == false && node->__parent->__isBlack == false)
+			check_node(node);
+		fix_insert(node->__parent);
 	}
+
+
 
 	ft::pair<iterator, bool> insert(const pair_type& p)
 	{
 		node_type 	*parent = this->__root;
     	node_type 	*current = this->__root;
     	bool 		isLeft = false;
-
 
     	while (current)
     	{
@@ -301,44 +317,46 @@ namespace ft
         	}
         	else if (this->__comp(current->__pair.first, p.first))
         	{
-        	    current = current->__right;
+				if (current->__right && current->__right == this->__sentinel)
+					current->__right = 0x0;
+				else 
+        	    	current = current->__right;
         	    isLeft = false;
         	}
         	else
-        	    return ft::pair<iterator, bool>(iterator(current), false);  // false or end
+        	    return ft::pair<iterator, bool>(iterator(current), false);
     	}
 
-		if (this->__sentinel == 0x0)
-			this->__sentinel =  this->__node_alloc.allocate(sizeof(node_type));
-
-    	current = this->__node_alloc.allocate(sizeof(node_type));
+		// create the node at a valid position
+    	current = this->__node_alloc.allocate(1);
     	this->__node_alloc.construct(current, node_type(p.first, p.second));
-		current->__parent = parent;
     	
+		if (!parent)
+			current->__parent = 0x0;
+		else
+			current->__parent = parent;
+		current->__right = 0x0;
+		current->__left = 0x0;
+		current->__isBlack = false;
+		current->__isLeftChild = isLeft;
 		if (parent == 0x0)
 		{
     	    this->__root = current;
 			this->__root->__isBlack = true;
-			this->__node_alloc.construct(this->__sentinel, node_type(key_type(), value_type()));
 		}
     	else if (isLeft)
-		{
     	    current->__parent->__left = current;
-			current->__isLeftChild = true;
-			current->__isBlack = false;
-		}
     	else
-		{
 			current->__parent->__right = current;
-			current->__isLeftChild = false;
-			current->__isBlack = false;
-		}
+	
+		// update sentinel
 		if (current == find_end())
 		{
 			current->__right = this->__sentinel;
 			this->__sentinel->__parent = current;
 		}
-    	// fix_insert(current);
+		if (current != this->__root && current->__isBlack == false && current->__parent->__isBlack == false)
+    		fix_insert(current);
     	this->__size += 1;
     	return (ft::pair<iterator, bool>(iterator(current), true));
 	}
@@ -531,14 +549,8 @@ namespace ft
 // 📚 Removes all elements from the tree (which are destroyed), leaving the tree with a size of 0.
 		void clear()
 		{
-			if (this->__root)
-			{
-				this->__node_alloc.destroy(this->__sentinel);
-				this->__node_alloc.deallocate(this->__sentinel, 1);
-			}
 			to_clear(this->__root);
 			this->__root = 0x0;
-
 			this->__size = 0;
 		}
 
@@ -701,23 +713,66 @@ namespace ft
 		*	📌 MY UTILS
 		*/
 
-		void printTree(node_type *node) const 
-		{
-		    if (node == 0x0)
-		        return;
 
-		    printTree(node->__right);
+# define M_RESET	        "\033[0m"
+# define M_BLACK	        "\033[1;30m"
+# define M_RED	        "\033[1;31m"
+# define M_GREEN	        "\033[1;32m"
+# define M_YELLOW         "\033[1;33m"
+# define M_MAGENTA        "\033[1;35m"
+# define M_CYAN	        "\033[1;36m"
 
-		    for (int i = 0; i < 6; i++)
-		        std::cout << "   ";
 
-		    std::cout << "(" << node->__pair.first << ", " << node->__pair.second << ")";
-		    std::cout << (node->__isBlack ? "B\n" : "R\n");
 
-		    printTree(node->__left);
-		}
+			size_t		returnHeight() const {
+				if (__root == 0x0)
+					return (0);
+				return (returnHeight(__root));
+			}
 
-		void printTree() const { printTree(this->__root); }
+			size_t		returnHeight(node_type *pos) const {
+				if (!pos || pos == this->__sentinel || this->__root == 0x0)
+					return 0;
+				int		leftHeight = returnHeight(pos->__left) + 1;
+				int		rightHeight = returnHeight(pos->__right) + 1;
+				if (leftHeight > rightHeight)
+					return (leftHeight);
+				return (rightHeight);
+			}
+
+			void printRb_treeFormat(int level, int k, node_type *pos) const {
+				if (!pos || pos == this->__sentinel || this->__root == 0x0)
+					return ;
+				printRb_treeFormat(level + 1, k, pos->__left);
+				printRb_treeFormat(level + 1, k, pos->__right);
+
+				if (k == level) {
+					std::cout << ((pos->__isLeftChild) ? M_CYAN : M_YELLOW) << " |" << M_RESET 
+					<< ((pos->__isBlack) ? M_BLACK : M_RED) << "value : [" << pos->__pair.first  
+					<< "] | p: [" << (pos->__parent  ? pos->__parent->__pair.first : 0x0) << "]" << M_RESET << ((pos->__isLeftChild) ? M_CYAN : M_YELLOW) << "| " << M_RESET;
+				}
+				return ;
+			}
+
+
+			void		printAllRb_tree() const {
+				size_t		size = this->returnHeight();
+				std::cout << "size : " << size << std::endl;
+				
+				std::cout << 
+				M_CYAN << "left child" << M_RESET << " | " <<
+				M_YELLOW << "right child" << M_RESET << std::endl  << std::endl;
+				for (size_t i = 0; i < size; i++) {
+					printRb_treeFormat(0, i, this->__root);
+					std::cout << std::endl << M_GREEN << "\t++++++++++++++++" << M_RESET << std::endl;
+				}
+				std::cout  << std::endl << M_YELLOW << "-------------END OF Rb_tree PRINT-------------" << M_RESET << std::endl << std::endl;
+			}
+
+
+
+
+
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -726,7 +781,7 @@ namespace ft
 			node_alloc												__node_alloc;
 			allocator_type											__alloc;
 			node_type												*__root;
-			node_type												*__sentinel;	
+			node_type												*__sentinel;
 			size_type												__size;
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -737,30 +792,31 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
+
 	void	to_clear(node_type *node)
 	{
 		if (node)
 		{
-			to_clear(node->__left);
-			to_clear(node->__right);
-			this->__node_alloc.destroy(node);
-			this->__node_alloc.deallocate(node, 1);
-			node = 0x0;
+				to_clear(node->__left);
+				to_clear(node->__right);
+				this->__node_alloc.destroy(node);
+				this->__node_alloc.deallocate(node, 1);
+				node = 0x0;
 		}
 	}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
 
-		void left_rotate(node_type *grand_parent) // the grand parent->parent
+		node_type* left_rotate(node_type *grand_parent) // the grand parent->parent
 		{
 		    node_type *save_parent = grand_parent->__right; //the parent, i.e the child of the grand parent
 			node_type *save_great_grand_parent = grand_parent->__parent; // the parent of the grand parent
 
-
 			// rotate
 			grand_parent->__right = save_parent->__left;
 			save_parent->__left = grand_parent;
+
 
 			/*
 			* the parent (save_parent) become the new grand parent . 
@@ -775,23 +831,33 @@ namespace ft
 			grand_parent->__parent = save_parent;
 			save_parent->__parent = save_great_grand_parent;
 			
-			grand_parent->__right->__isLeftChild = false;
-			
+			if (grand_parent->__right)
+			{
+				grand_parent->__right->__parent = grand_parent;
+				grand_parent->__right->__isLeftChild = false;
+
+			}
 			// update the child of the great grant parent
-			if (save_parent->__isLeftChild)
-				save_great_grand_parent->__left = save_parent;
-			else
-				save_great_grand_parent->__right = save_parent;
-				
+			
+			if (save_great_grand_parent)
+			{
+				if (save_parent->__isLeftChild)
+					save_great_grand_parent->__left = save_parent;
+				else
+					save_great_grand_parent->__right = save_parent;
+			}
+	
 			// we check if the grand parent was the root to change it.
 			// if it's true the parent become the root 
 			if (this->__root == grand_parent)
 				this->__root = save_parent;
+
+			return (save_parent);
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-		void right_rotate(node_type *grand_parent) // node is the parent->parent
+		node_type * right_rotate(node_type *grand_parent) // node is the parent->parent
 		{
 		    node_type *save_parent = grand_parent->__left; //the parent, i.e the child of the grand parent
 			node_type *save_great_grand_parent = grand_parent->__parent; // the parent of the grand parent
@@ -814,19 +880,42 @@ namespace ft
 			grand_parent->__parent = save_parent;
 			save_parent->__parent = save_great_grand_parent;
 			
-			grand_parent->__left->__isLeftChild = true;
+			if (grand_parent->__left)
+			{
+				grand_parent->__left->__parent = grand_parent;
+				grand_parent->__left->__isLeftChild = true;
+			}
 			
-			// update the child of the great grant parent
-			if (save_parent->__isLeftChild)
-				save_great_grand_parent->__left = save_parent;
-			else
-				save_great_grand_parent->__right = save_parent;
+			if (save_great_grand_parent)
+			{
+				// update the child of the great grant parent
+				if (save_parent->__isLeftChild)
+					save_great_grand_parent->__left = save_parent;
+				else
+					save_great_grand_parent->__right = save_parent;
+			}
 				
 			
 			// we check if the grand parent was the root to change it.
 			// if it's true the parent become the root 
 			if (this->__root == grand_parent)
 				this->__root = save_parent;
+			return (save_parent);
+		}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+
+		node_type * left_right_rotate(node_type *grand_parent)
+		{
+			left_rotate(grand_parent->__left);
+			return (right_rotate(grand_parent));
+		}
+
+		node_type *right_left_rotate(node_type *grand_parent)
+		{
+			right_rotate(grand_parent->__right);
+			return (left_rotate(grand_parent));
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/

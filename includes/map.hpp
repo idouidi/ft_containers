@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:02:40 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/26 21:59:52 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/27 20:23:11 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,6 @@ template <  class Key,
 		pair<iterator, bool> insert (const value_type& val)
 		{
 			ft::pair<iterator, bool> ret_pair = this->__tree.insert(val);
-
 			return (ret_pair);
 		}
 // 📚 Hint for the position where the element can be inserted.
