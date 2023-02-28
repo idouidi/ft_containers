@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:02:40 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/27 23:53:14 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/28 21:32:51 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ template <  class Key,
 // 📚 Copy constructor
 		map(const map& x) : __comp(x.__comp), __alloc(x.__alloc)
 		{
+			if (this->__tree.size())
+				this->clear();
 			this->insert(x.begin(), x.end());
 		}
 
@@ -256,13 +258,18 @@ template <  class Key,
 // 📚 Iterator pointing to a single element to be removed from the map.
 		void erase (iterator position)
 		{
-			this->__tree.erase(position); 
+			this->__tree.erase(position.base());
 		}
 
 // 📚 Key of the element to be removed from the map.
 		size_type erase (const key_type& k)
 		{
-			return (this->__tree.erase(k));
+			iterator it= find(k);
+
+			if (it == end())
+				return (0);
+			this->__tree.erase(it.base());
+			return (1);
 
 		}
 
@@ -272,11 +279,7 @@ template <  class Key,
 			iterator	tmp;
 
 			while (first != last) 
-			{
-				tmp = first;
-				first++;
-				erase(tmp);
-			}
+				erase(first++);
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/

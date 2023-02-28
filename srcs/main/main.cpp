@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:59:59 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/27 23:28:06 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/28 21:36:37 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,50 +97,16 @@ int main()
 {
     __CURRENT_TIME__ = t_time();
     __NAME_SPACE__ = (STD == 1) ? "std" : "ft" ;
-    // vector_tester();
-    // stack_tester();
-
-std::cout << RED << "--> " << __NAME_SPACE__ << "<--" << RESET << std::endl;
-
-if (STD != 1)
-{
-
-    // ft::map<int, std::string> test;
-    // test.insert(ft::pair<int, std::string>(1, "bar"));
-
-    ft::map<int, int>::iterator it;
-    ft::map<int, int>::iterator ite;
-
+    vector_tester();
+    stack_tester();
 
     ft::map<int, int> long_map;
 
     for (int i = 0; i < 42; i++)
-    {
       long_map.insert(ft::pair<int, int>(i , i * 2));
-    }
 
-      long_map.base().printAllRb_tree();
-    long_map.erase(34);
-      long_map.base().printAllRb_tree();
-
-    // it = long_map.begin();
-    // ite = long_map.end();
-    // ite--;
-      // while (it != ite)
-      // {
-      //   std::cout << it->first << ", " << it->second << '\n';
-      //   it++;
-      // }
-}
-
-  
-  // if (STD != 1)
-  // {
-  //   ft::map<int, std::string> toPrint;
-  //   toPrint.insert(ft::pair<int, std::string>(1, "salut"));
-  //   toPrint.insert(ft::pair<int, std::string>(2, "bar"));
-  //   toPrint.insert(ft::pair<int, std::string>(3, "foo"));
-  //   toPrint.base().printTree();
+    ft::map<int, int>::iterator it = long_map.begin();
+    ft::map<int, int>::iterator ite;
 
     return (0);
 }

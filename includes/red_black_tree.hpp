@@ -6,7 +6,7 @@
 /*   By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:06:45 by idouidi           #+#    #+#             */
-/*   Updated: 2023/02/28 00:00:16 by idouidi          ###   ########.fr       */
+/*   Updated: 2023/02/28 21:33:13 by idouidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,22 @@ namespace ft
 			this->__sentinel->__left = 0x0;	
 			this->__sentinel->__right = 0x0;	
 			this->__sentinel->__isLeftChild = false;
-			this->__sentinel->__isBlack = true; 
+			this->__sentinel->__isBlack = true;
+		}
+
+		Rb_tree& operator=(const Rb_tree& other)
+		{
+			if (this != &other)
+			{
+				if (!this->__size)
+					this->clear();
+				this->__comp = other.__comp;
+				this->__node_alloc = other.__node_alloc;
+				this->__alloc = other.__alloc;
+				this->__root = other.__root;
+				this->__sentinel = other.__sentinel;
+				this->__size = other.__size;
+			}
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -187,7 +202,7 @@ namespace ft
 			node_type *tmp = this->__root;
 			if (tmp)
 			{
-				while (tmp->__right)
+				while (tmp->__right && tmp->__right != this->__sentinel)
 					tmp = tmp->__right;
 			}
 			return (tmp);
@@ -367,170 +382,388 @@ namespace ft
 	
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-	void fix_erase(node_type* node, node_type* parent)
+	void erase_node(node_type *position)
 	{
-	    while (node != __root && (node == 0x0 || node->__isBlack))
-	    {
-	        if (node == parent->__left)
-	        {
-	            node_type* sibling = parent->__right;
-	            if (!sibling->__isBlack)
-	            {
-	                sibling->__isBlack = true;
-	                parent->__isBlack = false;
-	                left_rotate(parent);
-	                sibling = parent->__right;
-	            }
-	            if ((sibling->__left == 0x0 || sibling->__left->__isBlack) &&
-	                (sibling->__right == 0x0 || sibling->__right->__isBlack))
-	            {
-	                sibling->__isBlack = false;
-	                node = parent;
-	                parent = node->__parent;
-	            }
-	            else
-	            {
-	                if (sibling->__right == 0x0 || sibling->__right->__isBlack)
-	                {
-	                    sibling->__left->__isBlack = true;
-	                    sibling->__isBlack = false;
-	                    right_rotate(sibling);
-	                    sibling = parent->__right;
-	                }
-	                sibling->__isBlack = parent->__isBlack;
-	                parent->__isBlack = true;
-	                sibling->__right->__isBlack = true;
-	                left_rotate(parent);
-	                node = __root;
-	                break;
-	            }
-	        }
-	        else
-	        {
-	            node_type* sibling = parent->__left;
-	            if (!sibling->__isBlack)
-	            {
-	                sibling->__isBlack = true;
-	                parent->__isBlack = false;
-	                right_rotate(parent);
-	                sibling = parent->__left;
-	            }
-	            if ((sibling->__left == 0x0 || sibling->__left->__isBlack) &&
-	                (sibling->__right == 0x0 || sibling->__right->__isBlack))
-	            {
-	                sibling->__isBlack = false;
-	                node = parent;
-	                parent = node->__parent;
-	            }
-	            else
-	            {
-	                if (sibling->__left == 0x0 || sibling->__left->__isBlack)
-	                {
-	                    sibling->__right->__isBlack = true;
-	                    sibling->__isBlack = false;
-	                    left_rotate(sibling);
-	                    sibling = parent->__left;
-	                }
-	                sibling->__isBlack = parent->__isBlack;
-	                parent->__isBlack = true;
-	                sibling->__left->__isBlack = true;
-	                right_rotate(parent);
-	                node = __root;
-	                break;
-	            }
-	        }
-	    }
+		node_type *save_left_child = position->__left; 
+		node_type *save_right_child = position->__right;
 
-	    if (node != 0x0)
-	        node->__isBlack = true;
-	}
-
-
-	void erase(iterator position)
-	{
-	    if (position == end())
-	        return;
-
-	    node_type* node = position.base();
-	    node_type* to_remove;
-	    if (node->__left == 0x0 || node->__right == 0x0)
-	        to_remove = node;
-	    else
-	        to_remove = successor(node);
-
-	    node_type* child;
-	    if (to_remove->__left != 0x0)
-	        child = to_remove->__left;
-	    else
-	        child = to_remove->__right;
-
-	    if (child != 0x0)
-	        child->__parent = to_remove->__parent;
-
-	    if (to_remove->__parent == 0x0)
-	        __root = child;
-	    else if (to_remove == to_remove->__parent->__left)
-	        to_remove->__parent->__left = child;
-	    else
-	        to_remove->__parent->__right = child;
-
-	    if (to_remove != node)
-	        node->__pair = to_remove->__pair;
-
-	    if (to_remove->__isBlack)
+		if (position == this->__root)
+			this->__root = 0x0; 
+		if (position->__isLeftChild)
 		{
-	        fix_erase(child, to_remove->__parent);
+			if (save_left_child && save_left_child->__right != this->__sentinel)
+			{
+				if (position->__parent)
+					position->__parent->__left =  position->__left;
+				save_left_child->__parent = position->__parent;
+				position->__left->__isLeftChild = true;
+			}
+			else if (save_right_child && save_right_child->__right != this->__sentinel)
+			{
+				if (position->__parent)
+					position->__parent->__right = position->__right;
+				save_right_child->__parent = position->__parent;
+				position->__right->__isLeftChild = true;
+			}
+			else
+			{
+				if (position->__parent)
+					position->__parent->__right = this->__sentinel;
+			}
 		}
 
-		this->__node_alloc.destroy(to_remove);
-		this->__node_alloc.deallocate(to_remove, 1);
-	    --__size;
+		else
+		{
+			if (save_left_child && save_left_child->__right != this->__sentinel)
+			{
+				if (position->__parent)
+					position->__parent->__left =  position->__left;
+				save_left_child->__parent = position->__parent;
+				position->__left->__isLeftChild = false;
+			}
+			else if (save_right_child && save_right_child->__right != this->__sentinel)
+			{
+				if (position->__parent)
+					position->__parent->__right = position->__right;
+				save_right_child->__parent = position->__parent;
+				position->__right->__isLeftChild = false;
+			}
+			else
+			{
+				if (position->__parent)
+					position->__parent->__right = this->__sentinel;
+			}
+		}
+		this->__node_alloc.destroy(position);
+		this->__node_alloc.deallocate(position, 1);
+		this->__size -= 1;
+	}
+/*********************************************************************/
+
+// brother part
+	void brother_become_red(node_type *node, bool isLeft)
+	{
+		bool	swapColor;
+		if (isLeft)
+		{
+			swapColor = node->__right->__isBlack;
+			node->__right->__isBlack = node->__isBlack;
+			node->__isBlack = swapColor;
+			left_rotate(node);
+			fix_erase(node, isLeft);
+		}
+		else
+		{
+			swapColor = node->__left->__isBlack;
+			node->__left->__isBlack = node->__isBlack;
+			node->__isBlack = swapColor;
+			right_rotate(node);
+			fix_erase(node, isLeft);
+		}
 	}
 
-
-	size_type erase(const key_type& key)
+	bool brother_are_red(node_type *node, bool isLeft)
 	{
-	    iterator it = find(key);
-	    if (it == end())
-	        return 0;
-	
-	    node_type* node = it.base();
-	    node_type* to_remove;
-	    if (node->__left == 0x0 || node->__right == 0x0)
-	        to_remove = node;
-	    else
-	        to_remove = successor(node);
-	
-	    node_type* child;
-	    if (to_remove->__left != 0x0)
-	        child = to_remove->__left;
-	    else
-	        child = to_remove->__right;
-	
-	    if (child != 0x0)
-	        child->__parent = to_remove->__parent;
-	
-	    if (to_remove->__parent == 0x0)
-	        __root = child;
-	    else if (to_remove == to_remove->__parent->__left)
-	        to_remove->__parent->__left = child;
-	    else
-	        to_remove->__parent->__right = child;
-	
-	    if (to_remove != node)
-	        node->__pair = to_remove->__pair;
-	
-	    if (to_remove->__isBlack)
-		{
-	        fix_erase(child, to_remove->__parent);
-		}
-		this->__node_alloc.destroy(to_remove);
-		this->__node_alloc.deallocate(to_remove, 1);
+		return (((isLeft == true && node->__right->__isBlack == false)
+			|| (isLeft == false && node->__left->__isBlack == false)));
+	}
+
+/***********************************************************************/
+
+//child of the brother part
+	bool black_brothers_child_are_red(node_type *node, bool isLeft)
+	{
+		return ((isLeft && node->__right && node->__right != this->__sentinel && node->__right->__left 
+		&& node->__right->__left->__isBlack && node->__right->__right && node->__right->__right->__isBlack) 
+		|| (isLeft == false && node->__left  && node->__left->__left
+		&& node->__left->__left->__isBlack && node->__left->__right && node->__left->__right->__isBlack)); 
 		
-	    --__size;
-	
-	    return 1;
+		// return ( ((	node->__right->__right && node->__right->__left && 
+		// 			isLeft && node->__right->__right && node->__right->__right != this->__sentinel)
+		// 	&& (!node->__right->__left->__isBlack || !node->__right->__right->__isBlack))
+		// 	|| (!isLeft && node->__left->__left && node->__left->__right != this->__sentinel
+		// 	&& (!node->__left->__left->__isBlack || !node->__left->__right->__isBlack)));
 	}
+
+
+	void black_brother_child_become_red(node_type *node, bool isLeft)
+	{
+		bool  swapColor;
+
+		if (isLeft && node->__right && node->__right->__right != this->__sentinel
+			&& node->__right->__right->__isBlack == false)
+		{
+			node->__right->__isBlack = node->__isBlack;
+			node->__isBlack = true;
+			node->__right->__right->__isBlack = true;
+			left_rotate(node);
+		}
+
+		else if (isLeft == false && node->__left && node->__left->__right != this->__sentinel && 
+			node->__left->__left->__isBlack == false)
+		{
+			node->__left->__isBlack = node->__isBlack;
+			node->__isBlack = true;
+			node->__left->__left->__isBlack = true;
+			right_rotate(node);
+		}
+
+		else if (isLeft == false && node->__right && node->__right->__right != this->__sentinel &&
+			node->__right->__left->__isBlack == false)
+		{
+			swapColor = node->__right->__left->__isBlack;
+			node->__right->__left->__isBlack = node->__right->__isBlack;
+			node->__right->__isBlack = swapColor;
+			right_rotate(node->__right);
+			black_brother_child_become_red(node, isLeft);
+		}
+
+		else if (isLeft == false && node->__left && node->__left->__right != this->__sentinel &&
+			node->__left->__right->__isBlack == false)
+		{
+			swapColor = node->__left->__right->__isBlack;
+			node->__left->__right->__isBlack = node->__left->__isBlack;
+			node->__left->__isBlack = swapColor;
+			left_rotate(node->__left);
+			black_brother_child_become_red(node, isLeft);
+		}
+	}
+
+	void black_brother_child_become_black(node_type *node, bool isLeft)
+	{
+		if (isLeft)
+		{
+			node->__right->__isBlack = false;
+			if (node->__isBlack == false)
+				node->__isBlack = true;
+			else
+				fix_erase(node->__parent, node->__isLeftChild);
+		}
+		else
+		{
+			node->__left->__isBlack = false;
+			if (node->__isBlack == false)
+				node->__isBlack = true;
+			else
+				fix_erase(node->__parent, node->__isLeftChild);
+		}
+	}
+
+/***********************************************************************/
+
+		void		swapLeaf(node_type* swap_node, node_type* pos) 
+		{
+			node_type*							parent_tmp = pos->__parent;
+			node_type*							Lchild_tmp = pos->__left;
+			node_type*							Rchild_tmp = pos->__right;
+			bool								is_left = pos->__isLeftChild;
+			bool								black_tmp = pos->__isBlack;
+
+			if (pos == this->__root)
+				this->__root = swap_node;
+
+			pos->__left = swap_node->__left; 
+			if (swap_node->__left)
+				pos->__left->__parent = pos;
+			pos->__right = swap_node->__right;
+			if (swap_node->__right && swap_node->__right != this->__sentinel)
+				pos->__right->__parent = pos;
+			if (pos != swap_node->__parent) 
+			{
+				pos->__parent = swap_node->__parent;
+				if (swap_node->__isLeftChild && parent_tmp)
+					pos->__parent->__left = pos;
+				else if (parent_tmp)
+					pos->__parent->__right = pos;
+				swap_node->__left = Lchild_tmp;
+				if (swap_node->__left)
+					swap_node->__left->__parent = swap_node;
+				swap_node->__right = Rchild_tmp;
+				if (swap_node->__right)
+					swap_node->__right->__parent = swap_node;
+			}
+			else {
+				pos->__parent = swap_node;
+				if (swap_node->__isLeftChild) {
+					swap_node->__left = pos;
+					swap_node->__right = Rchild_tmp;
+					if (swap_node->__right)
+						swap_node->__right->__parent = swap_node;
+				}
+				else {
+					swap_node->__right = pos;
+					swap_node->__left = Lchild_tmp;
+					if (swap_node->__left)
+						swap_node->__left->__parent = swap_node;
+				}
+			}
+			swap_node->__parent = parent_tmp;
+			if (pos->__isLeftChild && parent_tmp)
+				parent_tmp->__left = swap_node;
+			else if (parent_tmp)
+				parent_tmp->__right = swap_node;
+			pos->__isBlack = swap_node->__isBlack;
+			pos->__isLeftChild = swap_node->__isLeftChild;
+			swap_node->__isBlack = black_tmp;
+			swap_node->__isLeftChild = is_left;
+		}
+
+/***********************************************************************/
+
+		void		deleteLeaf(node_type *pos) 
+		{
+			if (pos == this->__root)
+				this->__root = 0x0;
+			if (pos->__isLeftChild) 
+			{
+				if (pos->__left)
+				{
+					pos->__parent->__left = pos->__left;
+					pos->__left->__parent = pos->__parent;
+					pos->__left->__isLeftChild = true;
+				}
+				else if (pos->__right)
+				{
+					pos->__parent->__left = pos->__right;
+					pos->__right->__parent = pos->__parent;
+					pos->__right->__isLeftChild = true;
+				}
+				else
+				{
+					if (pos->__parent)
+						pos->__parent->__left = 0x0;
+				}
+			}
+			else if (!pos->__isLeftChild) 
+			{
+				if (pos->__left)
+				{
+					pos->__parent->__right = pos->__left;
+					pos->__left->__parent = pos->__parent;
+					pos->__left->__isLeftChild = false;
+				}
+				else if (pos->__right)
+				{
+					pos->__parent->__right = pos->__right;
+					pos->__right->__parent = pos->__parent;
+					pos->__right->__isLeftChild = false;
+				}
+				else
+				{
+					if (pos->__parent)
+						pos->__parent->__right = 0x0;
+				}
+			}
+			this->__node_alloc.destroy(pos);
+			this->__node_alloc.deallocate(pos, 1);
+			this->__size -= 1;
+		}
+
+
+/***********************************************************************/
+	// void fix_erase(node_type *node, bool isLeft, bool position_was_black = true)
+	// {
+	// 	if (position_was_black == false || (node == 0x0 || node == this->__sentinel)
+	// 		return ;
+	// 	if (isLeft == true && node->__left && node->__left->__isBlack == false)
+	// 		node->__left->__isBlack = true;
+	// 	else if (isLeft == false && node->__right && node->__right->__isBlack == false)
+	// 		node->__right->__isBlack = true;
+	// 	else if (brother_are_red(node, isLeft))
+	// 		brother_become_red(node, isLeft);
+
+	// 	else if (black_brothers_child_are_red(node, isLeft))
+	// 		black_brother_child_become_red(node, isLeft);
+	
+	// 	else if (black_brothers_child_are_red(node, isLeft) == false)
+	// 		black_brother_child_become_black(node, isLeft);
+	// }
+
+
+
+	void		erase(node_type* pos) 
+	{
+		bool								need_to_fix = pos->__isBlack;
+		bool								is_left = pos->__isLeftChild;
+		node_type							*fixNode = pos->__parent;
+		node_type							*swap_node;
+		node_type							*update_sentinel;
+		
+		if ((!pos->__right && !pos->__left ) || (!pos->__left && pos->__right == this->__sentinel))
+		{
+			if (pos->__isLeftChild && pos != this->__root)
+				pos->__parent->__left = 0x0;
+			else if (pos->__isLeftChild == false && pos != this->__root )
+				pos->__parent->__right = 0x0;
+			deleteLeaf(pos);
+			// if (fixNode)
+			// 	fixDelete(fixNode, is_left, need_to_fix);
+			update_sentinel = find_end();
+			update_sentinel->__right = this->__sentinel;
+			this->__sentinel->__parent = update_sentinel;
+			return ;
+		}
+		swap_node = successor(pos);
+		if (swap_node == 0x0)
+			swap_node = predecessor(pos);
+		is_left = swap_node->__isLeftChild;
+		need_to_fix = swap_node->__isBlack;
+		swapLeaf(swap_node, pos);
+		fixNode = pos->__parent;
+		deleteLeaf(pos);
+		// fixDelete(fixNode, is_left, need_to_fix);
+		update_sentinel = find_end();
+		update_sentinel->__right = this->__sentinel;
+		this->__sentinel->__parent = update_sentinel;
+		return ;
+	}
+	// void erase(node_type *pos)
+	// {
+
+	// 	node_type *save_parent = pos->__parent;
+	// 	node_type * update_sentinel;
+	// 	bool position_was_black = position->__isBlack;
+	// 	bool isLeft = position->__isLeftChild;
+
+	// 	//update sentinel
+	// 	if (position->__right && position->__left && position->__right != this->__sentinel)
+	// 	{
+	// 	std::cout << "in erase the value is =" << position->__pair.first << std::endl;
+	// 		if (save_parent)
+	// 		{
+	// 			save_parent->__right = this->__sentinel;
+	// 			this->__sentinel->__parent = save_parent;
+	// 		}
+	// 		else if (save_parent->__left)
+	// 		{
+	// 			save_parent->__left->__right = this->__sentinel;
+	// 			this->__sentinel->__parent = save_parent->__left;
+	// 		}
+	// 		erase_node(position);
+	// 		if (save_parent && save_parent->__right != this->__sentinel)
+	// 			fix_erase(save_parent, isLeft, position_was_black);
+	// 		update_sentinel = find_end();
+	// 		update_sentinel->__right = this->__sentinel;
+	// 		this->__sentinel->__parent = update_sentinel;
+	// 		return ;
+	// 	}
+	// 	node_type *swap_node = successor(position);
+	// 	if (swap_node)
+	// 	{
+	// 		if (swap_node->__right == this->__sentinel)
+	// 			swap_node = predecessor(position);
+	// 		isLeft = swap_node->__isLeftChild;
+	// 		position_was_black = swap_node->__isBlack;
+	// 		swapLeaf(swap_node, position);
+	// 		save_parent = position->__parent;
+	// 		deleteLeaf(position);
+	// 		fix_erase(save_parent, isLeft, position_was_black);
+	// 		update_sentinel = find_end();
+
+	// 		update_sentinel->__right = this->__sentinel;
+	// 		this->__sentinel->__parent = update_sentinel;
+	// 	}
+	// }
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
@@ -538,19 +771,27 @@ namespace ft
 // Sizes may differ.
 		void swap(Rb_tree& x)
 		{
+			if (this == &x)
+				return ;
 			key_compare		tmp_comp = this->__comp;
 			allocator_type	tmp_alloc = this->__alloc;
+			allocator_type	tmp_node_alloc = this->__node_alloc;
 			node_type		*tmp_root = this->__root;
+			node_type		*tmp_sentinel = this->__sentinel;
 			size_type		tmp_size = this->__size;
 
 			this->__comp = x.__comp;
 			this->__alloc = x.__alloc;
+			this->__node_alloc = x.__node_alloc;
 			this->__root = x.__root;
+			this->__sentinel = x.__sentinel;
 			this->__size = x.__size;
 
 			x.__comp = tmp_comp;
 			x.__alloc = tmp_alloc;
+			x.__node_alloc = tmp_node_alloc;
 			x.__root = tmp_root;
+			x.__sentinel = tmp_sentinel;
 			x.__size = tmp_size;
 		}
 
@@ -582,7 +823,9 @@ namespace ft
 				if (this->__comp(k, node->__pair.first))
 					node = node->__left;
 				else if (this->__comp(node->__pair.first, k))
+				{
 					node = node->__right;
+				}
 				else
 					return iterator(node);
 			}
@@ -618,38 +861,34 @@ namespace ft
 
 // 📚 Returns an iterator pointing to the first element in the container whose key is 
 // not considered to go before k (i.e., either it is equivalent or goes after).
-		iterator lower_bound(const key_type& k)
+		iterator	lower_bound (const key_type& k)
 		{
-			iterator	it  = this->begin();
-			iterator	ite = this->end();
+			iterator it = begin();
+			iterator ite = end();
 
-			
 			while (it != ite)
 			{
-				if (this->__comp(k, it->first))
+				if (this->__comp(it->first, k))
 					it++;
 				else
 					return (it);
 			}
 			return (ite);
-			
 		}
 
-		const_iterator lower_bound(const key_type& k) const
+		const_iterator	lower_bound (const key_type& k) const 
 		{
-			const_iterator	it  = this->begin();
-			const_iterator	ite = this->end();
+			const_iterator it = begin();
+			const_iterator ite = end();
 
-			
 			while (it != ite)
 			{
-				if (this->__comp(k, it->first))
+				if (this->__comp(it->first, k))
 					it++;
 				else
 					return (it);
 			}
-			return (ite);
-			
+			return (const_iterator(ite));
 		}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
@@ -925,26 +1164,42 @@ namespace ft
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
-		node_type* successor(node_type* node) const
+	node_type* successor(node_type* node)
+	{
+		node_type *ret;
+
+		if (!node)
+			return (0x0);
+		else if (node->__left == 0x0)
+			return (0x0);
+		else
 		{
-		    if (node->__right != NULL)
-		    {
-		        node_type* n = node->__right;
-		        while (n->__left != NULL)
-		            n = n->__left;
-		        return n;
-		    }
-		    else
-		    {
-		        node_type* p = node->__parent;
-		        while (p != NULL && node == p->__right)
-		        {
-		            node = p;
-		            p = p->__parent;
-		        }
-		        return p;
-		    }
+			ret = node->__left;
+			while(ret->__right)
+				ret = ret->__right; ////// ?
+			return (ret);
 		}
+		return (0x0);
+	}
+
+/*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
+
+	node_type* predecessor(node_type *node)
+	{
+		node_type *ret;
+		if (!node )
+			return (0x0);
+		else if (node->__right == 0x0)
+			return (0x0);
+		else
+		{
+			ret = node->__right;
+			while  (ret->__left)
+				ret = ret->__left;
+			return (ret);
+		}
+		return (0x0);
+	}
 
 /*	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	:	*/
 
